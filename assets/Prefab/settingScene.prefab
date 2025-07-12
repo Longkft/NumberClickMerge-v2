@@ -3889,14 +3889,8 @@
     "exit": {
       "__id__": 154
     },
-    "spriteOn": {
-      "__uuid__": "afc69723-4fe5-4afd-a2ab-b8ec3297e9bd@f9941",
-      "__expectedType__": "cc.SpriteFrame"
-    },
-    "spriteOff": {
-      "__uuid__": "88948cdb-fe50-4fe6-9b57-7ee84695bc13@f9941",
-      "__expectedType__": "cc.SpriteFrame"
-    },
+    "spriteOn": null,
+    "spriteOff": null,
     "_id": ""
   },
   {
@@ -4000,6 +3994,7 @@
       "__id__": 0
     },
     "fileId": "10rWqUW6tAdLLNdKpbkwlV",
+    "instance": null,
     "targetOverrides": null
   }
 ]

@@ -26,19 +26,19 @@
         "__id__": 14
       },
       {
-        "__id__": 383
+        "__id__": 445
       },
       {
-        "__id__": 385
+        "__id__": 447
       },
       {
-        "__id__": 387
+        "__id__": 449
       }
     ],
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 389
+      "__id__": 451
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -69,7 +69,7 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 390
+      "__id__": 452
     },
     "_id": "58d9c931-66fe-4866-bfbd-9c6b842cf1a7"
   },
@@ -286,18 +286,21 @@
       },
       {
         "__id__": 376
+      },
+      {
+        "__id__": 380
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 380
+        "__id__": 442
       },
       {
-        "__id__": 381
+        "__id__": 443
       },
       {
-        "__id__": 382
+        "__id__": 444
       }
     ],
     "_prefab": null,
@@ -12782,6 +12785,815 @@
     "_id": "1fJCYJj21EtY6qq97wLuXA"
   },
   {
+    "__type__": "cc.Node",
+    "_name": "fullcircle",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "_parent": {
+      "__id__": 14
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 381
+      },
+      {
+        "__id__": 440
+      },
+      {
+        "__id__": 441
+      }
+    ],
+    "_prefab": null,
+    "_lpos": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": -0.953
+    },
+    "_lrot": {
+      "__type__": "cc.Quat",
+      "x": 1.0587911840678754e-22,
+      "y": 4.163361890128557e-17,
+      "z": -1.0587911840678751e-22,
+      "w": 1
+    },
+    "_lscale": {
+      "__type__": "cc.Vec3",
+      "x": 1000,
+      "y": 1000,
+      "z": 1000
+    },
+    "_mobility": 0,
+    "_layer": 1073741824,
+    "_euler": {
+      "__type__": "cc.Vec3",
+      "x": 1.213285324654967e-20,
+      "y": 4.770861297799509e-15,
+      "z": -1.2132853246549666e-20
+    },
+    "_id": "34+OJcIoZMxbSVRZvh/VsF"
+  },
+  {
+    "__type__": "cc.ParticleSystem",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 380
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "_materials": [
+      {
+        "__uuid__": "270130f2-23b0-4d88-9b28-cff55d2ff6ca",
+        "__expectedType__": "cc.Material"
+      },
+      null
+    ],
+    "_visFlags": 0,
+    "startColor": {
+      "__id__": 382
+    },
+    "scaleSpace": 1,
+    "startSize3D": false,
+    "startSizeX": {
+      "__id__": 383
+    },
+    "startSize": {
+      "__id__": 383
+    },
+    "startSizeY": {
+      "__id__": 384
+    },
+    "startSizeZ": {
+      "__id__": 385
+    },
+    "startSpeed": {
+      "__id__": 386
+    },
+    "startRotation3D": false,
+    "startRotationX": {
+      "__id__": 387
+    },
+    "startRotationY": {
+      "__id__": 388
+    },
+    "startRotationZ": {
+      "__id__": 389
+    },
+    "startRotation": {
+      "__id__": 389
+    },
+    "startDelay": {
+      "__id__": 390
+    },
+    "startLifetime": {
+      "__id__": 391
+    },
+    "duration": 3,
+    "loop": false,
+    "simulationSpeed": 3,
+    "playOnAwake": true,
+    "gravityModifier": {
+      "__id__": 392
+    },
+    "rateOverTime": {
+      "__id__": 393
+    },
+    "rateOverDistance": {
+      "__id__": 394
+    },
+    "bursts": [],
+    "_renderCulling": false,
+    "_cullingMode": 0,
+    "_aabbHalfX": 0,
+    "_aabbHalfY": 0,
+    "_aabbHalfZ": 0,
+    "_dataCulling": false,
+    "enableCulling": false,
+    "_colorOverLifetimeModule": {
+      "__id__": 395
+    },
+    "_shapeModule": {
+      "__id__": 403
+    },
+    "_sizeOvertimeModule": {
+      "__id__": 405
+    },
+    "_velocityOvertimeModule": {
+      "__id__": 411
+    },
+    "_forceOvertimeModule": {
+      "__id__": 416
+    },
+    "_limitVelocityOvertimeModule": {
+      "__id__": 420
+    },
+    "_rotationOvertimeModule": {
+      "__id__": 425
+    },
+    "_textureAnimationModule": {
+      "__id__": 429
+    },
+    "_noiseModule": {
+      "__id__": 433
+    },
+    "_trailModule": {
+      "__id__": 434
+    },
+    "renderer": {
+      "__id__": 439
+    },
+    "_prewarm": false,
+    "_capacity": 1,
+    "_simulationSpace": 1,
+    "_id": "51SZ5hGKZEIauC0EH4TsEH"
+  },
+  {
+    "__type__": "cc.GradientRange",
+    "_mode": 2,
+    "colorMin": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 87
+    },
+    "colorMax": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 91
+    }
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 1,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 3,
+    "constantMin": 0,
+    "constantMax": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 2,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 1,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.ColorOvertimeModule",
+    "_enable": true,
+    "color": {
+      "__id__": 396
+    }
+  },
+  {
+    "__type__": "cc.GradientRange",
+    "_mode": 1,
+    "gradient": {
+      "__id__": 397
+    }
+  },
+  {
+    "__type__": "cc.Gradient",
+    "colorKeys": [
+      {
+        "__id__": 398
+      },
+      {
+        "__id__": 399
+      }
+    ],
+    "alphaKeys": [
+      {
+        "__id__": 400
+      },
+      {
+        "__id__": 401
+      },
+      {
+        "__id__": 402
+      }
+    ],
+    "mode": 0
+  },
+  {
+    "__type__": "cc.ColorKey",
+    "color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "time": 0
+  },
+  {
+    "__type__": "cc.ColorKey",
+    "color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "time": 1
+  },
+  {
+    "__type__": "cc.AlphaKey",
+    "alpha": 0,
+    "time": 0
+  },
+  {
+    "__type__": "cc.AlphaKey",
+    "alpha": 255,
+    "time": 0.5
+  },
+  {
+    "__type__": "cc.AlphaKey",
+    "alpha": 0,
+    "time": 1
+  },
+  {
+    "__type__": "cc.ShapeModule",
+    "_enable": false,
+    "_shapeType": 1,
+    "shapeType": 1,
+    "emitFrom": 3,
+    "alignToDirection": false,
+    "randomDirectionAmount": 0,
+    "sphericalDirectionAmount": 0,
+    "randomPositionAmount": 0,
+    "radius": 0.5,
+    "radiusThickness": 0.43,
+    "arcMode": 0,
+    "arcSpread": 0,
+    "arcSpeed": {
+      "__id__": 404
+    },
+    "length": 1,
+    "boxThickness": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_rotation": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 90,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 0.5,
+      "y": 0.5,
+      "z": 0.5
+    },
+    "_arc": 6.283185307179586,
+    "_angle": 0.4351105825221864
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 1,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.SizeOvertimeModule",
+    "_enable": true,
+    "separateAxes": false,
+    "size": {
+      "__id__": 406
+    },
+    "x": {
+      "__id__": 408
+    },
+    "y": {
+      "__id__": 409
+    },
+    "z": {
+      "__id__": 410
+    }
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 1,
+    "spline": {
+      "__id__": 407
+    },
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.RealCurve",
+    "_times": [
+      0.00008173699588962733,
+      1
+    ],
+    "_values": [
+      {
+        "__type__": "cc.RealKeyframeValue",
+        "interpolationMode": 2,
+        "tangentWeightMode": 0,
+        "value": 0.013253741854084879,
+        "rightTangent": 2.0511720983419095,
+        "rightTangentWeight": 0.7605886428395141,
+        "leftTangent": 2.0511720983419095,
+        "leftTangentWeight": 0,
+        "easingMethod": 0,
+        "__editorExtras__": null
+      },
+      {
+        "__type__": "cc.RealKeyframeValue",
+        "interpolationMode": 2,
+        "tangentWeightMode": 0,
+        "value": 0.9978549102746389,
+        "rightTangent": -0.18488455988455976,
+        "rightTangentWeight": 0,
+        "leftTangent": -0.18488455988455976,
+        "leftTangentWeight": 0.33895480614581547,
+        "easingMethod": 0,
+        "__editorExtras__": null
+      }
+    ],
+    "preExtrapolation": 1,
+    "postExtrapolation": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.VelocityOvertimeModule",
+    "_enable": false,
+    "x": {
+      "__id__": 412
+    },
+    "y": {
+      "__id__": 413
+    },
+    "z": {
+      "__id__": 414
+    },
+    "speedModifier": {
+      "__id__": 415
+    },
+    "space": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 1,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.ForceOvertimeModule",
+    "_enable": false,
+    "x": {
+      "__id__": 417
+    },
+    "y": {
+      "__id__": 418
+    },
+    "z": {
+      "__id__": 419
+    },
+    "space": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.LimitVelocityOvertimeModule",
+    "_enable": false,
+    "limitX": {
+      "__id__": 421
+    },
+    "limitY": {
+      "__id__": 422
+    },
+    "limitZ": {
+      "__id__": 423
+    },
+    "limit": {
+      "__id__": 424
+    },
+    "dampen": 3,
+    "separateAxes": false,
+    "space": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.RotationOvertimeModule",
+    "_enable": false,
+    "_separateAxes": false,
+    "x": {
+      "__id__": 426
+    },
+    "y": {
+      "__id__": 427
+    },
+    "z": {
+      "__id__": 428
+    }
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0.7853981633974483,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.TextureAnimationModule",
+    "_enable": false,
+    "_numTilesX": 0,
+    "numTilesX": 0,
+    "_numTilesY": 0,
+    "numTilesY": 0,
+    "_mode": 0,
+    "animation": 0,
+    "frameOverTime": {
+      "__id__": 430
+    },
+    "startFrame": {
+      "__id__": 432
+    },
+    "cycleCount": 0,
+    "_flipU": 0,
+    "_flipV": 0,
+    "_uvChannelMask": -1,
+    "randomRow": false,
+    "rowIndex": 0
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 1,
+    "spline": {
+      "__id__": 431
+    },
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.RealCurve",
+    "_times": [
+      0,
+      1
+    ],
+    "_values": [
+      {
+        "__type__": "cc.RealKeyframeValue",
+        "interpolationMode": 2,
+        "tangentWeightMode": 0,
+        "value": 1,
+        "rightTangent": 0,
+        "rightTangentWeight": 0,
+        "leftTangent": 0,
+        "leftTangentWeight": 0,
+        "easingMethod": 0,
+        "__editorExtras__": null
+      },
+      {
+        "__type__": "cc.RealKeyframeValue",
+        "interpolationMode": 2,
+        "tangentWeightMode": 0,
+        "value": 1,
+        "rightTangent": 0,
+        "rightTangentWeight": 0,
+        "leftTangent": 0,
+        "leftTangentWeight": 0,
+        "easingMethod": 0,
+        "__editorExtras__": null
+      }
+    ],
+    "preExtrapolation": 1,
+    "postExtrapolation": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.NoiseModule",
+    "_enable": false,
+    "_strengthX": 0.5,
+    "_strengthY": 0.5,
+    "_strengthZ": 0.5,
+    "_noiseSpeedX": 0.5,
+    "_noiseSpeedY": 0.5,
+    "_noiseSpeedZ": 0.5,
+    "_noiseFrequency": 0.5,
+    "_remapX": 0,
+    "_remapY": 0,
+    "_remapZ": 0,
+    "_octaves": 1,
+    "_octaveMultiplier": 0.5,
+    "_octaveScale": 2
+  },
+  {
+    "__type__": "cc.TrailModule",
+    "_enable": false,
+    "mode": 0,
+    "lifeTime": {
+      "__id__": 435
+    },
+    "_minParticleDistance": 0.1,
+    "existWithParticles": true,
+    "textureMode": 0,
+    "widthFromParticle": true,
+    "widthRatio": {
+      "__id__": 436
+    },
+    "colorFromParticle": false,
+    "colorOverTrail": {
+      "__id__": 437
+    },
+    "colorOvertime": {
+      "__id__": 438
+    },
+    "_space": 0,
+    "_particleSystem": {
+      "__id__": 381
+    }
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 1,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.CurveRange",
+    "mode": 0,
+    "constant": 0,
+    "multiplier": 1
+  },
+  {
+    "__type__": "cc.GradientRange",
+    "_mode": 0,
+    "color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    }
+  },
+  {
+    "__type__": "cc.GradientRange",
+    "_mode": 0,
+    "color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    }
+  },
+  {
+    "__type__": "cc.ParticleSystemRenderer",
+    "_renderMode": 0,
+    "_velocityScale": 0,
+    "_lengthScale": 0,
+    "_mesh": null,
+    "_cpuMaterial": {
+      "__uuid__": "270130f2-23b0-4d88-9b28-cff55d2ff6ca",
+      "__expectedType__": "cc.Material"
+    },
+    "_gpuMaterial": null,
+    "_mainTexture": {
+      "__uuid__": "e42727fa-f592-4051-863b-f432480819eb@6c48a",
+      "__expectedType__": "cc.Texture2D"
+    },
+    "_useGPU": false,
+    "_alignSpace": 2
+  },
+  {
+    "__type__": "cc.UIMeshRenderer",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 380
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "_id": "eepvAhpTlLZp3XXOUa4b2v"
+  },
+  {
+    "__type__": "cc.UITransform",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 380
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 100,
+      "height": 100
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_id": "3d0BPmb1FJfLPqYmlLylM2"
+  },
+  {
     "__type__": "cc.UITransform",
     "_name": "",
     "_objFlags": 0,
@@ -12861,7 +13673,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 384
+        "__id__": 446
       }
     ],
     "_prefab": null,
@@ -12900,7 +13712,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 383
+      "__id__": 445
     },
     "_enabled": true,
     "__prefab": null,
@@ -12934,7 +13746,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 386
+        "__id__": 448
       }
     ],
     "_prefab": null,
@@ -12973,7 +13785,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 385
+      "__id__": 447
     },
     "_enabled": true,
     "__prefab": null,
@@ -12991,7 +13803,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 388
+        "__id__": 450
       }
     ],
     "_prefab": null,
@@ -13030,7 +13842,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 387
+      "__id__": 449
     },
     "_enabled": true,
     "__prefab": null,
@@ -13061,28 +13873,28 @@
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 391
+      "__id__": 453
     },
     "shadows": {
-      "__id__": 392
+      "__id__": 454
     },
     "_skybox": {
-      "__id__": 393
+      "__id__": 455
     },
     "fog": {
-      "__id__": 394
+      "__id__": 456
     },
     "octree": {
-      "__id__": 395
+      "__id__": 457
     },
     "skin": {
-      "__id__": 396
+      "__id__": 458
     },
     "lightProbeInfo": {
-      "__id__": 397
+      "__id__": 459
     },
     "postSettings": {
-      "__id__": 398
+      "__id__": 460
     },
     "bakedWithStationaryMainLight": false,
     "bakedWithHighpLightmap": false
