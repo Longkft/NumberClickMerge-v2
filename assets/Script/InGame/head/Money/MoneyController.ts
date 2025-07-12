@@ -3,10 +3,11 @@ import { MoneyUi } from './MoneyUi';
 import { EventBus } from '../../../Utils/EventBus';
 import { EventGame } from '../../../Enum/EEvent';
 import { DataManager } from '../../../Manager/DataManager';
+import { BaseSingleton } from '../../../Base/BaseSingleton';
 const { ccclass, property } = _decorator;
 
 @ccclass('MoneyController')
-export class MoneyController extends Component {
+export class MoneyController extends BaseSingleton<MoneyController> {
 
     @property({ type: MoneyUi })
     moneyUi: MoneyUi = null;
@@ -40,6 +41,8 @@ export class MoneyController extends Component {
 
         // Gọi hàm tween tăng điểm mượt mà
         this.moneyUi.AnimationScoreChange(previousGold, updatedGold, this.moneyUi.gold);
+
+        this.moneyUi.activeEffGold();
     }
 
     public updateGold() {

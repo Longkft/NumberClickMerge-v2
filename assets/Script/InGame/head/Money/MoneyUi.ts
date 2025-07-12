@@ -10,6 +10,9 @@ export class MoneyUi extends AutoComponent {
     @property({ type: Label })
     gold: Label = null;
 
+    @property({ type: Node })
+    effGold: Node = null;
+
     SetCoin(gold: number) {
         this.gold.string = gold.toString();
     }
@@ -34,6 +37,14 @@ export class MoneyUi extends AutoComponent {
                 }
             })
             .start();
+    }
+
+    activeEffGold() {
+        this.effGold.active = true;
+
+        setTimeout(() => {
+            this.effGold.active = false;
+        }, 1000)
     }
 }
 

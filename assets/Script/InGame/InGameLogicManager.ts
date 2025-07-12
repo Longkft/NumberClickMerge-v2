@@ -193,9 +193,17 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         if (this.consecutiveMerges < 3) return; // chỉ từ combo 3
 
         const gold = 10 * (this.consecutiveMerges - 2) + 10;
+        PopupManager.getInstance().PopupClainGoldCombo.gold = gold;
 
-        // DataManager.getInstance().Gold += gold;
-        EventBus.emit(EventGame.UPDATE_COIN_UI, gold);
+        return new Promise(resolve => {
+            // DataManager.getInstance().Gold += gold;
+            // EventBus.emit(EventGame.UPDATE_COIN_UI, gold);
+            PopupManager.getInstance().PopupClainGoldCombo.Show(gold, this.consecutiveMerges, () => {
+                // Hàm callback khi người chơi bấm claim
+                resolve(true);
+            });
+        });
+
     }
 
 
@@ -212,7 +220,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
         const newValue = rootModel.value + 1;
 
-        this.RewardGoldByCombo();
+        // this.RewardGoldByCombo();
 
         // Gán -1 cho toàn bộ ô matched (bao gồm root)
         gridMgr.ResetDataMatch(matched);
@@ -358,7 +366,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         return matchGroups;
     }
 
-    public checkAllMatchingGroupsLoop() {
+    public async checkAllMatchingGroupsLoop() {
         this.isProcessing = true;
 
         var matchGroups = this.findAllMatchedGroups();
@@ -366,9 +374,19 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             this.isProcessing = false; // cho phép click lại
             console.error("Không còn ô nào match.");
 
-            if (this.isUpLevel == true) {
-                PopupManager.getInstance().ShowPopupUnlockMax()
-                this.isUpLevel = false
+            // const shownGoldPopup = await this.RewardGoldByCombo();
+
+            // Nếu KHÔNG có popup combo → hiện popup max luôn
+            // if (!shownGoldPopup && this.isUpLevel) {
+            //     PopupManager.getInstance().ShowPopupUnlockMax();
+            //     this.isUpLevel = false;
+            // }
+
+            await this.RewardGoldByCombo();
+
+            if (this.isUpLevel) {
+                PopupManager.getInstance().ShowPopupUnlockMax();
+                this.isUpLevel = false;
             }
 
             return;

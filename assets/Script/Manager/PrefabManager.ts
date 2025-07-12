@@ -16,6 +16,12 @@ export class PrefabManager extends BaseSingleton<PrefabManager> {
     @property({ type: Prefab, group: { name: "POPUP" } })
     popupUnlockMin: Prefab = null
 
+    @property({ type: Prefab, group: { name: "POPUP" } })
+    popupGold: Prefab = null
+
+    @property({ type: Prefab, group: { name: "POPUP" } })
+    popupClainGoldCombo: Prefab = null
+
 
 
 }

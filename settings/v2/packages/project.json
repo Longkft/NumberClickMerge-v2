@@ -6,5 +6,11 @@
       "height": 1920,
       "fitHeight": true
     }
-  }
+  },
+  "layer": [
+    {
+      "name": "layerMax",
+      "value": 524288
+    }
+  ]
 }

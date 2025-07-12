@@ -1,5 +1,6 @@
 import { _decorator, Animation, Color, Component, Label, Node, Sprite, tween, Vec3 } from 'cc';
 import { GridManager } from '../GridManager';
+import { PopupManager } from '../../Manager/PopupManager';
 const { ccclass, property } = _decorator;
 
 export enum CellPopupState {
@@ -32,8 +33,6 @@ export class CellPopupMax extends Component {
         Color.fromHEX(color, GridManager.getInstance().GetColorByValue(value))
         this.bg.color = color
         this.updateState(state, false)
-
-
     }
 
 
@@ -45,10 +44,11 @@ export class CellPopupMax extends Component {
                     this.UpdateUICurrent()
                 }
                 else {
-                    this.node.getComponent(Animation).play()
+                    this.node.getComponent(Animation).play();
                     tween(this.node).to(1, { scale: new Vec3(1.4, 1.4, 1.4) }).start()
                     this.scheduleOnce(() => {
-                        this.node.getComponent(Animation).stop()
+                        PopupManager.getInstance().popupUnlockMax.ShowEff();
+                        this.node.getComponent(Animation).stop();
                         this.UpdateUICurrent()
                     }, 1)
                 }

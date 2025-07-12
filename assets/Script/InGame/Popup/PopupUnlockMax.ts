@@ -3,6 +3,7 @@ import { GridManager } from '../GridManager';
 
 import { InGameLogicManager } from '../InGameLogicManager';
 import { CellPopupMax, CellPopupState } from '../Cell/CellPopupMax';
+import { PopupManager } from '../../Manager/PopupManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupUnlockMax')
@@ -12,6 +13,12 @@ export class PopupUnlockMax extends Component {
 
     @property(Prefab)
     cellPrefab: Prefab = null
+
+    @property(Node)
+    effNode: Node = null
+
+    valueGoldPlus: number = 0;
+    valueUpCell: number = 100;
 
     protected start(): void {
         // this.show()
@@ -33,9 +40,8 @@ export class PopupUnlockMax extends Component {
             })
             .start()
 
-
+        this.valueGoldPlus = 1 * this.valueUpCell;
     }
-
 
     init() {
 
@@ -47,13 +53,11 @@ export class PopupUnlockMax extends Component {
 
     }
 
-
     CreateCell(value, state) {
         let cell = instantiate(this.cellPrefab)
         this.pageView.addPage(cell)
         cell.getComponent(CellPopupMax).setUp(value, state)
     }
-
 
     onScrollEvent() {
         this.pageView.content.children.forEach((e, index) => {
@@ -70,11 +74,19 @@ export class PopupUnlockMax extends Component {
         })
     }
 
+    ShowEff() {
+        this.effNode.active = true;
+
+        setTimeout(() => {
+            this.effNode.active = false;
+        }, 3000)
+    }
+
     btnClaim() {
         this.node.active = false
 
-        GridManager.getInstance().CheckUpDateMinCurrent();
-        InGameLogicManager.getInstance().UpdateAllFrames();
+        PopupManager.getInstance().PopupGold.gold = this.valueGoldPlus;
+        PopupManager.getInstance().PopupGold.Show(this.valueGoldPlus);
     }
 
 }
