@@ -22,6 +22,12 @@ export class Utils extends BaseSingleton<Utils> {
         DataManager.getInstance().MyHeart = newHeart;
     }
 
+    ResetHeart(subtraction: number) {
+        if (subtraction < 0 || subtraction > 5) return;
+
+        DataManager.getInstance().MyHeart = subtraction;
+    }
+
     //#region AdsManager
     ShowAdsReward(call?: CallableFunction) {
 
@@ -32,6 +38,7 @@ export class Utils extends BaseSingleton<Utils> {
         }
     }
 
+    //#region set cam
     setCamLayer(rootNode: Node, layer: number): void {
         log(1)
         if (!rootNode) return;

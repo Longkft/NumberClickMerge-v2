@@ -14,6 +14,7 @@ import { DataManager } from '../Manager/DataManager';
 import { AudioManager } from '../Manager/AudioManager';
 import { SFXType } from '../Enum/Enum';
 import { PopupManager } from '../Manager/PopupManager';
+import { Utils } from '../Utils/Utils';
 const { ccclass, property } = _decorator;
 
 @ccclass('InGameLogicManager')
@@ -374,16 +375,6 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             this.isProcessing = false; // cho phép click lại
             console.error("Không còn ô nào match.");
 
-            // const shownGoldPopup = await this.RewardGoldByCombo();
-
-            // Nếu KHÔNG có popup combo → hiện popup max luôn
-            // if (!shownGoldPopup && this.isUpLevel) {
-            //     PopupManager.getInstance().ShowPopupUnlockMax();
-            //     this.isUpLevel = false;
-            // }
-
-            // await this.RewardGoldByCombo();
-
             if (this.isUpLevel) {
                 PopupManager.getInstance().ShowPopupUnlockMax();
                 this.isUpLevel = false;
@@ -696,6 +687,50 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         } else {
             this.isProcessing = false;
         }
+    }
+
+    //#region restart game
+    public RestartGame(): void {
+        this.isProcessing = true;
+
+        // Xoá tất cả Cell UI
+        for (let i = 0; i < this.cells.length; i++) {
+            for (let j = 0; j < this.cells[i].length; j++) {
+                const cell = this.cells[i][j];
+                if (cell) {
+                    cell.Dispose();
+                    this.cells[i][j] = null;
+                }
+            }
+        }
+
+        for (const node of this.cellContainColllection) {
+            node.destroy(); // hoặc node.destroy() nếu không dùng pool
+        }
+
+        // Reset UI và biến
+        this.cells = [];
+        this.contains = [];
+        this.cellContainColllection = [];
+        this.cellCollection = new CellCollection(); // làm mới bộ nhớ pool
+
+        this.consecutiveMerges = 0;
+        this.isUpLevel = false;
+
+        // Gọi hàm reset logic từ GridManager
+        GridManager.getInstance().ResetGridState();
+
+        // Khởi tạo lại UI
+        this.InitContainCells();
+        this.InitCells();
+
+        // Gọi check match đầu tiên
+        this.scheduleOnce(() => {
+            this.checkAllMatchingGroupsLoop();
+        }, 0.3);
+
+        Utils.getInstance().ResetHeart(5); // reset tim
+        EventBus.emit(EventGame.UPDATE_HEARt_UI); // update Ui
     }
 
 }

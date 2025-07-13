@@ -242,6 +242,15 @@ export class GridManager extends BaseSingleton<GridManager> {
         PopupManager.getInstance().ShowPopupUnlockMin()
 
     }
+
+    public ResetGridState(): void {
+        this.numberMax = 8;
+        this.numberMin = 1;
+
+        this.initGrid();
+        this.CreateBoard();
+    }
+
 }
 
 

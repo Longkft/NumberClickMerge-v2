@@ -2,6 +2,8 @@ import { _decorator, Component, director, EventTouch, Label, log, Node, Sprite, 
 import { BaseTouch } from '../../../Base/BaseTouch';
 import { AudioManager } from '../../../Manager/AudioManager';
 import { DataManager } from '../../../Manager/DataManager';
+import { FXShadow } from '../../../FX/FXShadow';
+import { InGameLogicManager } from '../../InGameLogicManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('SettingScene')
@@ -21,6 +23,12 @@ export class SettingScene extends BaseTouch {
 
     @property(Node)
     exit: Node = null;
+
+    @property(FXShadow)
+    shadow: FXShadow = null;
+
+    @property(Node)
+    box: Node = null;
 
     @property(SpriteFrame)
     spriteOn: SpriteFrame = null;
@@ -119,16 +127,18 @@ export class SettingScene extends BaseTouch {
         this.UnRegisterEventSound();
     }
 
-    update(deltaTime: number) {
+    async Show() {
+        await this.shadow.ShowFxShadow();
 
+        this.box.active = true;
     }
 
     TouchStart(event: EventTouch) {
-        this.node.active = false;
+        // this.node.active = false;
 
-        this.node.children.forEach(element => {
-            element.active = false;
-        })
+        // this.node.children.forEach(element => {
+        //     element.active = false;
+        // })
 
         event.propagationStopped = true;
     }
@@ -195,6 +205,18 @@ export class SettingScene extends BaseTouch {
 
         this.node.active = false
         // HomeManager.instance.ShowHome();
+    }
+
+    BtnResumeAndHome() {
+        this.box.active = false;
+
+        this.shadow.HideFXShadow();
+    }
+
+    BtnRestart() {
+        InGameLogicManager.getInstance().RestartGame();
+
+        this.shadow.HideFXShadow();
     }
 }
 

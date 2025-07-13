@@ -1,19 +1,11 @@
-import { _decorator, Camera, Component, find, Label, Layers, Node, Vec2, Vec3 } from 'cc';
+import { _decorator, Component, Label, Layers, Node } from 'cc';
 import { Utils } from '../../Utils/Utils';
 import { MoneyController } from '../head/Money/MoneyController';
 import { FXShadow } from '../../FX/FXShadow';
-import { AutoComponent } from '../../Base/AutoComponent';
-import { PopupManager } from '../../Manager/PopupManager';
 const { ccclass, property } = _decorator;
 
-@ccclass('PopupClainGoldCombo')
-export class PopupClainGoldCombo extends AutoComponent {
-
-    @property({ type: Camera })
-    camLayer: Camera = null;
-
-    @property({ type: Label })
-    textCombo: Label = null;
+@ccclass('PopupAdsGold')
+export class PopupAdsGold extends Component {
 
     @property({ type: Label })
     valueGoldPlus: Label = null;
@@ -23,28 +15,15 @@ export class PopupClainGoldCombo extends AutoComponent {
 
     gold: number;
 
-    LoadCamera() {
-        if (this.camLayer) return;
-        this.camLayer = PopupManager.getInstance().cameraItem.getComponent(Camera);
-    }
-
-    protected LoadComponent(): void {
-        this.LoadCamera();
-    }
-
-    async Show(gold: number, combo: number, call: CallableFunction) {
+    async Show(gold: number = 100) {
         const box = this.node.getChildByName('box');
 
         Utils.getInstance().setCamLayer(MoneyController.getInstance().node, Layers.Enum.PROFILER);
 
-        this.SetValueGoldUI(gold, combo);
+        this.SetValueGoldUI(gold);
 
         await this.shadow.ShowFxShadow();
         await this.shadow.ShowFxBox(box);
-
-        if (typeof call === 'function') {
-            call();
-        }
     }
 
     async Hide() {
@@ -60,8 +39,7 @@ export class PopupClainGoldCombo extends AutoComponent {
         });
     }
 
-    SetValueGoldUI(gold: number, Combo: number = 3) {
-        this.textCombo.string = `Combo x${Combo}`;
+    SetValueGoldUI(gold: number) {
         this.valueGoldPlus.string = `+ ${gold}`;
     }
 

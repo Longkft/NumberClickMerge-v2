@@ -87,7 +87,7 @@ export class ClaimGold extends AutoComponent {
     }
 
     ads(call: CallableFunction) {
-        if (call) {
+        if (typeof call === 'function') {
             call();
         }
     }

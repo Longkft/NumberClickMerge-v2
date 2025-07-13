@@ -2,6 +2,7 @@ import { _decorator, Component, Label, log, Node, tween } from 'cc';
 import { AutoComponent } from '../../Base/AutoComponent';
 import { DataManager } from '../../Manager/DataManager';
 import { FXShadow } from '../../FX/FXShadow';
+import { InGameLogicManager } from '../InGameLogicManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('Lose')
@@ -44,6 +45,8 @@ export class Lose extends AutoComponent {
         await this.fxShadow.ShowFxShadow();
 
         await this.fxShadow.ShowFxBox(this.box);
+
+        this.GetScoreGamePlay();
     }
 
     async HideFXLose() {
@@ -78,5 +81,11 @@ export class Lose extends AutoComponent {
                 }
             })
             .start();
+    }
+
+    btnPlayAgain() {
+        InGameLogicManager.getInstance().RestartGame();
+
+        this.HideFXLose();
     }
 }

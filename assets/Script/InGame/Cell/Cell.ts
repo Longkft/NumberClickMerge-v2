@@ -15,6 +15,7 @@ import { EventGame } from '../../Enum/EEvent';
 import { AudioManager } from '../../Manager/AudioManager';
 import { SFXType } from '../../Enum/Enum';
 import { DataManager } from '../../Manager/DataManager';
+import { PopupManager } from '../../Manager/PopupManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('Cell')
@@ -91,9 +92,8 @@ export class Cell {
         const matched = GridManager.getInstance().findConnectedCells(this.cellData.row, this.cellData.col);
         if (!matched || matched.length < 3) {
             if (DataManager.getInstance().MyHeart <= 0) {
-                // lose
-                log('lose');
-                InGameUIManager.getInstance().lose.ShowFXLose();
+                log('popup out of move');
+                PopupManager.getInstance().OutOfMove.Show();
             }
             return;
         }

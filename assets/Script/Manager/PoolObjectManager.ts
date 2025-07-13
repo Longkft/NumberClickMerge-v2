@@ -6,7 +6,6 @@ const { ccclass, property } = _decorator;
 export class PoolObjectManager extends BaseSingleton<PoolObjectManager> {
     public pools: Map<Prefab, Node[]> = new Map<Prefab, Node[]>();
 
-
     Spawn(prefab: Prefab, parent) {
         let listPrefab = this.pools.get(prefab)
         if (listPrefab == null) {
