@@ -5,6 +5,8 @@ import { FXShadow } from '../../FX/FXShadow';
 import { Utils } from '../../Utils/Utils';
 import { MoneyController } from '../head/Money/MoneyController';
 import { AutoComponent } from '../../Base/AutoComponent';
+import { PrefabManager } from '../../Manager/PrefabManager';
+import { PopupManager } from '../../Manager/PopupManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('ClaimGold')
@@ -24,12 +26,18 @@ export class ClaimGold extends AutoComponent {
 
     gold: number;
 
+    LoadCamera() {
+        if (this.camLayer) return;
+        this.camLayer = PopupManager.getInstance().cameraItem.getComponent(Camera);
+    }
+
     LoadEffGold() {
         if (this.effGold) return;
         this.effGold = find('Canvas/IngameUIManager/effGold');
     }
 
     protected LoadComponent(): void {
+        this.LoadCamera();
         this.LoadEffGold();
     }
 

@@ -382,11 +382,13 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             //     this.isUpLevel = false;
             // }
 
-            await this.RewardGoldByCombo();
+            // await this.RewardGoldByCombo();
 
             if (this.isUpLevel) {
                 PopupManager.getInstance().ShowPopupUnlockMax();
                 this.isUpLevel = false;
+            } else {
+                this.RewardGoldByCombo();
             }
 
             return;

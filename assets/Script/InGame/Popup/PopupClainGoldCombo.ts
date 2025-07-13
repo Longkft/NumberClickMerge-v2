@@ -1,11 +1,13 @@
-import { _decorator, Camera, Component, Label, Layers, Node, Vec2, Vec3 } from 'cc';
+import { _decorator, Camera, Component, find, Label, Layers, Node, Vec2, Vec3 } from 'cc';
 import { Utils } from '../../Utils/Utils';
 import { MoneyController } from '../head/Money/MoneyController';
 import { FXShadow } from '../../FX/FXShadow';
+import { AutoComponent } from '../../Base/AutoComponent';
+import { PopupManager } from '../../Manager/PopupManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupClainGoldCombo')
-export class PopupClainGoldCombo extends Component {
+export class PopupClainGoldCombo extends AutoComponent {
 
     @property({ type: Camera })
     camLayer: Camera = null;
@@ -20,6 +22,15 @@ export class PopupClainGoldCombo extends Component {
     shadow: FXShadow = null;
 
     gold: number;
+
+    LoadCamera() {
+        if (this.camLayer) return;
+        this.camLayer = PopupManager.getInstance().cameraItem.getComponent(Camera);
+    }
+
+    protected LoadComponent(): void {
+        this.LoadCamera();
+    }
 
     async Show(gold: number, combo: number, call: CallableFunction) {
         const box = this.node.getChildByName('box');

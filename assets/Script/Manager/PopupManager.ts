@@ -1,4 +1,4 @@
-import { _decorator, Component, instantiate, Node } from 'cc';
+import { _decorator, Camera, Component, find, instantiate, Node } from 'cc';
 import { PopupUnlockMax } from '../InGame/Popup/PopupUnlockMax';
 import { PrefabManager } from './PrefabManager';
 import { BaseSingleton } from '../Base/BaseSingleton';
@@ -11,6 +11,7 @@ const { ccclass, property } = _decorator;
 export class PopupManager extends BaseSingleton<PopupManager> {
 
 
+    private _cameraItem: Camera = null
     private _popupUnlockMax: PopupUnlockMax = null
     private _popupUnlockMin: PopupUnlockMin = null
     private _popupGold: ClaimGold = null
@@ -27,7 +28,6 @@ export class PopupManager extends BaseSingleton<PopupManager> {
     ShowPopupUnlockMax() {
         this.popupUnlockMax.show()
     }
-
 
     get popupUnlockMin() {
         if (this._popupUnlockMin == null) {
@@ -59,6 +59,14 @@ export class PopupManager extends BaseSingleton<PopupManager> {
             this.node.addChild(this._popupClainGoldCombo.node)
         }
         return this._popupClainGoldCombo
+    }
+
+    get cameraItem() {
+        if (this._cameraItem == null) {
+            this._cameraItem = instantiate(PrefabManager.getInstance().cameraItem).getComponent(Camera);
+            find('Canvas').addChild(this._cameraItem.node)
+        }
+        return this._cameraItem
     }
 }
 
