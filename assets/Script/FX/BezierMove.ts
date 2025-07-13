@@ -5,14 +5,14 @@ const { ccclass, property } = _decorator;
 export class BezierMove extends Component {
 
     @property({ type: Vec3 })
-    posStart: Vec3 = new Vec3(0, 143.996, 0);
+    posStart: Vec3 = new Vec3(0, 0, 0);
 
     initPositionDefault: Vec3;
     protected start(): void {
         // this.initPositionDefault = this.node.worldPosition.clone();
     }
 
-    moveAlongCurve(posStart: Vec3 = new Vec3(0, 143.996, 0), posB: Vec3, call?: CallableFunction, height: number = 300, duration: number = 1) {
+    moveAlongCurve(posStart: Vec3 = new Vec3(0, 0, 0), posB: Vec3, call?: CallableFunction, height: number = 300, duration: number = 1.5) {
 
         this.initPositionDefault = this.node.parent.getComponent(UITransform).convertToWorldSpaceAR(posStart);
         let posA = this.initPositionDefault.clone();
@@ -53,17 +53,17 @@ export class BezierMove extends Component {
 
         const ab = b.clone().subtract(a);
 
-        // Vector vuông góc (trên mặt phẳng XY) — xoay 90 độ
-        const normal = new Vec3(-ab.y, ab.x, 0).normalize(); // cong lên
-        // Nếu muốn cong xuống, dùng: new Vec3(ab.y, -ab.x, 0)
+        // Vector vuông góc (trên mặt phẳng XY) — xoay 90 độ ngược (lõm qua phải)
+        const normal = new Vec3(ab.y, -ab.x, 0).normalize();
 
         return mid.add(normal.multiplyScalar(height));
     }
 
+
     resetData() {
         // Tween.stopAllByTarget(this.node)
         this.node.active = true;
-        this.node.setScale(2, 2, 2);
+        this.node.setScale(1, 1, 1);
         this.node.position = this.posStart;
     }
 

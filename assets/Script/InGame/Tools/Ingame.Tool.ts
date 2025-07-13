@@ -97,14 +97,25 @@ export class Ingame_Tool extends Component {
         const first = this.firstSwapCell;
         this.firstSwapCell = null;
 
+        const cellA = InGameLogicManager.getInstance().cells[first.row][first.col];
+        const cellB = InGameLogicManager.getInstance().cells[second.row][second.col];
+
         const isAdjacent = Math.abs(first.row - second.row) + Math.abs(first.col - second.col) === 1;
         if (!isAdjacent) {
             console.warn("Hai ô không kề nhau.");
+
+            if (cellA) cellA.cellUI.ShowEff(false);
+            if (cellB) cellB.cellUI.ShowEff(false);
+
             return;
         }
 
         // Thực hiện swap
         await InGameLogicManager.getInstance().HandleSwap(first, second);
+
+        // Tắt hiệu ứng sau khi swap xong
+        if (cellA) cellA.cellUI.ShowEff(false);
+        if (cellB) cellB.cellUI.ShowEff(false);
 
         // Tắt hiệu ứng và chế độ swap
         await this.HideFxShadow();

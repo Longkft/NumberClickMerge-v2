@@ -12,6 +12,9 @@ export class MoneyController extends BaseSingleton<MoneyController> {
     @property({ type: MoneyUi })
     moneyUi: MoneyUi = null;
 
+    @property({ type: Node })
+    coinUi: Node = null;
+
     protected start(): void {
         this.updateGold();
         this.RegisterEvent();
@@ -40,7 +43,7 @@ export class MoneyController extends BaseSingleton<MoneyController> {
         dataManager.Gold = updatedGold;
 
         // Gọi hàm tween tăng điểm mượt mà
-        this.moneyUi.AnimationScoreChange(previousGold, updatedGold, this.moneyUi.gold);
+        this.moneyUi.AnimationMoneyChange(previousGold, updatedGold, this.moneyUi.gold);
 
         this.moneyUi.activeEffGold();
     }

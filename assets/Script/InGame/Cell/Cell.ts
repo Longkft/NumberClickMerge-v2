@@ -125,6 +125,8 @@ export class Cell {
     HandleSwapClick() {
         log('Swap click ---');
 
+        this.cellUI.ShowEff(true);
+
         const inGameLogic = InGameLogicManager.getInstance();
         if (inGameLogic.swapCallback) {
             inGameLogic.swapCallback(this.cellData.row, this.cellData.col);

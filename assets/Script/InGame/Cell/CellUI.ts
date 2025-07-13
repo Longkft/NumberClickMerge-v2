@@ -21,6 +21,9 @@ export class CellUI extends Component {
     @property(Node)
     frame: Node = null
 
+    @property(Node)
+    effNode: Node = null
+
     private _shakeState: AnimationState | null = null;
 
     SetUp(data) {
@@ -81,6 +84,12 @@ export class CellUI extends Component {
         this._shakeState.repeatCount = 1;
 
         this._shakeState = null;
+    }
+
+    public ShowEff(active: boolean) {
+        if (this.effNode) {
+            this.effNode.active = active;
+        }
     }
 }
 
