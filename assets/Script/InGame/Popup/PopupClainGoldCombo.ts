@@ -18,6 +18,9 @@ export class PopupClainGoldCombo extends AutoComponent {
     @property({ type: Label })
     valueGoldPlus: Label = null;
 
+    @property({ type: Node })
+    effNode: Node = null;
+
     @property({ type: FXShadow })
     shadow: FXShadow = null;
 
@@ -41,6 +44,8 @@ export class PopupClainGoldCombo extends AutoComponent {
 
         await this.shadow.ShowFxShadow();
         await this.shadow.ShowFxBox(box);
+
+        this.effNode.active = true;
 
         if (typeof call === 'function') {
             call();

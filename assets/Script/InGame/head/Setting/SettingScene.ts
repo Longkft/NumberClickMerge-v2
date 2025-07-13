@@ -4,6 +4,8 @@ import { AudioManager } from '../../../Manager/AudioManager';
 import { DataManager } from '../../../Manager/DataManager';
 import { FXShadow } from '../../../FX/FXShadow';
 import { InGameLogicManager } from '../../InGameLogicManager';
+import { EventBus } from '../../../Utils/EventBus';
+import { EventGame } from '../../../Enum/EEvent';
 const { ccclass, property } = _decorator;
 
 @ccclass('SettingScene')

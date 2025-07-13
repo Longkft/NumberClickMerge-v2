@@ -1,4 +1,4 @@
-import { _decorator, Component, error, log, Node, tween } from 'cc';
+import { _decorator, Component, error, game, log, Node, tween } from 'cc';
 import { CellCollection } from './Cell/CellCollection';
 import { GameManager } from '../Manager/GameManager';
 import { PoolObjectManager } from '../Manager/PoolObjectManager';
@@ -40,12 +40,20 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         this.isProcessing = value;
     }
 
-    protected start(): void {
-        this.init()
-        this.InitContainCells()
-        this.InitCells()
+    protected onLoad(): void {
+        super.onLoad();
 
-        EventBus.on(EventGame.GRID_CELL_UPDATED_EVENT, this.OnUpdateUi, this);
+        this.RegisEventBeforUnload();
+    }
+
+    protected start(): void {
+        // this.init()
+        // this.InitContainCells()
+        // this.InitCells()
+
+        this.LoadGame();
+
+        // EventBus.on(EventGame.GRID_CELL_UPDATED_EVENT, this.OnUpdateUi, this);
     }
 
     DestroyEvent() {
@@ -95,79 +103,101 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
     }
 
     ClickCheckToMove(rootRow: number, rootCol: number, matched: { row: number, col: number }[]) {
-        this.consecutiveMerges = 0;
-        this.moveMatchedCellsToRoot(rootRow, rootCol, matched);
-        // this.scheduleOnce(() => {
+        if (this.isProcessing) return;
 
-        // }, 0.3)
+        // Khi người chơi tự click, reset combo và bắt đầu một chuỗi mới
+        this.consecutiveMerges = 0;
+
+        // Bắt đầu vòng lặp kiểm tra. Vòng lặp sẽ tự tìm thấy nhóm vừa được click
+        // và xử lý nó cùng các nhóm khác (nếu có).
+        this.checkAllMatchingGroupsLoop();
     }
 
-    public moveMatchedCellsToRoot(
+    private findPathToRoot(
+        startCell: { row: number, col: number },
+        rootCell: { row: number, col: number },
+        matchedCells: { row: number, col: number }[]
+    ): { row: number, col: number }[] {
+
+        const queue: { row: number, col: number }[][] = [[startCell]]; // Hàng đợi chứa các đường đi
+        const visited = new Set<string>([`${startCell.row},${startCell.col}`]);
+        const matchedSet = new Set(matchedCells.map(c => `${c.row},${c.col}`));
+
+        const directions = [{ r: 0, c: 1 }, { r: 0, c: -1 }, { r: 1, c: 0 }, { r: -1, c: 0 }];
+
+        while (queue.length > 0) {
+            const path = queue.shift()!;
+            const lastCell = path[path.length - 1];
+
+            // Nếu đã đến đích, trả về đường đi
+            if (lastCell.row === rootCell.row && lastCell.col === rootCell.col) {
+                return path;
+            }
+
+            for (const dir of directions) {
+                const nextRow = lastCell.row + dir.r;
+                const nextCol = lastCell.col + dir.c;
+                const nextKey = `${nextRow},${nextCol}`;
+
+                // Kiểm tra xem ô tiếp theo có hợp lệ không
+                if (matchedSet.has(nextKey) && !visited.has(nextKey)) {
+                    visited.add(nextKey);
+                    const newPath = [...path, { row: nextRow, col: nextCol }];
+                    queue.push(newPath);
+                }
+            }
+        }
+
+        return []; // Không tìm thấy đường đi
+    }
+
+    // Thay thế hàm moveMatchedCellsToRoot cũ bằng hàm này
+
+    public async moveMatchedCellsToRoot(
         rootRow: number,
         rootCol: number,
         matched: { row: number, col: number }[]
     ) {
         this.isProcessing = true;
+        const STEP_DURATION = 0.2; // Tốc độ di chuyển
 
-        const rootNode = this.cells[rootRow][rootCol].GetCellUI();
-        const rootPos = rootNode.getPosition();
-
-        let finished = 0;
-        const needFinish = matched.length - 1;      // bỏ gốc
-
-        //  Nếu chỉ có 1 ô trong matched → reset ngay
-        if (needFinish === 0) {
+        if (matched.length <= 1) {
             this.ResetAfterTween(matched);
             return;
         }
 
-        //   Tween từng ô */
+        const rootCell = { row: rootRow, col: rootCol };
+        const animationPromises: Promise<void>[] = [];
+
         for (const cell of matched) {
-            if (cell.row === rootRow && cell.col === rootCol) continue; // bỏ gốc
+            if (cell.row === rootRow && cell.col === rootCol) continue;
 
-            const node = this.cells[cell.row][cell.col].GetCellUI();
+            const node = this.cells[cell.row][cell.col]?.GetCellUI();
+            if (!node) continue;
 
-            /*        Ô đang chéo              */
-            if (cell.row !== rootRow && cell.col !== rootCol) {
-                // Hai giao‑điểm, góc vuông đúng
-                const corner1 = { row: cell.row, col: rootCol }; // ( cell.row , rootCol)
-                const corner2 = { row: rootRow, col: cell.col }; // ( rootRow , cell.col)
+            const path = this.findPathToRoot(cell, rootCell, matched);
+            if (path.length < 2) continue;
 
-                // Kiểm xem giao‑điểm nào nằm trong matched
-                const hasCorner1 = matched.some(
-                    c => c.row === corner1.row && c.col === corner1.col
-                );
-                const hasCorner2 = matched.some(
-                    c => c.row === corner2.row && c.col === corner2.col
-                );
+            const sequence = tween(node);
 
-                // Chọn góc vuông ưu tiên có trong matched
-                const midRow = hasCorner1 || !hasCorner2 ? corner1.row : corner2.row;
-                const midCol = hasCorner1 || !hasCorner2 ? corner1.col : corner2.col;
-
-                const midPos = this.contains[midRow][midCol].position.clone();
-
-                tween(node)
-                    .to(0.15, { position: midPos })   // chặng 1
-                    .to(0.15, { position: rootPos })  // chặng 2
-                    .call(() => ++finished)
-                    .start();
-            } else {
-                // Đã thẳng hàng/cột
-                tween(node)
-                    .to(0.25, { position: rootPos })
-                    .call(() => ++finished)
-                    .start();
+            for (let i = 1; i < path.length; i++) {
+                const nextStep = path[i];
+                const targetPos = this.contains[nextStep.row][nextStep.col].position;
+                sequence.to(STEP_DURATION, { position: targetPos });
             }
+
+            const promise = new Promise<void>(resolve => {
+                sequence.call(resolve).start();
+            });
+
+            animationPromises.push(promise);
         }
 
-        const watcher = () => {
-            if (finished === needFinish) {
-                this.unschedule(watcher);
-                this.ResetAfterTween(matched);
-            }
-        };
-        this.schedule(watcher);
+        // Chờ tất cả các animation hoàn thành
+        await Promise.all(animationPromises);
+
+        // Sau khi tất cả đã di chuyển xong, reset lại bàn chơi
+        // this.ResetAfterTween(matched);
     }
 
     private ResetAfterTween(matched: { row: number, col: number }[]) {
@@ -220,8 +250,6 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         this.AddScoreAfterMerge(rootModel, matched);
 
         const newValue = rootModel.value + 1;
-
-        // this.RewardGoldByCombo();
 
         // Gán -1 cho toàn bộ ô matched (bao gồm root)
         gridMgr.ResetDataMatch(matched);
@@ -370,7 +398,10 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
     public async checkAllMatchingGroupsLoop() {
         this.isProcessing = true;
 
+        // Tìm tất cả các nhóm
         var matchGroups = this.findAllMatchedGroups();
+
+        // Nếu không có nhóm nào, kết thúc
         if (matchGroups.length === 0) {
             this.isProcessing = false; // cho phép click lại
             console.error("Không còn ô nào match.");
@@ -381,21 +412,88 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             } else {
                 this.RewardGoldByCombo();
             }
-
+            this.isProcessing = false;
             return;
         }
 
-        let cellRoot = matchGroups[0];
-        let rootRow = cellRoot.root.row;
-        let rootCol = cellRoot.root.col;
-        let matched = cellRoot.cells
+        this.consecutiveMerges++;
 
+        // Chạy animation cho tất cả các nhóm (Không đổi)
+        const animationPromises: Promise<void>[] = [];
+        for (const group of matchGroups) {
+            const animPromise = this.moveMatchedCellsToRoot(group.root.row, group.root.col, group.cells);
+            animationPromises.push(animPromise);
+        }
+        await Promise.all(animationPromises);
+
+        AudioManager.getInstance().playSFX(SFXType.Merge);
+        DataManager.getInstance().MyHeart += 1;
+        EventBus.emit(EventGame.UPDATE_HEARt_UI);
+
+        const gridMgr = GridManager.getInstance();
+        const allCellsToRemove: { row: number, col: number }[] = [];
+
+        // Mảng mới để lưu thông tin cần thiết TRƯỚC KHI reset
+        const newCellsData: { root: { row: number, col: number }, newValue: number }[] = [];
+
+        // Vòng lặp ĐẦU TIÊN: Đọc và lưu lại tất cả thông tin cần thiết
+        for (const group of matchGroups) {
+            const rootModel = gridMgr.grid[group.root.row][group.root.col];
+            const originalValue = rootModel.value; // QUAN TRỌNG: Lấy giá trị gốc tại đây
+
+            // Tính điểm dựa trên giá trị gốc
+            this.AddScoreAfterMerge(rootModel, group.cells);
+
+            // Chuẩn bị dữ liệu để tạo ô mới sau này
+            newCellsData.push({
+                root: group.root,
+                newValue: originalValue + 1 // Tính toán giá trị mới chính xác
+            });
+
+            // Thu thập các ô sẽ bị xóa
+            allCellsToRemove.push(...group.cells);
+        }
+
+        // Reset data logic của các ô cũ
+        gridMgr.ResetDataMatch(allCellsToRemove);
+
+        // Xóa các node UI cũ
+        for (const cellPos of allCellsToRemove) {
+            if (this.cells[cellPos.row][cellPos.col]) {
+                this.cells[cellPos.row][cellPos.col].Dispose();
+                this.cells[cellPos.row][cellPos.col] = null;
+            }
+        }
+
+        // Tạo các ô mới dựa trên dữ liệu đã lưu
+        for (const data of newCellsData) {
+            const root = data.root;
+            const newValue = data.newValue; // Lấy giá trị mới đã được tính đúng
+
+            const newCellModel = new CellModel({
+                value: newValue,
+                color: gridMgr.GetColorByValue(newValue),
+                row: root.row, col: root.col,
+            });
+            gridMgr.grid[root.row][root.col] = newCellModel;
+
+            const nodeCell = this.CreateCells(newCellModel);
+            nodeCell.GetCellUI().setPosition(this.contains[root.row][root.col].position.clone());
+            this.cells[root.row][root.col] = nodeCell;
+            this.UpdateValueCellBeforeTween(root.row, root.col, nodeCell);
+
+            if (GridManager.getInstance().CheckUpdateMaxCurrent(newValue)) {
+                this.isUpLevel = true;
+            }
+        }
+
+        // Lấp đầy chỗ trống và kiểm tra lại
         this.fillIntheBlank();
-        GridManager.getInstance().FillIntheValue();
+        gridMgr.FillIntheValue();
+
         this.scheduleOnce(() => {
-            this.processAllMatchGroups(rootRow, rootCol, matched);
-        }, 0.3)
-        log('this.cells: ', this.cells)
+            this.checkAllMatchingGroupsLoop();
+        }, 0.25);
     }
 
     private processAllMatchGroups(rootRow: number, rootCol: number, matched: { row: number, col: number }[]) {
@@ -638,29 +736,26 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             return;
         }
 
-        // Hoán đổi logic
+        // Hoán đổi logic data
         const tempModel = GridManager.getInstance().grid[a.row][a.col];
         GridManager.getInstance().grid[a.row][a.col] = GridManager.getInstance().grid[b.row][b.col];
         GridManager.getInstance().grid[b.row][b.col] = tempModel;
 
-        // Cập nhật vị trí model
+        // Cập nhật vị trí trong model
         GridManager.getInstance().grid[a.row][a.col].row = a.row;
         GridManager.getInstance().grid[a.row][a.col].col = a.col;
-
         GridManager.getInstance().grid[b.row][b.col].row = b.row;
         GridManager.getInstance().grid[b.row][b.col].col = b.col;
 
-        // Hoán đổi UI
+        // Hoán đổi tham chiếu trong mảng UI
         const posA = this.contains[a.row][a.col].position.clone();
         const posB = this.contains[b.row][b.col].position.clone();
-
         const nodeA = cellA.GetCellUI();
         const nodeB = cellB.GetCellUI();
-
         this.cells[a.row][a.col] = cellB;
         this.cells[b.row][b.col] = cellA;
 
-        // Di chuyển node
+        // Chạy animation di chuyển
         const tweenA = new Promise(resolve => {
             tween(nodeA).to(0.2, { position: posB }).call(resolve).start();
         });
@@ -670,21 +765,23 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
         await Promise.all([tweenA, tweenB]);
 
-        // Cập nhật UI sau khi swap
+        // Cập nhật lại UI của 2 ô vừa hoán đổi
         this.UpdateValueCellBeforeTween(a.row, a.col, this.cells[a.row][a.col]);
         this.UpdateValueCellBeforeTween(b.row, b.col, this.cells[b.row][b.col]);
 
-        // Check match
+        // --- PHẦN LOGIC ĐÃ SỬA ---
+        // Kiểm tra xem có nhóm nào được tạo ở vị trí A hoặc B không
         const matchA = GridManager.getInstance().findConnectedCells(a.row, a.col);
         const matchB = GridManager.getInstance().findConnectedCells(b.row, b.col);
 
-        const matched = matchA.length >= 3 ? matchA : matchB.length >= 3 ? matchB : null;
-
-        if (matched) {
+        // Chỉ cần một trong hai vị trí tạo ra match là đủ
+        if (matchA.length >= 3 || matchB.length >= 3) {
+            // Nếu có, gọi vòng lặp xử lý chính của game
             this.scheduleOnce(() => {
-                this.processAllMatchGroups(matched[0].row, matched[0].col, matched);
+                this.checkAllMatchingGroupsLoop();
             }, 0.1);
         } else {
+            // Nếu không có nhóm nào được tạo, mở khóa và cho người chơi đi tiếp
             this.isProcessing = false;
         }
     }
@@ -731,6 +828,92 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
         Utils.getInstance().ResetHeart(5); // reset tim
         EventBus.emit(EventGame.UPDATE_HEARt_UI); // update Ui
+        EventBus.emit(EventGame.RESET_SCORE);
+    }
+
+    //#region Load State
+
+    protected onDestroy(): void {
+        this.UnRegisEventBeforUnload();
+    }
+
+    // Đăng ký sự kiện beforeunload cho trình duyệt, sự kiện game hide/close
+    RegisEventBeforUnload() {
+        if (typeof window !== 'undefined') {
+            window.addEventListener('beforeunload', this.handleBeforeUnload.bind(this));
+        }
+        // Đăng ký sự kiện game hide/close
+        game.on('hide', this.SaveGame.bind(this));
+        game.on('close', this.SaveGame.bind(this));
+    }
+
+    UnRegisEventBeforUnload() {
+        // Hủy đăng ký sự kiện
+        if (typeof window !== 'undefined') {
+            window.removeEventListener('beforeunload', this.handleBeforeUnload.bind(this));
+        }
+        game.off('hide', this.SaveGame.bind(this));
+        game.off('close', this.SaveGame.bind(this));
+    }
+
+    private handleBeforeUnload(): void {
+        this.SaveGame();
+    }
+
+    public SaveGame() {
+        DataManager.getInstance().SaveGameState({
+            grid: GridManager.getInstance().grid.map(row => row.map(cell => ({
+                value: cell.value,
+                row: cell.row,
+                col: cell.col,
+                color: cell.color
+            }))),
+            numberMin: GridManager.getInstance().numberMin,
+            numberMax: GridManager.getInstance().numberMax,
+            heart: DataManager.getInstance().MyHeart,
+            score: DataManager.getInstance().CoreInPlayGame, // hoặc score hiện tại
+        });
+
+    }
+
+    async LoadGame() {
+        this.isProcessing = true; // Khóa input trong lúc load
+
+        this.init(); // Tạo CellCollection
+        this.cells = [];
+        this.contains = [];
+        this.cellContainColllection = [];
+
+        const savedData = await DataManager.getInstance().LoadGameState();
+
+        // 3. Quyết định luồng chạy
+        if (savedData) {
+
+            GridManager.getInstance().grid = savedData.grid.map(row =>
+                row.map(c => new CellModel({ value: c.value, color: c.color, row: c.row, col: c.col }))
+            );
+            GridManager.getInstance().numberMin = savedData.numberMin;
+            GridManager.getInstance().numberMax = savedData.numberMax;
+
+            DataManager.getInstance().MyHeart = savedData.heart;
+            DataManager.getInstance().CoreInPlayGame = savedData.score;
+            EventBus.emit(EventGame.UPDATE_HEARt_UI);
+            EventBus.emit(EventGame.UPGRADE_SCORE, 0);
+
+        } else {
+            log("🔥 No save data, starting a new game...");
+
+            GridManager.getInstance().initNewGrid();
+        }
+
+        this.InitContainCells();
+        this.InitCells();
+
+        this.scheduleOnce(() => {
+            this.checkAllMatchingGroupsLoop();
+        }, 0.25);
+
+        EventBus.on(EventGame.GRID_CELL_UPDATED_EVENT, this.OnUpdateUi, this);
     }
 
 }

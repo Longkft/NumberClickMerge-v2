@@ -1,9 +1,10 @@
-import { _decorator, Component, log, Node } from 'cc';
+import { _decorator, Component, Layers, log, Node } from 'cc';
 import { MoneyUi } from './MoneyUi';
 import { EventBus } from '../../../Utils/EventBus';
 import { EventGame } from '../../../Enum/EEvent';
 import { DataManager } from '../../../Manager/DataManager';
 import { BaseSingleton } from '../../../Base/BaseSingleton';
+import { Utils } from '../../../Utils/Utils';
 const { ccclass, property } = _decorator;
 
 @ccclass('MoneyController')
@@ -44,6 +45,8 @@ export class MoneyController extends BaseSingleton<MoneyController> {
 
         // Gọi hàm tween tăng điểm mượt mà
         this.moneyUi.AnimationMoneyChange(previousGold, updatedGold, this.moneyUi.gold);
+
+        Utils.getInstance().setCamLayer(this.node, Layers.Enum.PROFILER);
 
         this.moneyUi.activeEffGold();
     }

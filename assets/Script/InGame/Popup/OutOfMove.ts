@@ -35,7 +35,10 @@ export class OutOfMove extends Component {
         let gold = DataManager.getInstance().Gold;
         if (!gold) return;
         let goldAfter = gold - 200;
-        if (goldAfter < 0) return;
+        if (goldAfter < 0) {
+            PopupManager.getInstance().PopupAdsGold.Show();
+            return;
+        }
 
         log(gold, goldAfter)
 

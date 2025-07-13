@@ -55,23 +55,27 @@ export class ClaimGold extends AutoComponent {
         this.node.children.forEach(element => {
             element.active = true;
         });
+
+        this.scheduleOnce(() => {
+            this.Hide();
+        }, 2);
     }
 
     async Hide() {
-        this.ads(async () => {
-            MoneyController.getInstance().UpdateUiCoin(this.gold);
+        // this.ads(async () => {
+        MoneyController.getInstance().UpdateUiCoin(this.gold);
 
-            Utils.getInstance().setCamLayer(MoneyController.getInstance().node, Layers.Enum.DEFAULT);
+        Utils.getInstance().setCamLayer(MoneyController.getInstance().node, Layers.Enum.DEFAULT);
 
-            await this.HideFx();
+        await this.HideFx();
 
-            GridManager.getInstance().CheckUpDateMinCurrent();
-            InGameLogicManager.getInstance().UpdateAllFrames();
+        GridManager.getInstance().CheckUpDateMinCurrent();
+        InGameLogicManager.getInstance().UpdateAllFrames();
 
-            this.node.children.forEach(element => {
-                element.active = true;
-            });
-        })
+        this.node.children.forEach(element => {
+            element.active = true;
+        });
+        // })
     }
 
     async ShowFx() {

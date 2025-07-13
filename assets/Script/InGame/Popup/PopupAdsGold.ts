@@ -28,14 +28,12 @@ export class PopupAdsGold extends Component {
 
     async Hide() {
         this.ads(async () => {
-            const box = this.node.getChildByName('box');
-
+            this.gold = 1 * 100;
             MoneyController.getInstance().UpdateUiCoin(this.gold);
 
             Utils.getInstance().setCamLayer(MoneyController.getInstance().node, Layers.Enum.DEFAULT);
 
-            await this.shadow.HideFxBox(box);
-            await this.shadow.HideFXShadow();
+            this.hidePopup();
         });
     }
 
@@ -47,6 +45,12 @@ export class PopupAdsGold extends Component {
         if (typeof call === 'function') {
             call();
         }
+    }
+
+    async hidePopup() {
+        const box = this.node.getChildByName('box');
+        await this.shadow.HideFxBox(box);
+        await this.shadow.HideFXShadow();
     }
 }
 

@@ -19,11 +19,11 @@ export class Lose extends AutoComponent {
 
     protected LoadScoreGame() {
         if (this.scoreGame == null) return;
-        this.scoreGame = this.node.getChildByPath('box/score/maxScore/value').getComponent(Label);
+        this.scoreGame = this.node.getChildByPath('box/score/score/value').getComponent(Label);
     }
     protected LoadMaxScoreGame() {
         if (this.maxScoreGame == null) return;
-        this.maxScoreGame = this.node.getChildByPath('box/score/score/value').getComponent(Label);
+        this.maxScoreGame = this.node.getChildByPath('box/score/maxScore/value').getComponent(Label);
     }
 
     protected override LoadComponent(): void {
@@ -63,6 +63,8 @@ export class Lose extends AutoComponent {
         let maxScore = DataManager.getInstance().highScore;
 
         this.AnimationScoreChange(0, maxScore, this.maxScoreGame);
+
+        log('score: ', score, 'maxScore: ', maxScore);
     }
 
     public AnimationScoreChange(oldScore: number = 0, newScore: number, labelText: Label) {

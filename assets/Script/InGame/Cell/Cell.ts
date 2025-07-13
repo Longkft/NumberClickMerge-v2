@@ -87,6 +87,12 @@ export class Cell {
     HandleNormalClick() {
         log('Normal click ---');
 
+        if (DataManager.getInstance().MyHeart <= 0) {
+            log('popup out of move');
+            PopupManager.getInstance().OutOfMove.Show();
+            return;
+        }
+
         this.UpdateCellWhenClick();
 
         const matched = GridManager.getInstance().findConnectedCells(this.cellData.row, this.cellData.col);

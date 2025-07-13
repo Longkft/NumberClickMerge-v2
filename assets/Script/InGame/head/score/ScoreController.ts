@@ -26,10 +26,12 @@ export class ScoreController extends Component {
 
     ResGisterEvent() {
         EventBus.on(EventGame.UPGRADE_SCORE, this.OnScoreUpgraded, this);
+        EventBus.on(EventGame.RESET_SCORE, this.ResetScore, this);
     }
 
     UnResGisterEvent() {
         EventBus.off(EventGame.UPGRADE_SCORE, this.OnScoreUpgraded);
+        EventBus.off(EventGame.RESET_SCORE, this.ResetScore);
     }
 
     OnScoreUpgraded(plusScore: number) {
@@ -66,6 +68,12 @@ export class ScoreController extends Component {
 
         DataManager.getInstance().CoreInPlayGame = 0;
         score = 0;
+        this.scoreUiCpn.SetValueScore(score);
+    }
+
+    ResetScore() {
+        DataManager.getInstance().CoreInPlayGame = 0;
+        let score = 0;
         this.scoreUiCpn.SetValueScore(score);
     }
 

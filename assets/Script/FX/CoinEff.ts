@@ -1,7 +1,8 @@
-import { _decorator, Animation, Component, Node, tween, Vec3 } from 'cc';
+import { _decorator, Animation, Component, Layers, Node, tween, Vec3 } from 'cc';
 import { BezierMove } from './BezierMove';
 import { MoneyController } from '../InGame/head/Money/MoneyController';
 import { BaseSingleton } from '../Base/BaseSingleton';
+import { Utils } from '../Utils/Utils';
 
 const { ccclass, property } = _decorator;
 
@@ -36,7 +37,10 @@ export class CoinEff extends BaseSingleton<CoinEff> {
                 });
             });
 
-            Promise.all(promises).then(() => resolve());
+            Promise.all(promises).then(() => {
+                Utils.getInstance().setCamLayer(this.node, Layers.Enum.DEFAULT);
+                resolve()
+            });
         });
     }
 

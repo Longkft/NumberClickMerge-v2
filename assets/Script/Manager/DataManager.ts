@@ -108,14 +108,15 @@ export class DataManager extends BaseSingleton<DataManager> {
     }
 
     // Lưu trạng thái game
-    public saveGameState(gameState: any) {
+    public SaveGameState(gameState: any) {
         localStorage.setItem("gameState", JSON.stringify(gameState));
     }
 
     // Tải trạng thái game
-    public loadGameState(): any {
-        const saved = localStorage.getItem("gameState");
-        return saved ? JSON.parse(saved) : null;
+    public async LoadGameState(): Promise<any> {
+        const raw = localStorage.getItem("gameState");
+        if (!raw) return null;
+        return JSON.parse(raw);
     }
 
     // Xóa trạng thái game

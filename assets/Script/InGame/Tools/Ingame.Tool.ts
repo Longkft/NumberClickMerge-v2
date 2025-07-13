@@ -4,6 +4,9 @@ import { FXShadow } from '../../FX/FXShadow';
 import { ECLICK_MODE } from '../../Enum/ECell';
 import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
+import { DataManager } from '../../Manager/DataManager';
+import { PopupManager } from '../../Manager/PopupManager';
+import { MoneyController } from '../head/Money/MoneyController';
 const { ccclass, property } = _decorator;
 
 export enum TYPE_TOOL {
@@ -70,6 +73,15 @@ export class Ingame_Tool extends Component {
 
     //#region tool hammer
     async OnHammer() {
+        let checkGoldUse = this.CheckCoinUseToolGame();
+
+        if (!checkGoldUse) {
+            PopupManager.getInstance().PopupAdsGold.Show();
+            return;
+        }
+
+        MoneyController.getInstance().UpdateUiCoin(- this.coin);
+
         this.SetEclickTools(ECLICK_MODE.HAMMER);
 
         await this.ShowFxShadow();
@@ -77,6 +89,15 @@ export class Ingame_Tool extends Component {
 
     //#region tool swap
     async OnSwap() {
+        let checkGoldUse = this.CheckCoinUseToolGame();
+
+        if (!checkGoldUse) {
+            PopupManager.getInstance().PopupAdsGold.Show();
+            return;
+        }
+
+        MoneyController.getInstance().UpdateUiCoin(- this.coin);
+
         this.ShowFxShadow();
 
         this.firstSwapCell = null;
@@ -125,6 +146,15 @@ export class Ingame_Tool extends Component {
 
     //#region destroy cell
     async OnDestroyCell() {
+        let checkGoldUse = this.CheckCoinUseToolGame();
+
+        if (!checkGoldUse) {
+            PopupManager.getInstance().PopupAdsGold.Show();
+            return;
+        }
+
+        MoneyController.getInstance().UpdateUiCoin(- this.coin);
+
         await this.ShowFxShadow();
 
         InGameLogicManager.getInstance().removeAllMinCellsTools(); // xoá nhỏ nhất
@@ -132,9 +162,27 @@ export class Ingame_Tool extends Component {
 
     //#region up grade
     async OnUpGrade() {
+        let checkGoldUse = this.CheckCoinUseToolGame();
+
+        if (!checkGoldUse) {
+            PopupManager.getInstance().PopupAdsGold.Show();
+            return;
+        }
+
+        MoneyController.getInstance().UpdateUiCoin(- this.coin);
+
         this.SetEclickTools(ECLICK_MODE.UPGRADE);
 
         await this.ShowFxShadow();
+    }
+
+    CheckCoinUseToolGame() {
+        let coinData = DataManager.getInstance().Gold;
+        if (coinData < this.coin) {
+
+            return false;
+        }
+        return true;
     }
 
     async ShowFxShadow() { // hiệu ứng bóng và chặn event

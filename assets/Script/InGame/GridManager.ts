@@ -19,8 +19,11 @@ export class GridManager extends BaseSingleton<GridManager> {
 
     public colors: string[] = ["#CDC958", "#31DA28", "#FF963D", "#12D5C6", "#F54444", "#1592DD", "#DA36B3", "#4449DE", "#8C37E4"]
 
-
     protected onLoad(): void {
+        this.initGrid();
+    }
+
+    initNewGrid() {
         this.initGrid();
         this.CreateBoard();
     }
@@ -38,7 +41,6 @@ export class GridManager extends BaseSingleton<GridManager> {
         }
 
     }
-
 
     private CreateBoard() {
         let success = false;
