@@ -63,7 +63,7 @@ export class CoinEff extends BaseSingleton<CoinEff> {
                     .to(0.1, { scale: new Vec3(1, 1, 1) })
                     .start();
 
-
+                MoneyController.getInstance().moneyUi.activeEffGold();
                 resolve(); // resolve khi tween xong
             });
         });
