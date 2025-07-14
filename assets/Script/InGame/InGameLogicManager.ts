@@ -103,14 +103,18 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
     }
 
     ClickCheckToMove(rootRow: number, rootCol: number, matched: { row: number, col: number }[]) {
-        if (this.isProcessing) return;
+        if (this.isProcessing) {
+            log("Đang xử lý, không cho click.");
+            return;
+        }
 
         // Khi người chơi tự click, reset combo và bắt đầu một chuỗi mới
         this.consecutiveMerges = 0;
 
         // Bắt đầu vòng lặp kiểm tra. Vòng lặp sẽ tự tìm thấy nhóm vừa được click
         // và xử lý nó cùng các nhóm khác (nếu có).
-        this.checkAllMatchingGroupsLoop();
+        // TRUYỀN THÔNG TIN Ô ĐƯỢC CLICK VÀO HÀM XỬ LÝ CHÍNH
+        this.checkAllMatchingGroupsLoop({ row: rootRow, col: rootCol });
     }
 
     private findPathToRoot(
@@ -395,30 +399,65 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         return matchGroups;
     }
 
-    public async checkAllMatchingGroupsLoop() {
+    public async checkAllMatchingGroupsLoop(clickedRoot?: { row: number, col: number }) {
         this.isProcessing = true;
 
         // Tìm tất cả các nhóm
-        var matchGroups = this.findAllMatchedGroups();
+        let matchGroups = this.findAllMatchedGroups();
 
-        // Nếu không có nhóm nào, kết thúc
+        // Xử lý trường hợp clickedRoot cho lượt đầu tiên
+        if (clickedRoot) {
+            const firstGroupIndex = matchGroups.findIndex(group =>
+                group.cells.some(cell => cell.row === clickedRoot.row && cell.col === clickedRoot.col)
+            );
+
+            if (firstGroupIndex !== -1) {
+                // Nếu ô click thuộc về một nhóm, đặt nó làm root của nhóm đó
+                const clickedGroup = matchGroups[firstGroupIndex];
+                clickedGroup.root = clickedRoot; // Gán root là ô người chơi click
+
+                // Đảm bảo nhóm được click được xử lý đầu tiên nếu cần (tùy chọn)
+                // Hoán đổi nhóm này lên đầu mảng nếu không phải là nhóm đầu tiên
+                if (firstGroupIndex !== 0) {
+                    const temp = matchGroups[0];
+                    matchGroups[0] = clickedGroup;
+                    matchGroups[firstGroupIndex] = temp;
+                }
+            } else {
+                // Nếu ô click không tạo ra nhóm nào, có thể xử lý ở đây
+                console.error("Ô được click không tạo ra nhóm phù hợp.");
+                this.isProcessing = false;
+                // Thêm logic hiển thị popup hết tim nếu cần
+                if (DataManager.getInstance().MyHeart <= 0) {
+                    PopupManager.getInstance().OutOfMove.Show();
+                }
+                return;
+            }
+        }
+
+
+        // Nếu không có nhóm nào (sau khi đã thử với clickedRoot nếu có), kết thúc
         if (matchGroups.length === 0) {
             this.isProcessing = false; // cho phép click lại
-            console.error("Không còn ô nào match.");
+            console.log("Không còn ô nào match.");
 
             if (this.isUpLevel) {
                 PopupManager.getInstance().ShowPopupUnlockMax();
                 this.isUpLevel = false;
             } else {
-                this.RewardGoldByCombo();
+                // Chỉ thưởng combo nếu không có isUpLevel và không phải click ban đầu không tạo ra match
+                if (!clickedRoot) { // Chỉ gọi khi là một vòng lặp tự động kết thúc chuỗi combo
+                    this.RewardGoldByCombo();
+                }
             }
             this.isProcessing = false;
             return;
         }
 
+        // Tăng combo chỉ khi thực sự có match được xử lý
         this.consecutiveMerges++;
 
-        // Chạy animation cho tất cả các nhóm (Không đổi)
+        // Chạy animation cho tất cả các nhóm
         const animationPromises: Promise<void>[] = [];
         for (const group of matchGroups) {
             const animPromise = this.moveMatchedCellsToRoot(group.root.row, group.root.col, group.cells);
@@ -426,20 +465,19 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         }
         await Promise.all(animationPromises);
 
+        // Sau khi tất cả animation di chuyển hoàn thành, xử lý logic merge
         AudioManager.getInstance().playSFX(SFXType.Merge);
-        DataManager.getInstance().MyHeart += 1;
-        EventBus.emit(EventGame.UPDATE_HEARt_UI);
+        // DataManager.getInstance().MyHeart += 1; // Tim đã trừ khi click, không cộng lại ở đây (chỉ khi match)
+        // EventBus.emit(EventGame.UPDATE_HEARt_UI); // Cập nhật UI tim nếu có thay đổi
 
         const gridMgr = GridManager.getInstance();
         const allCellsToRemove: { row: number, col: number }[] = [];
-
-        // Mảng mới để lưu thông tin cần thiết TRƯỚC KHI reset
         const newCellsData: { root: { row: number, col: number }, newValue: number }[] = [];
 
-        // Vòng lặp ĐẦU TIÊN: Đọc và lưu lại tất cả thông tin cần thiết
+        // Vòng lặp: Đọc và lưu lại tất cả thông tin cần thiết
         for (const group of matchGroups) {
             const rootModel = gridMgr.grid[group.root.row][group.root.col];
-            const originalValue = rootModel.value; // QUAN TRỌNG: Lấy giá trị gốc tại đây
+            const originalValue = rootModel.value; // Lấy giá trị gốc tại đây
 
             // Tính điểm dựa trên giá trị gốc
             this.AddScoreAfterMerge(rootModel, group.cells);
@@ -488,12 +526,14 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         }
 
         // Lấp đầy chỗ trống và kiểm tra lại
+        // `fillIntheBlank` không cần await vì tween đang chạy trong đó
         this.fillIntheBlank();
         gridMgr.FillIntheValue();
 
+        // Đợi một chút để animation fill hoàn tất trước khi check vòng lặp tiếp theo
         this.scheduleOnce(() => {
-            this.checkAllMatchingGroupsLoop();
-        }, 0.25);
+            this.checkAllMatchingGroupsLoop(); // Tiếp tục vòng lặp tự động
+        }, 0.3); // Tăng thời gian chờ một chút để đảm bảo animation rơi hoàn tất trước khi check lại
     }
 
     private processAllMatchGroups(rootRow: number, rootCol: number, matched: { row: number, col: number }[]) {
