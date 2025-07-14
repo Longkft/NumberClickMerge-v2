@@ -22,7 +22,7 @@ export class FXShadow extends AutoComponent {
             this.shadow.node.active = true;
             this.shadow.opacity = 155;
             tween(this.shadow)
-                .to(0.3, { opacity: 255 }, { easing: 'quadInOut' })
+                .to(0.2, { opacity: 255 }, { easing: 'quadInOut' })
                 .call(() => {
                     resolve();
                 })
@@ -33,7 +33,7 @@ export class FXShadow extends AutoComponent {
     HideFXShadow(): Promise<void> {
         return new Promise((resolve) => {
             tween(this.shadow)
-                .to(0.3, { opacity: 0 }, { easing: 'quadInOut' })
+                .to(0.2, { opacity: 0 }, { easing: 'quadInOut' })
                 .call(() => {
                     this.shadow.node.active = false;
                     resolve();
@@ -54,7 +54,7 @@ export class FXShadow extends AutoComponent {
             const posLocal = guide.getPosition().clone();
             guide.setPosition(-1080, posLocal.y, posLocal.z);
             tween(guide)
-                .to(0.3, { position: new Vec3(0, posLocal.y, posLocal.z) })
+                .to(0.2, { position: new Vec3(0, posLocal.y, posLocal.z) })
                 .call(() => {
                     resolve();
                 })
@@ -66,7 +66,7 @@ export class FXShadow extends AutoComponent {
         return new Promise((resolve) => {
             const posLocal = guide.getPosition().clone();
             tween(guide)
-                .to(0.3, { position: new Vec3(-1080, posLocal.y, posLocal.z) })
+                .to(0.2, { position: new Vec3(-1080, posLocal.y, posLocal.z) })
                 .call(() => {
                     guide.active = false;
                     resolve();
@@ -81,7 +81,7 @@ export class FXShadow extends AutoComponent {
             const posLocal = guide.getPosition().clone();
             guide.setPosition(-1080, posLocal.y, posLocal.z);
             tween(guide)
-                .to(0.3, { position: new Vec3(0, posLocal.y, posLocal.z) })
+                .to(0.2, { position: new Vec3(0, posLocal.y, posLocal.z) })
                 .call(() => {
                     resolve();
                 })
@@ -93,7 +93,7 @@ export class FXShadow extends AutoComponent {
         return new Promise((resolve) => {
             const posLocal = guide.getPosition().clone();
             tween(guide)
-                .to(0.3, { position: new Vec3(1080, posLocal.y, posLocal.z) })
+                .to(0.2, { position: new Vec3(1080, posLocal.y, posLocal.z) })
                 .call(() => {
                     guide.active = false;
                     resolve();

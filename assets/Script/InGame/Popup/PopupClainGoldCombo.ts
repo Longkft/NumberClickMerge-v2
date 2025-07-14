@@ -4,6 +4,8 @@ import { MoneyController } from '../head/Money/MoneyController';
 import { FXShadow } from '../../FX/FXShadow';
 import { AutoComponent } from '../../Base/AutoComponent';
 import { PopupManager } from '../../Manager/PopupManager';
+import { EventBus } from '../../Utils/EventBus';
+import { EventGame } from '../../Enum/EEvent';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupClainGoldCombo')
@@ -56,7 +58,7 @@ export class PopupClainGoldCombo extends AutoComponent {
         this.ads(async () => {
             const box = this.node.getChildByName('box');
 
-            MoneyController.getInstance().UpdateUiCoin(this.gold);
+            EventBus.emit(EventGame.UPDATE_COIN_UI, this.gold);
 
             Utils.getInstance().setCamLayer(MoneyController.getInstance().node, Layers.Enum.DEFAULT);
 

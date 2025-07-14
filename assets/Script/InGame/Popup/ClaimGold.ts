@@ -7,6 +7,8 @@ import { MoneyController } from '../head/Money/MoneyController';
 import { AutoComponent } from '../../Base/AutoComponent';
 import { PrefabManager } from '../../Manager/PrefabManager';
 import { PopupManager } from '../../Manager/PopupManager';
+import { EventBus } from '../../Utils/EventBus';
+import { EventGame } from '../../Enum/EEvent';
 const { ccclass, property } = _decorator;
 
 @ccclass('ClaimGold')
@@ -63,7 +65,7 @@ export class ClaimGold extends AutoComponent {
 
     async Hide() {
         // this.ads(async () => {
-        MoneyController.getInstance().UpdateUiCoin(this.gold);
+        EventBus.emit(EventGame.UPDATE_COIN_UI, this.gold);
 
         Utils.getInstance().setCamLayer(MoneyController.getInstance().node, Layers.Enum.DEFAULT);
 

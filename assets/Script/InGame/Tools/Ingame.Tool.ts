@@ -80,7 +80,7 @@ export class Ingame_Tool extends Component {
             return;
         }
 
-        MoneyController.getInstance().UpdateUiCoin(- this.coin);
+        EventBus.emit(EventGame.UPDATE_COIN_UI, - this.coin);
 
         this.SetEclickTools(ECLICK_MODE.HAMMER);
 
@@ -96,7 +96,7 @@ export class Ingame_Tool extends Component {
             return;
         }
 
-        MoneyController.getInstance().UpdateUiCoin(- this.coin);
+        EventBus.emit(EventGame.UPDATE_COIN_UI, - this.coin);
 
         this.ShowFxShadow();
 
@@ -153,7 +153,7 @@ export class Ingame_Tool extends Component {
             return;
         }
 
-        MoneyController.getInstance().UpdateUiCoin(- this.coin);
+        EventBus.emit(EventGame.UPDATE_COIN_UI, - this.coin);
 
         await this.ShowFxShadow();
 
@@ -169,7 +169,7 @@ export class Ingame_Tool extends Component {
             return;
         }
 
-        MoneyController.getInstance().UpdateUiCoin(- this.coin);
+        EventBus.emit(EventGame.UPDATE_COIN_UI, - this.coin);
 
         this.SetEclickTools(ECLICK_MODE.UPGRADE);
 

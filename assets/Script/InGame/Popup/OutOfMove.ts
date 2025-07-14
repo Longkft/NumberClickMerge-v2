@@ -36,6 +36,7 @@ export class OutOfMove extends Component {
         if (!gold) return;
         let goldAfter = gold - 200;
         if (goldAfter < 0) {
+            this.Hide();
             PopupManager.getInstance().PopupAdsGold.Show();
             return;
         }

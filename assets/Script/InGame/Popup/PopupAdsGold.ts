@@ -2,6 +2,8 @@ import { _decorator, Component, Label, Layers, Node } from 'cc';
 import { Utils } from '../../Utils/Utils';
 import { MoneyController } from '../head/Money/MoneyController';
 import { FXShadow } from '../../FX/FXShadow';
+import { EventBus } from '../../Utils/EventBus';
+import { EventGame } from '../../Enum/EEvent';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupAdsGold')
@@ -29,7 +31,7 @@ export class PopupAdsGold extends Component {
     async Hide() {
         this.ads(async () => {
             this.gold = 1 * 100;
-            MoneyController.getInstance().UpdateUiCoin(this.gold);
+            EventBus.emit(EventGame.UPDATE_COIN_UI, this.gold);
 
             Utils.getInstance().setCamLayer(MoneyController.getInstance().node, Layers.Enum.DEFAULT);
 

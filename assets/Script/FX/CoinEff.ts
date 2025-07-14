@@ -62,6 +62,8 @@ export class CoinEff extends BaseSingleton<CoinEff> {
                     .to(0.1, { scale: new Vec3(1.2, 1.2, 1.2) })
                     .to(0.1, { scale: new Vec3(1, 1, 1) })
                     .start();
+
+
                 resolve(); // resolve khi tween xong
             });
         });
