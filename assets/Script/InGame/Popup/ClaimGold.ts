@@ -1,4 +1,4 @@
-import { _decorator, Camera, Component, find, Label, Layers, log, Node } from 'cc';
+import { _decorator, Camera, Component, find, Label, Layers, log, Node, tween, Vec2, Vec3 } from 'cc';
 import { GridManager } from '../GridManager';
 import { InGameLogicManager } from '../InGameLogicManager';
 import { FXShadow } from '../../FX/FXShadow';
@@ -26,6 +26,9 @@ export class ClaimGold extends AutoComponent {
     @property({ type: Node })
     effGold: Node = null;
 
+    @property(Node)
+    coinIcon: Node = null
+
     gold: number;
 
     LoadCamera() {
@@ -40,7 +43,7 @@ export class ClaimGold extends AutoComponent {
 
     protected LoadComponent(): void {
         this.LoadCamera();
-        this.LoadEffGold();
+        // this.LoadEffGold();
     }
 
     async Show(gold: number) {
@@ -54,10 +57,13 @@ export class ClaimGold extends AutoComponent {
 
         await this.ShowFx();
 
+
         this.node.children.forEach(element => {
             element.active = true;
         });
 
+        this.coinIcon.setScale(0, 0, 0)
+        tween(this.coinIcon).to(0.5, { scale: new Vec3(1, 1, 1) }, { easing: "backOut" }).start()
         this.scheduleOnce(() => {
             this.Hide();
         }, 2);
@@ -75,7 +81,7 @@ export class ClaimGold extends AutoComponent {
         InGameLogicManager.getInstance().UpdateAllFrames();
 
         this.node.children.forEach(element => {
-            element.active = true;
+            element.active = false;
         });
         // })
     }
