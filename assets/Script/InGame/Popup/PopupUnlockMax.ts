@@ -1,4 +1,4 @@
-import { _decorator, Component, instantiate, Layout, Node, PageView, Prefab, tween, Vec2, Vec3 } from 'cc';
+import { _decorator, Component, instantiate, Label, Layout, Node, PageView, Prefab, tween, Vec2, Vec3 } from 'cc';
 import { GridManager } from '../GridManager';
 
 import { InGameLogicManager } from '../InGameLogicManager';
@@ -13,6 +13,9 @@ export class PopupUnlockMax extends Component {
 
     @property(Prefab)
     cellPrefab: Prefab = null
+
+    @property(Label)
+    coin: Label = null
 
     @property(Node)
     effNode: Node = null
@@ -41,6 +44,8 @@ export class PopupUnlockMax extends Component {
             .start()
 
         this.valueGoldPlus = 1 * this.valueUpCell;
+
+        this.coin.string = `+ ${this.valueGoldPlus.toString()}`;
     }
 
     init() {
