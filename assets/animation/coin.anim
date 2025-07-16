@@ -76,39 +76,39 @@
     ],
     "_values": [
       {
-        "__uuid__": "a78c51c3-bb96-4e98-ae9c-5d1fef859086@f9941",
+        "__uuid__": "a447a669-b95b-445f-b043-96e7442996fb@7e27e",
         "__expectedType__": "cc.SpriteFrame"
       },
       {
-        "__uuid__": "215f808d-d1f2-48b2-af10-ed1aa9bd4963@f9941",
+        "__uuid__": "a447a669-b95b-445f-b043-96e7442996fb@dbce6",
         "__expectedType__": "cc.SpriteFrame"
       },
       {
-        "__uuid__": "fc5fc32b-219b-44af-8333-5ff094d476b4@f9941",
+        "__uuid__": "a447a669-b95b-445f-b043-96e7442996fb@fde93",
         "__expectedType__": "cc.SpriteFrame"
       },
       {
-        "__uuid__": "e950163e-753d-4843-90f6-281c8264600c@f9941",
+        "__uuid__": "a447a669-b95b-445f-b043-96e7442996fb@f9197",
         "__expectedType__": "cc.SpriteFrame"
       },
       {
-        "__uuid__": "2d0fb49d-dd22-4c00-8244-9bcad2732b64@f9941",
+        "__uuid__": "a447a669-b95b-445f-b043-96e7442996fb@4587a",
         "__expectedType__": "cc.SpriteFrame"
       },
       {
-        "__uuid__": "0e2f1e7c-8c3e-490f-aeca-f260925ae0e8@f9941",
+        "__uuid__": "a447a669-b95b-445f-b043-96e7442996fb@cec9d",
         "__expectedType__": "cc.SpriteFrame"
       },
       {
-        "__uuid__": "b23d4b7e-a2c6-4cfa-b45f-fcc4f684c1c8@f9941",
+        "__uuid__": "a447a669-b95b-445f-b043-96e7442996fb@1593f",
         "__expectedType__": "cc.SpriteFrame"
       },
       {
-        "__uuid__": "faee3384-c8a6-431f-9319-16b3d038d2ef@f9941",
+        "__uuid__": "a447a669-b95b-445f-b043-96e7442996fb@d3058",
         "__expectedType__": "cc.SpriteFrame"
       },
       {
-        "__uuid__": "442550b3-3eb4-48dd-a6de-906b2fc4ba63@f9941",
+        "__uuid__": "a447a669-b95b-445f-b043-96e7442996fb@951d1",
         "__expectedType__": "cc.SpriteFrame"
       }
     ]
@@ -154,7 +154,7 @@
     "__type__": "cc.RealCurve",
     "_times": [
       0,
-      0.23333333333333334
+      0.23333333432674408
     ],
     "_values": [
       {
@@ -199,7 +199,7 @@
     "__type__": "cc.RealCurve",
     "_times": [
       0,
-      0.23333333333333334
+      0.23333333432674408
     ],
     "_values": [
       {
@@ -244,7 +244,7 @@
     "__type__": "cc.RealCurve",
     "_times": [
       0,
-      0.23333333333333334
+      0.23333333432674408
     ],
     "_values": [
       {
