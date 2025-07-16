@@ -9518,6 +9518,10 @@
       "__uuid__": "38028105-555c-481a-b462-43e6986d7310",
       "__expectedType__": "cc.Prefab"
     },
+    "popupGoal": {
+      "__uuid__": "131dd205-3c69-4e4d-8dee-0afd3bf03cf9",
+      "__expectedType__": "cc.Prefab"
+    },
     "_id": "4b+4Qe0kJKUbbtIfhbeaoB"
   },
   {

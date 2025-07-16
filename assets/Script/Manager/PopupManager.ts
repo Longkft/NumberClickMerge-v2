@@ -10,6 +10,7 @@ import { SettingScene } from '../InGame/head/Setting/SettingScene';
 import { Lose } from '../InGame/Lose/Lose';
 import { PopupAdsGold } from '../InGame/Popup/PopupAdsGold';
 import { AdsHeat } from '../InGame/Popup/AdsHeat';
+import { PopUpGoal } from '../InGame/Popup/PopUpGoal';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupManager')
@@ -26,6 +27,7 @@ export class PopupManager extends BaseSingleton<PopupManager> {
     private _popupLose: Lose = null
     private _popupAdsGold: PopupAdsGold = null
     private _popupAdsheat: AdsHeat = null
+    private _popupGoal: PopUpGoal = null
 
     get popupUnlockMax() {
         if (this._popupUnlockMax == null) {
@@ -117,6 +119,14 @@ export class PopupManager extends BaseSingleton<PopupManager> {
             this.node.addChild(this._popupAdsheat.node)
         }
         return this._popupAdsheat
+    }
+
+    get PopupGoal() {
+        if (this._popupGoal == null) {
+            this._popupGoal = instantiate(PrefabManager.getInstance().popupGoal).getComponent(PopUpGoal);
+            this.node.addChild(this._popupGoal.node)
+        }
+        return this._popupGoal
     }
 }
 

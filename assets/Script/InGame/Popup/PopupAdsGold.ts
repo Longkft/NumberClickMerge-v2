@@ -40,7 +40,7 @@ export class PopupAdsGold extends Component {
     }
 
     SetValueGoldUI(gold: number) {
-        this.valueGoldPlus.string = `+ ${gold}`;
+        this.valueGoldPlus.string = `${gold}`;
     }
 
     ads(call: CallableFunction) {

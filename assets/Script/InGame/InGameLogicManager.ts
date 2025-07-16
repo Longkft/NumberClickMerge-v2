@@ -44,6 +44,8 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         super.onLoad();
 
         this.RegisEventBeforUnload();
+
+        PopupManager.getInstance().PopupGoal.Show();
     }
 
     protected start(): void {
@@ -199,6 +201,9 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
         // Chờ tất cả các animation hoàn thành
         await Promise.all(animationPromises);
+
+        Utils.getInstance().UpdateHeart(1);
+        EventBus.emit(EventGame.UPDATE_HEARt_UI);
 
         // Sau khi tất cả đã di chuyển xong, reset lại bàn chơi
         // this.ResetAfterTween(matched);
