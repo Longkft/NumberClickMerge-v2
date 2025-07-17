@@ -108,7 +108,7 @@ export class GridManager extends BaseSingleton<GridManager> {
     // Thêm hàm này vào trong class GridManager của bạn
     private GetDataCellWeightedRandom(): CellModel {
         const min = this.numberMin;
-        const max = this.numberMax;
+        const max = this.numberMax - 1;
 
         // Mảng lưu các giá trị có thể có và trọng số của chúng
         const weightedValues: { value: number, weight: number }[] = [];
@@ -279,6 +279,8 @@ export class GridManager extends BaseSingleton<GridManager> {
         this.numberMin = (diff / 2) + 1
         PopupManager.getInstance().ShowPopupUnlockMin()
 
+        log('numberMin: ', this.numberMin)
+        log('numberMax: ', this.numberMax)
     }
 
     public ResetGridState(): void {

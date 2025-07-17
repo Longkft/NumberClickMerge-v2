@@ -40,12 +40,8 @@ export class Utils extends BaseSingleton<Utils> {
 
     //#region set cam
     setCamLayer(rootNode: Node, layer: number): void {
-        log(1)
         if (!rootNode) return;
-        log(2)
         rootNode.layer = layer;
-
-        log('rootNode: ', rootNode);
 
         for (const child of rootNode.children) {
             this.setCamLayer(child, layer);

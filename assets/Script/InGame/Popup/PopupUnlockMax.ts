@@ -4,6 +4,7 @@ import { GridManager } from '../GridManager';
 import { InGameLogicManager } from '../InGameLogicManager';
 import { CellPopupMax, CellPopupState } from '../Cell/CellPopupMax';
 import { PopupManager } from '../../Manager/PopupManager';
+import { EventBus } from '../../Utils/EventBus';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupUnlockMax')
@@ -92,6 +93,9 @@ export class PopupUnlockMax extends Component {
 
         PopupManager.getInstance().PopupGold.gold = this.valueGoldPlus;
         PopupManager.getInstance().PopupGold.Show(this.valueGoldPlus);
+
+        GridManager.getInstance().CheckUpDateMinCurrent();
+        EventBus.emit('UIColorRecycle', GridManager.getInstance().numberMin); // cập nhật ui recycle
     }
 
 }

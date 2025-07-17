@@ -15,6 +15,7 @@ import { AudioManager } from '../Manager/AudioManager';
 import { SFXType } from '../Enum/Enum';
 import { PopupManager } from '../Manager/PopupManager';
 import { Utils } from '../Utils/Utils';
+import { TutorialManager } from './Tools/TutorialManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('InGameLogicManager')
@@ -45,7 +46,9 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
         this.RegisEventBeforUnload();
 
-        PopupManager.getInstance().PopupGoal.Show();
+        if (!TutorialManager.getInstance().isFirst) {
+            PopupManager.getInstance().PopupGoal.Show();
+        }
     }
 
     protected start(): void {
@@ -960,6 +963,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
         EventBus.on(EventGame.GRID_CELL_UPDATED_EVENT, this.OnUpdateUi, this);
     }
+
 
 }
 
