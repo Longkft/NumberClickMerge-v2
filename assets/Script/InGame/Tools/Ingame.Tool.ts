@@ -125,8 +125,8 @@ export class Ingame_Tool extends Component {
         if (!isAdjacent) {
             console.warn("Hai ô không kề nhau.");
 
-            if (cellA) cellA.cellUI.ShowEff(false);
-            if (cellB) cellB.cellUI.ShowEff(false);
+            if (cellA) cellA.cellUI.StopAnimationShake();
+            if (cellB) cellB.cellUI.StopAnimationShake();
 
             return;
         }
@@ -135,8 +135,8 @@ export class Ingame_Tool extends Component {
         await InGameLogicManager.getInstance().HandleSwap(first, second);
 
         // Tắt hiệu ứng sau khi swap xong
-        if (cellA) cellA.cellUI.ShowEff(false);
-        if (cellB) cellB.cellUI.ShowEff(false);
+        if (cellA) cellA.cellUI.StopAnimationShake();
+        if (cellB) cellB.cellUI.StopAnimationShake();
 
         // Tắt hiệu ứng và chế độ swap
         await this.HideFxShadow();

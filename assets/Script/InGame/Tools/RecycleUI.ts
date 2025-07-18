@@ -18,7 +18,12 @@ export class RecycleUI extends Component {
 
         const savedData = await DataManager.getInstance().LoadGameState();
 
-        this.SetUIRecycle(savedData.numberMin);
+        if (!savedData) {
+            this.SetUIRecycle(1);
+        } else {
+            this.SetUIRecycle(savedData.numberMin);
+        }
+
     }
 
     RegisEvent() {

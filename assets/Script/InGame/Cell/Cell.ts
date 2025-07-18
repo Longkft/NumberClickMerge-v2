@@ -131,7 +131,7 @@ export class Cell {
     HandleSwapClick() {
         log('Swap click ---');
 
-        this.cellUI.ShowEff(true);
+        this.cellUI.PlayAnimationShakeLoop();
 
         const inGameLogic = InGameLogicManager.getInstance();
         if (inGameLogic.swapCallback) {

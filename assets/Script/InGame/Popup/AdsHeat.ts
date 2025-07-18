@@ -15,6 +15,8 @@ export class AdsHeat extends Component {
     @property({ type: Node })
     box: Node = null;
 
+    isCheckLose: boolean = false;
+
     async Show() {
         await this.shadow.ShowFxShadow();
 
@@ -61,8 +63,14 @@ export class AdsHeat extends Component {
     }
 
     BtnClose() {
-        log('lose');
         this.Hide();
+
+        if (!this.isCheckLose) {
+
+        } else {
+            log('lose');
+            PopupManager.getInstance().Lose.ShowFXLose();
+        }
     }
 }
 

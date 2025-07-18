@@ -8,6 +8,7 @@ const { ccclass, property } = _decorator;
 export class btnAddHeart extends BaseTouch {
 
     TouchStart(event: EventTouch): void {
+        PopupManager.getInstance().PopupAdsHeat.isCheckLose = false;
         PopupManager.getInstance().PopupAdsHeat.Show();
     }
 

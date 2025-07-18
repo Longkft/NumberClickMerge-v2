@@ -823,12 +823,10 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         this.UpdateValueCellBeforeTween(a.row, a.col, this.cells[a.row][a.col]);
         this.UpdateValueCellBeforeTween(b.row, b.col, this.cells[b.row][b.col]);
 
-        // --- PHẦN LOGIC ĐÃ SỬA ---
         // Kiểm tra xem có nhóm nào được tạo ở vị trí A hoặc B không
         const matchA = GridManager.getInstance().findConnectedCells(a.row, a.col);
         const matchB = GridManager.getInstance().findConnectedCells(b.row, b.col);
 
-        // Chỉ cần một trong hai vị trí tạo ra match là đủ
         if (matchA.length >= 3 || matchB.length >= 3) {
             // Nếu có, gọi vòng lặp xử lý chính của game
             this.scheduleOnce(() => {

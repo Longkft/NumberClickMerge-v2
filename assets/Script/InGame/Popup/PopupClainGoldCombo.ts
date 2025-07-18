@@ -68,7 +68,7 @@ export class PopupClainGoldCombo extends AutoComponent {
     }
 
     SetValueGoldUI(gold: number, Combo: number = 3) {
-        this.textCombo.string = `Combo X${Combo}`;
+        this.textCombo.string = `X${Combo}`;
         this.valueGoldPlus.string = `+ ${gold}`;
     }
 
