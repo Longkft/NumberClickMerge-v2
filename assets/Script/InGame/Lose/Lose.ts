@@ -57,14 +57,9 @@ export class Lose extends AutoComponent {
 
     GetScoreGamePlay() {
         let score = DataManager.getInstance().CoreInPlayGame;
-
         this.AnimationScoreChange(0, score, this.scoreGame);
-
         let maxScore = DataManager.getInstance().highScore;
-
         this.AnimationScoreChange(0, maxScore, this.maxScoreGame);
-
-        log('score: ', score, 'maxScore: ', maxScore);
     }
 
     public AnimationScoreChange(oldScore: number = 0, newScore: number, labelText: Label) {

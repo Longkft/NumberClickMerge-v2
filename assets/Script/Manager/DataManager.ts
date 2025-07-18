@@ -78,66 +78,75 @@ export class DataManager extends BaseSingleton<DataManager> {
     }
 
     // #region gold
-    public get Gold(): number {
-        const saved = localStorage.getItem("Gold");
-        return saved ? parseInt(saved) : 0;
+    public async GetGold() {
+        return await this.getLocale("Gold")
     }
 
-    public set Gold(value: number) {
-        localStorage.setItem("Gold", value.toString());
+    public async SetGold(value: number) {
+        await this.saveLocale("Gold", value)
     }
 
     // #region DataMusic
-    public get DataMusic(): boolean {
-        const saved = localStorage.getItem("DataMusic");
-        return saved !== null && saved === 'false' ? false : true;
+    public async GetDataMusic() {
+        return await this.getLocale("DataMusic")
     }
 
-    public set DataMusic(value: boolean) {
-        localStorage.setItem("DataMusic", value.toString());
+    public async SetDataMusic(value: boolean) {
+        await this.saveLocale("DataMusic", value)
     }
 
     // #region DataSound
-    public get DataSound(): boolean {
-        const saved = localStorage.getItem("DataSound");
-        return saved !== null && saved === 'false' ? false : true;
+    public async GetDataSound() {
+        return await this.getLocale("DataSound")
     }
 
-    public set DataSound(value: boolean) {
-        localStorage.setItem("DataSound", value.toString());
+    public async SetDataSound(value: boolean) {
+        await this.saveLocale("DataSound", value)
     }
 
     // Lưu trạng thái game
-    public SaveGameState(gameState: any) {
-        localStorage.setItem("gameState", JSON.stringify(gameState));
+    public async SaveGameState(gameState: any) {
+        await this.saveLocale("gameState", gameState)
     }
 
     // Tải trạng thái game
     public async LoadGameState(): Promise<any> {
-        const raw = localStorage.getItem("gameState");
-        if (!raw) return null;
-        return JSON.parse(raw);
+        return await this.getLocale("gameState")
     }
 
     // Xóa trạng thái game
     public clearGameState() {
-        localStorage.removeItem("gameState");
+        this.removeData("gameState")
     }
 
     // #region Level
-    public getLevel(): any {
-        const saved = localStorage.getItem("DataLevel");
-        return saved ? JSON.parse(saved) : null;
+    public async getLevel() {
+        return await this.getLocale("DataLevel")
     }
 
-    public setLevel(level: number, bar: number, exp: number): any {
+    public async setLevel(level: number, bar: number, exp: number) {
         let obj = {
             level: level,
             bar: bar,
             exp: exp,
         };
 
-        localStorage.setItem("DataLevel", JSON.stringify(obj));
+        await this.saveLocale("DataLevel", obj)
+    }
+
+
+    public async saveLocale(key, value) {
+        await localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    public async getLocale(key) {
+        let saved = await localStorage.getItem(key)
+        return saved ? JSON.parse(saved) : null;
+    }
+
+
+    public async removeData(key) {
+        await localStorage.removeItem(key);
     }
 }
 

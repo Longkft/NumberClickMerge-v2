@@ -16,9 +16,17 @@ export class MoneyController extends BaseSingleton<MoneyController> {
     @property({ type: Node })
     coinUi: Node = null;
 
-    protected start(): void {
+
+    GoldCurrent: number = 0
+
+    protected async start() {
+        await this.LoadGoldCurrent()
         this.updateGold();
         this.RegisterEvent();
+    }
+
+    async LoadGoldCurrent() {
+        this.GoldCurrent = await DataManager.getInstance().GetGold()
     }
 
     onDestroy() {
@@ -33,15 +41,13 @@ export class MoneyController extends BaseSingleton<MoneyController> {
         EventBus.off(EventGame.UPDATE_COIN_UI, this.UpdateUiCoin)
     }
 
+
+
+
     UpdateUiCoin(gold: number) {
         // Cộng điểm vào Gold
-        const dataManager = DataManager.getInstance();
-
-        const previousGold = dataManager.Gold;
+        const previousGold = this.GoldCurrent;
         const updatedGold = previousGold + gold;
-
-        // Cập nhật điểm trong DataManager
-        dataManager.Gold = updatedGold;
 
         // Gọi hàm tween tăng điểm mượt mà
         this.moneyUi.AnimationMoneyChange(previousGold, updatedGold, this.moneyUi.gold);
@@ -52,15 +58,19 @@ export class MoneyController extends BaseSingleton<MoneyController> {
     }
 
     public updateGold() {
-        let gold = DataManager.getInstance().Gold;
+        let gold = this.GoldCurrent;
         if (gold) {
             this.moneyUi.SetCoin(gold);
             return;
         }
 
-        DataManager.getInstance().Gold = 0;
         gold = 0;
         this.moneyUi.SetCoin(gold);
+    }
+
+
+    public SaveGold() {
+        DataManager.getInstance().SetGold(this.GoldCurrent)
     }
 }
 

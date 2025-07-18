@@ -18,6 +18,12 @@ export class CellCollection extends Array<Cell> {
         this.push(newCell)
         return newCell
     }
+
+    public RemoveItem(cell: Cell) {
+        let index = this.findIndex(e => e == cell)
+        if (index == -1) return
+        this.splice(index, 1)
+    }
 }
 
 

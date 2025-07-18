@@ -5,6 +5,7 @@ import { Utils } from '../../Utils/Utils';
 import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
 import { PopupManager } from '../../Manager/PopupManager';
+import { MoneyController } from '../head/Money/MoneyController';
 const { ccclass, property } = _decorator;
 
 @ccclass('AdsHeat')
@@ -30,13 +31,10 @@ export class AdsHeat extends Component {
     }
 
     BtnUseGold() {
-        let gold = DataManager.getInstance().Gold;
+        let gold = MoneyController.getInstance().GoldCurrent;
         if (!gold) return;
         let goldAfter = gold - 200;
         if (goldAfter < 0) return;
-
-        log(gold, goldAfter)
-
         this.Hide();
 
         Utils.getInstance().UpdateHeart(5); // reset lại heart là 5
@@ -61,7 +59,6 @@ export class AdsHeat extends Component {
     }
 
     BtnClose() {
-        log('lose');
         this.Hide();
     }
 }
