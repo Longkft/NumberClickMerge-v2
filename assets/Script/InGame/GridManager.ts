@@ -34,7 +34,7 @@ export class GridManager extends BaseSingleton<GridManager> {
         for (let i = 0; i < this.GRID_ROWS; i++) {
             this.grid[i] = [];
             for (let j = 0; j < this.GRID_COLS; j++) {
-                this.grid[i][j] = this.GetDataCellRandom();
+                this.grid[i][j] = this.GetDataCellWeightedRandom();
                 this.grid[i][j].row = i
                 this.grid[i][j].col = j
             }
@@ -105,6 +105,42 @@ export class GridManager extends BaseSingleton<GridManager> {
         return false;
     }
 
+    // Thêm hàm này vào trong class GridManager của bạn
+    private GetDataCellWeightedRandom(): CellModel {
+        const min = this.numberMin;
+        const max = this.numberMax - 1;
+
+        // Mảng lưu các giá trị có thể có và trọng số của chúng
+        const weightedValues: { value: number, weight: number }[] = [];
+        let totalWeight = 0;
+
+        // 1. Gán trọng số theo quy tắc bậc thang ngược
+        // Số càng lớn, trọng số càng nhỏ.
+        for (let i = min; i <= max; i++) {
+            const weight = (max - i) + min;
+            weightedValues.push({ value: i, weight: weight });
+            totalWeight += weight;
+        }
+
+        // 2. Quay số ngẫu nhiên trong khoảng tổng trọng số
+        let randomPoint = randomRangeInt(1, totalWeight + 1);
+
+        // 3. Xác định giá trị dựa trên điểm ngẫu nhiên
+        for (const item of weightedValues) {
+            // Nếu điểm ngẫu nhiên nằm trong "phần" của giá trị này
+            if (randomPoint <= item.weight) {
+                const index = item.value;
+                const color = this.GetColorByValue(index);
+                return new CellModel({ value: index, color: color });
+            }
+            // Nếu không, trừ đi trọng số của phần này và xét tiếp
+            randomPoint -= item.weight;
+        }
+
+        // Fallback, trường hợp này gần như không bao giờ xảy ra
+        // nhưng để đảm bảo code an toàn
+        return this.GetDataCellRandom();
+    }
 
     private GetDataCellRandom() {
         let index = randomRangeInt(this.numberMin, this.numberMax)
@@ -115,7 +151,7 @@ export class GridManager extends BaseSingleton<GridManager> {
     private GetDifferentDataCell(numberCurrent: number) {
         let random: CellModel = null
         do {
-            random = this.GetDataCellRandom()
+            random = this.GetDataCellWeightedRandom()
         }
         while (random.value == numberCurrent)
         return random;
@@ -214,7 +250,7 @@ export class GridManager extends BaseSingleton<GridManager> {
         for (let col = 0; col < cols; col++) {
             for (let row = 0; row < rows; row++) {
                 if (this.grid[row][col].value === -1) {
-                    const data = this.GetDataCellRandom(); // TẠO MỚI CELL
+                    const data = this.GetDataCellWeightedRandom(); // TẠO MỚI CELL
                     data.row = row;
                     data.col = col;
                     this.grid[row][col] = data;
@@ -243,6 +279,8 @@ export class GridManager extends BaseSingleton<GridManager> {
         this.numberMin = (diff / 2) + 1
         PopupManager.getInstance().ShowPopupUnlockMin()
 
+        log('numberMin: ', this.numberMin)
+        log('numberMax: ', this.numberMax)
     }
 
     public ResetGridState(): void {

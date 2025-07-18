@@ -86,6 +86,16 @@ export class DataManager extends BaseSingleton<DataManager> {
         await this.saveLocale("Gold", value)
     }
 
+    // #region first
+    public get First(): boolean {
+        const saved = localStorage.getItem("First");
+        return saved !== null && saved === 'false' ? false : true;
+    }
+
+    public set First(value: boolean) {
+        localStorage.setItem("First", value.toString());
+    }
+
     // #region DataMusic
     public async GetDataMusic() {
         return await this.getLocale("DataMusic")

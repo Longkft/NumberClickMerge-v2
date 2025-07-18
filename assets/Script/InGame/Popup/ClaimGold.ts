@@ -77,12 +77,14 @@ export class ClaimGold extends AutoComponent {
 
         await this.HideFx();
 
-        GridManager.getInstance().CheckUpDateMinCurrent();
+        // GridManager.getInstance().CheckUpDateMinCurrent();
         InGameLogicManager.getInstance().UpdateAllFrames();
 
         this.node.children.forEach(element => {
             element.active = false;
         });
+
+        log('GridManager.getInstance(): ', GridManager.getInstance().numberMin);
         // })
     }
 

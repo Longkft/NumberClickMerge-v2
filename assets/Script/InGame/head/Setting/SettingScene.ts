@@ -6,6 +6,7 @@ import { FXShadow } from '../../../FX/FXShadow';
 import { InGameLogicManager } from '../../InGameLogicManager';
 import { EventBus } from '../../../Utils/EventBus';
 import { EventGame } from '../../../Enum/EEvent';
+import { PopupManager } from '../../../Manager/PopupManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('SettingScene')
@@ -217,6 +218,8 @@ export class SettingScene extends BaseTouch {
         InGameLogicManager.getInstance().RestartGame();
 
         this.shadow.HideFXShadow();
+
+        PopupManager.getInstance().PopupGoal.Show();
     }
 }
 

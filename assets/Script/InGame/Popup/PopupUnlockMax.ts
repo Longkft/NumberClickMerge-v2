@@ -1,9 +1,10 @@
-import { _decorator, Component, instantiate, Layout, Node, PageView, Prefab, tween, Vec2, Vec3 } from 'cc';
+import { _decorator, Component, instantiate, Label, Layout, Node, PageView, Prefab, tween, Vec2, Vec3 } from 'cc';
 import { GridManager } from '../GridManager';
 
 import { InGameLogicManager } from '../InGameLogicManager';
 import { CellPopupMax, CellPopupState } from '../Cell/CellPopupMax';
 import { PopupManager } from '../../Manager/PopupManager';
+import { EventBus } from '../../Utils/EventBus';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupUnlockMax')
@@ -13,6 +14,9 @@ export class PopupUnlockMax extends Component {
 
     @property(Prefab)
     cellPrefab: Prefab = null
+
+    @property(Label)
+    coin: Label = null
 
     @property(Node)
     effNode: Node = null
@@ -41,6 +45,8 @@ export class PopupUnlockMax extends Component {
             .start()
 
         this.valueGoldPlus = 1 * this.valueUpCell;
+
+        this.coin.string = `+ ${this.valueGoldPlus.toString()}`;
     }
 
     init() {
@@ -87,6 +93,9 @@ export class PopupUnlockMax extends Component {
 
         PopupManager.getInstance().PopupGold.gold = this.valueGoldPlus;
         PopupManager.getInstance().PopupGold.Show(this.valueGoldPlus);
+
+        GridManager.getInstance().CheckUpDateMinCurrent();
+        EventBus.emit('UIColorRecycle', GridManager.getInstance().numberMin); // cập nhật ui recycle
     }
 
 }

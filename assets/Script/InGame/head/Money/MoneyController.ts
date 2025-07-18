@@ -53,8 +53,6 @@ export class MoneyController extends BaseSingleton<MoneyController> {
         this.moneyUi.AnimationMoneyChange(previousGold, updatedGold, this.moneyUi.gold);
 
         Utils.getInstance().setCamLayer(this.node, Layers.Enum.PROFILER);
-
-        this.moneyUi.activeEffGold();
     }
 
     public updateGold() {

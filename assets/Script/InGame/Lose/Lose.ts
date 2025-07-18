@@ -3,6 +3,7 @@ import { AutoComponent } from '../../Base/AutoComponent';
 import { DataManager } from '../../Manager/DataManager';
 import { FXShadow } from '../../FX/FXShadow';
 import { InGameLogicManager } from '../InGameLogicManager';
+import { PopupManager } from '../../Manager/PopupManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('Lose')
@@ -84,5 +85,7 @@ export class Lose extends AutoComponent {
         InGameLogicManager.getInstance().RestartGame();
 
         this.HideFXLose();
+
+        PopupManager.getInstance().PopupGoal.Show();
     }
 }
