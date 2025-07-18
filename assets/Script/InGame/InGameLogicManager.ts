@@ -46,7 +46,13 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
         this.RegisEventBeforUnload();
 
-        if (!TutorialManager.getInstance().isFirst) {
+        log('DataManager.getInstance().First: ', DataManager.getInstance().First);
+
+        if (DataManager.getInstance().First) {
+            DataManager.getInstance().First = false;
+            PopupManager.getInstance().PopupTutorial.Show();
+
+        } else {
             PopupManager.getInstance().PopupGoal.Show();
         }
     }

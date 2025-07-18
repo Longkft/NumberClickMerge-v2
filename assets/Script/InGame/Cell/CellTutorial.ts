@@ -51,6 +51,7 @@ export class CellTutorial extends BaseTouch {
 
     TouchStart(event: EventTouch): void {
         if (!this.isClick) return;
+        PopupManager.getInstance().PopupTutorial.hand.active = false;
 
         if (this.isUp) {
             this.data++;
@@ -65,13 +66,13 @@ export class CellTutorial extends BaseTouch {
         this.TweenNgang();
     }
 
-    TweenNgang() {
+    async TweenNgang() {
         let listNode;
 
         if (this.isUp) {
-            listNode = TutorialManager.getInstance().up.children.filter(child => child !== this.node);
+            listNode = PopupManager.getInstance().PopupTutorial.up.children.filter(child => child !== this.node);
         } else {
-            listNode = TutorialManager.getInstance().down.children.filter(child => child !== this.node);
+            listNode = PopupManager.getInstance().PopupTutorial.down.children.filter(child => child !== this.node);
         }
 
         let pos = this.node.position.clone();
@@ -89,15 +90,18 @@ export class CellTutorial extends BaseTouch {
                         this.SetUp(this.data)
                         this.UpdateUICell(this.stage);
 
-                        TutorialManager.getInstance().countTutorial++;
+                        PopupManager.getInstance().PopupTutorial.countTutorial++;
 
-                        TutorialManager.getInstance().fx.active = true;
+                        PopupManager.getInstance().PopupTutorial.fx.active = true;
 
                         this.scheduleOnce(async () => {
-                            TutorialManager.getInstance().SetUpDown(false);
-                            TutorialManager.getInstance().fx.active = false;
-                            if (TutorialManager.getInstance().countTutorial < 2) return;
-                            let shadow = TutorialManager.getInstance().shadow;
+                            if (PopupManager.getInstance().PopupTutorial.countTutorial < 2) {
+                                await PopupManager.getInstance().PopupTutorial.HideFxUp();
+                                PopupManager.getInstance().PopupTutorial.SetUpDown(false);
+                                PopupManager.getInstance().PopupTutorial.fx.active = false;
+                                return;
+                            }
+                            let shadow = PopupManager.getInstance().PopupTutorial.shadow;
                             await shadow.HideFXShadow();
 
                             PopupManager.getInstance().PopupGoal.Show();

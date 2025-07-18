@@ -43,6 +43,9 @@ export class PrefabManager extends BaseSingleton<PrefabManager> {
     @property({ type: Prefab, group: { name: "POPUP" } })
     popupGoal: Prefab = null
 
+    @property({ type: Prefab, group: { name: "POPUP" } })
+    popupTutorial: Prefab = null
+
 }
 
 
