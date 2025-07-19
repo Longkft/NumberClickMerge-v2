@@ -15,6 +15,13 @@ export class AudioManager extends BaseSingleton<AudioManager> {
     @property([AudioClip])
     sfxClips: AudioClip[] = [];
 
+
+    stateCurrentSound: boolean = false
+    stateCurrentMusic: boolean = false
+
+
+
+
     LoadMusicSource() {
         if (this.musicSource != null) return;
         this.musicSource = this.node.getChildByName('MusicSource').getComponent(AudioSource);
@@ -31,8 +38,13 @@ export class AudioManager extends BaseSingleton<AudioManager> {
 
     protected onLoad(): void {
         super.onLoad();
-
         director.addPersistRootNode(this.node) // giữ lại khi đổi scene
+        this.LoadState()
+    }
+
+    async LoadState() {
+        this.stateCurrentSound = await DataManager.getInstance().GetDataSound()
+        this.stateCurrentMusic = await DataManager.getInstance().GetDataMusic()
     }
 
     start() {
@@ -40,7 +52,7 @@ export class AudioManager extends BaseSingleton<AudioManager> {
     }
 
     playMusic() {
-        if (DataManager.getInstance().DataMusic) {
+        if (this.stateCurrentMusic) {
             this.musicSource?.play();
         }
     }
@@ -50,24 +62,24 @@ export class AudioManager extends BaseSingleton<AudioManager> {
     }
 
     setMusicStatus(on: boolean) {
-        DataManager.getInstance().DataMusic = on;
+        this.stateCurrentMusic = on;
         on ? this.playMusic() : this.stopMusic();
     }
 
     getMusicStatus(): boolean {
-        return DataManager.getInstance().DataMusic;
+        return this.stateCurrentMusic;
     }
 
     setSFXStatus(on: boolean) {
-        DataManager.getInstance().DataSound = on;
+        this.stateCurrentSound = on;
     }
 
     getSFXStatus(): boolean {
-        return DataManager.getInstance().DataSound;
+        return this.stateCurrentSound;
     }
 
     playSFX(type: SFXType) {
-        if (!DataManager.getInstance().DataSound) return;
+        if (!this.stateCurrentSound) return;
 
         const clip = this.sfxClips[type];
         if (clip) {
@@ -84,6 +96,11 @@ export class AudioManager extends BaseSingleton<AudioManager> {
         this.setMusicStatus(true);
         this.setSFXStatus(true);
         this.playSFX(SFXType.Spawn);
+    }
+
+    public SaveState() {
+        DataManager.getInstance().SetDataMusic(this.stateCurrentMusic)
+        DataManager.getInstance().SetDataSound(this.stateCurrentSound)
     }
 }
 

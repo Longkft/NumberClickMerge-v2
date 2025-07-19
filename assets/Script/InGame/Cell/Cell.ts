@@ -57,7 +57,6 @@ export class Cell {
 
     onClick() {
         if (InGameLogicManager.getInstance().IsProcessing) {
-            log("Đang xử lý tự động, không cho click.");
             return;
         }
 
@@ -85,10 +84,9 @@ export class Cell {
     }
 
     HandleNormalClick() {
-        log('Normal click ---');
 
-        if (DataManager.getInstance().MyHeart <= 0) {
-            log('popup out of move');
+
+        if (InGameLogicManager.getInstance().currentHeart <= 0) {
             PopupManager.getInstance().OutOfMove.Show();
             return;
         }
@@ -97,8 +95,7 @@ export class Cell {
 
         const matched = GridManager.getInstance().findConnectedCells(this.cellData.row, this.cellData.col);
         if (!matched || matched.length < 3) {
-            if (DataManager.getInstance().MyHeart <= 0) {
-                log('popup out of move');
+            if (InGameLogicManager.getInstance().currentHeart <= 0) {
                 PopupManager.getInstance().OutOfMove.Show();
             }
             return;
@@ -108,31 +105,21 @@ export class Cell {
     }
 
     HandleHammerClick() {
-        log('Hammer click ---');
-
         this.SetEclickNoMal();
-
         const inGameLogic = InGameLogicManager.getInstance();
-
         inGameLogic.HandleHammerAt(this.cellData.row, this.cellData.col);
     }
 
     HandleUpgradeClick() {
-        log('Upgrade click ---');
         if (this.cellData.value == GridManager.getInstance().numberMax - 1) return;
-
         this.SetEclickNoMal();
-
         const inGameLogic = InGameLogicManager.getInstance();
-
         inGameLogic.HandleUpgradeAt(this.cellData.row, this.cellData.col);
     }
 
     HandleSwapClick() {
         log('Swap click ---');
-
         this.cellUI.PlayAnimationShakeLoop();
-
         const inGameLogic = InGameLogicManager.getInstance();
         if (inGameLogic.swapCallback) {
             inGameLogic.swapCallback(this.cellData.row, this.cellData.col);
@@ -177,7 +164,7 @@ export class Cell {
     RandomEffectClick(): ECELL_CLICK_EFFECT {
 
         const gridMgr = GridManager.getInstance();
-        const minValue = DataManager.getInstance().NumberMin;
+        const minValue = GridManager.getInstance().numberMin;
 
         // ❶ Nếu ô đang ở giá trị nhỏ nhất → luôn Up
         if (this.cellData.value === minValue) return ECELL_CLICK_EFFECT.Up;
@@ -199,9 +186,9 @@ export class Cell {
 
     Dispose() {
         this.RemoveEventClick();
-
         // add cellUi vào pooling
         PoolObjectManager.getInstance().RecycleObject(this.GetCellUI(), PrefabManager.getInstance().cellPrefab);
+        InGameLogicManager.getInstance().cellCollection.RemoveItem(this)
     }
 
     SetEclickNoMal() {

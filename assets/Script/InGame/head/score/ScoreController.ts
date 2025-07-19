@@ -3,13 +3,20 @@ import { ScoreUi } from './ScoreUi';
 import { DataManager } from '../../../Manager/DataManager';
 import { EventBus } from '../../../Utils/EventBus';
 import { EventGame } from '../../../Enum/EEvent';
+import { BaseSingleton } from '../../../Base/BaseSingleton';
 const { ccclass, property } = _decorator;
 
 @ccclass('ScoreController')
-export class ScoreController extends Component {
+export class ScoreController extends BaseSingleton<ScoreController> {
 
     @property({ type: ScoreUi })
     scoreUiCpn: ScoreUi = null;
+
+    scoreCurrent: number = 0
+    highScoreCurrent: number = 0
+    protected async onLoad() {
+        this.LoadScoreCurrent()
+    }
 
     start() {
         this.scoreUiCpn = this.node.getComponent(ScoreUi);
@@ -34,19 +41,24 @@ export class ScoreController extends Component {
         EventBus.off(EventGame.RESET_SCORE, this.ResetScore);
     }
 
+    async LoadScoreCurrent() {
+        this.scoreCurrent = await DataManager.getInstance().GetCoreInPlayGame()
+        this.highScoreCurrent = await DataManager.getInstance().GethighScore()
+    }
+
     OnScoreUpgraded(plusScore: number) {
         // Cộng điểm vào CoreInPlayGame
         const dataManager = DataManager.getInstance();
 
-        const previousScore = dataManager.CoreInPlayGame;
+        const previousScore = this.scoreCurrent;
         const updatedScore = previousScore + plusScore;
 
         // Cập nhật điểm trong DataManager
-        dataManager.CoreInPlayGame = updatedScore;
+        this.scoreCurrent = updatedScore;
 
         // Cập nhật high score
-        if (updatedScore > dataManager.highScore) {
-            dataManager.highScore = updatedScore;
+        if (updatedScore > this.highScoreCurrent) {
+            this.highScoreCurrent = updatedScore;
         }
 
         // Gọi hàm tween tăng điểm mượt mà
@@ -56,31 +68,37 @@ export class ScoreController extends Component {
         this.scoreUiCpn.updateScorePlus(plusScore);
 
         // Cập nhật highScore trên UI
-        this.scoreUiCpn.SetValueMaxScore(dataManager.highScore);
+        this.scoreUiCpn.SetValueMaxScore(this.highScoreCurrent);
     }
 
     public updateScore() {
-        let score = DataManager.getInstance().CoreInPlayGame;
+        let score = this.scoreCurrent;
         if (score) {
             this.scoreUiCpn.SetValueScore(score);
             return;
         }
 
-        DataManager.getInstance().CoreInPlayGame = 0;
+        this.scoreCurrent = 0;
         score = 0;
         this.scoreUiCpn.SetValueScore(score);
     }
 
     ResetScore() {
-        DataManager.getInstance().CoreInPlayGame = 0;
+        this.scoreCurrent = 0;
         let score = 0;
         this.scoreUiCpn.SetValueScore(score);
     }
 
     public updateScoreMax() {
-        const score = DataManager.getInstance().highScore;
+        const score = this.highScoreCurrent;
 
         this.scoreUiCpn.SetValueMaxScore(score);
+    }
+
+
+    SaveScoreCurrent() {
+        DataManager.getInstance().SetCoreInPlayGame(this.scoreCurrent)
+        DataManager.getInstance().SethighScore(this.highScoreCurrent)
     }
 }
 

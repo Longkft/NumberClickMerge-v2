@@ -40,9 +40,6 @@ export class OutOfMove extends Component {
             PopupManager.getInstance().PopupAdsGold.Show();
             return;
         }
-
-        log(gold, goldAfter)
-
         this.Hide();
 
         Utils.getInstance().UpdateHeart(5); // reset lại heart là 5
@@ -67,7 +64,6 @@ export class OutOfMove extends Component {
     }
 
     BtnClose() {
-        log('lose');
         this.Hide();
         PopupManager.getInstance().Lose.ShowFXLose();
     }

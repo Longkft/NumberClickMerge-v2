@@ -79,8 +79,6 @@ export class SettingScene extends BaseTouch {
 
             btn.node.setPosition(50, 0, 0);
         }
-
-        log('status: ', status, btn, effNode)
     }
 
     LoadDataMusic() {

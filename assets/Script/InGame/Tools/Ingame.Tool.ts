@@ -177,7 +177,7 @@ export class Ingame_Tool extends Component {
     }
 
     CheckCoinUseToolGame() {
-        let coinData = DataManager.getInstance().Gold;
+        let coinData = MoneyController.getInstance().GoldCurrent;
         if (coinData < this.coin) {
 
             return false;
