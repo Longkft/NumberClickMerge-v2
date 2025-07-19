@@ -1,6 +1,7 @@
 import { _decorator, Component, log, Node } from 'cc';
 import { BaseSingleton } from '../Base/BaseSingleton';
 import { DataManager } from '../Manager/DataManager';
+import { InGameLogicManager } from '../InGame/InGameLogicManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('Utils')
@@ -9,23 +10,23 @@ export class Utils extends BaseSingleton<Utils> {
 
     //#region Heart
     LoadHeartGameDefault() {
-        let heart = DataManager.getInstance().MyHeart;
+        let heart = InGameLogicManager.getInstance().currentHeart;
 
-        DataManager.getInstance().MyHeart = heart;
+        InGameLogicManager.getInstance().currentHeart = heart;
     }
 
     UpdateHeart(subtraction: number) { // subtraction là hiệu (cộng hoặc trừ)
-        let heart = DataManager.getInstance().MyHeart;
+        let heart = InGameLogicManager.getInstance().currentHeart;
         let newHeart = heart + subtraction;
         if (newHeart < 0 || newHeart > 5) return;
 
-        DataManager.getInstance().MyHeart = newHeart;
+        InGameLogicManager.getInstance().currentHeart = newHeart;
     }
 
     ResetHeart(subtraction: number) {
         if (subtraction < 0 || subtraction > 5) return;
 
-        DataManager.getInstance().MyHeart = subtraction;
+        InGameLogicManager.getInstance().currentHeart = subtraction;
     }
 
     //#region AdsManager

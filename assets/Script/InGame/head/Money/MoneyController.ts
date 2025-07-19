@@ -48,7 +48,7 @@ export class MoneyController extends BaseSingleton<MoneyController> {
         // Cộng điểm vào Gold
         const previousGold = this.GoldCurrent;
         const updatedGold = previousGold + gold;
-
+        this.GoldCurrent = updatedGold
         // Gọi hàm tween tăng điểm mượt mà
         this.moneyUi.AnimationMoneyChange(previousGold, updatedGold, this.moneyUi.gold);
 

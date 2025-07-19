@@ -86,7 +86,7 @@ export class Cell {
     HandleNormalClick() {
 
 
-        if (DataManager.getInstance().MyHeart <= 0) {
+        if (InGameLogicManager.getInstance().currentHeart <= 0) {
             PopupManager.getInstance().OutOfMove.Show();
             return;
         }
@@ -95,7 +95,7 @@ export class Cell {
 
         const matched = GridManager.getInstance().findConnectedCells(this.cellData.row, this.cellData.col);
         if (!matched || matched.length < 3) {
-            if (DataManager.getInstance().MyHeart <= 0) {
+            if (InGameLogicManager.getInstance().currentHeart <= 0) {
                 PopupManager.getInstance().OutOfMove.Show();
             }
             return;
@@ -164,7 +164,7 @@ export class Cell {
     RandomEffectClick(): ECELL_CLICK_EFFECT {
 
         const gridMgr = GridManager.getInstance();
-        const minValue = DataManager.getInstance().NumberMin;
+        const minValue = GridManager.getInstance().numberMin;
 
         // ❶ Nếu ô đang ở giá trị nhỏ nhất → luôn Up
         if (this.cellData.value === minValue) return ECELL_CLICK_EFFECT.Up;

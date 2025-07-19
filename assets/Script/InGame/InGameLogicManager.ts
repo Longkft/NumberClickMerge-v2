@@ -16,6 +16,7 @@ import { SFXType } from '../Enum/Enum';
 import { PopupManager } from '../Manager/PopupManager';
 import { Utils } from '../Utils/Utils';
 import { MoneyController } from './head/Money/MoneyController';
+import { ScoreController } from './head/score/ScoreController';
 const { ccclass, property } = _decorator;
 
 @ccclass('InGameLogicManager')
@@ -41,21 +42,24 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         this.isProcessing = value;
     }
 
-    protected onLoad(): void {
+    public currentHeart: number = 0
+
+    protected async onLoad() {
         super.onLoad();
 
         this.RegisEventBeforUnload();
-
-        log('DataManager.getInstance().First: ', DataManager.getInstance().First);
-
-        if (DataManager.getInstance().First) {
-            DataManager.getInstance().First = false;
+        this.currentHeart = await DataManager.getInstance().GetMyHeart()
+        let first = await DataManager.getInstance().GetFirst()
+        console.log(first)
+        if (first) {
+            DataManager.getInstance().SetFirst(false)
             PopupManager.getInstance().PopupTutorial.Show();
-
         } else {
             PopupManager.getInstance().PopupGoal.Show();
         }
     }
+
+
 
     protected start(): void {
         // this.init()
@@ -220,7 +224,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         this.ResetGrid(matched);
         this.isProcessing = false;
 
-        DataManager.getInstance().MyHeart += 1;
+        this.currentHeart += 1;
         EventBus.emit(EventGame.UPDATE_HEARt_UI);
 
         AudioManager.getInstance().playSFX(SFXType.Merge);
@@ -437,7 +441,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
                 console.error("Ô được click không tạo ra nhóm phù hợp.");
                 this.isProcessing = false;
                 // Thêm logic hiển thị popup hết tim nếu cần
-                if (DataManager.getInstance().MyHeart <= 0) {
+                if (this.currentHeart <= 0) {
                     PopupManager.getInstance().OutOfMove.Show();
                 }
                 return;
@@ -476,7 +480,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
         // Sau khi tất cả animation di chuyển hoàn thành, xử lý logic merge
         AudioManager.getInstance().playSFX(SFXType.Merge);
-        // DataManager.getInstance().MyHeart += 1; // Tim đã trừ khi click, không cộng lại ở đây (chỉ khi match)
+        // this.currentHeart += 1; // Tim đã trừ khi click, không cộng lại ở đây (chỉ khi match)
         // EventBus.emit(EventGame.UPDATE_HEARt_UI); // Cập nhật UI tim nếu có thay đổi
 
         const gridMgr = GridManager.getInstance();
@@ -904,6 +908,8 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         this.SaveGame();
         AudioManager.getInstance().SaveState()
         MoneyController.getInstance().SaveGold()
+        ScoreController.getInstance().SaveScoreCurrent()
+        DataManager.getInstance().SetMyHeart(this.currentHeart)
     }
 
     public SaveGame() {
@@ -916,8 +922,8 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             }))),
             numberMin: GridManager.getInstance().numberMin,
             numberMax: GridManager.getInstance().numberMax,
-            heart: DataManager.getInstance().MyHeart,
-            score: DataManager.getInstance().CoreInPlayGame, // hoặc score hiện tại
+            // heart: this.currentHeart,
+            // score: DataManager.getInstance().CoreInPlayGame, // hoặc score hiện tại
         });
 
 
@@ -943,8 +949,8 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             GridManager.getInstance().numberMin = savedData.numberMin;
             GridManager.getInstance().numberMax = savedData.numberMax;
 
-            DataManager.getInstance().MyHeart = savedData.heart;
-            DataManager.getInstance().CoreInPlayGame = savedData.score;
+            this.currentHeart = savedData.heart;
+            // DataManager.getInstance().CoreInPlayGame = savedData.score;
             EventBus.emit(EventGame.UPDATE_HEARt_UI);
             EventBus.emit(EventGame.UPGRADE_SCORE, 0);
 

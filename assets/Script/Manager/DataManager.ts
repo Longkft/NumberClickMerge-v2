@@ -6,46 +6,45 @@ const { ccclass, property } = _decorator;
 export class DataManager extends BaseSingleton<DataManager> {
 
     // #region FirstGame
-    public get FirstGame(): boolean {
-        const saved = localStorage.getItem("firstGame");
-        return saved !== null && saved === 'false' ? false : true;
-    }
+    // public get FirstGame(): boolean {
+    //     const saved = localStorage.getItem("firstGame");
+    //     return saved !== null && saved === 'false' ? false : true;
+    // }
 
-    public set FirstGame(value: boolean) {
-        localStorage.setItem("firstGame", value.toString());
-    }
+    // public set FirstGame(value: boolean) {
+    //     localStorage.setItem("firstGame", value.toString());
+    // }
 
     // #region My Heart
-    public get MyHeart(): number {
-        const saved = localStorage.getItem("myHeart");
+    public async GetMyHeart() {
+        const saved = await this.getLocale("myHeart");
         return saved !== null ? parseInt(saved) : 5;
     }
 
-    public set MyHeart(value: number) {
+    public async SetMyHeart(value: number) {
         if (value > 5) return;
-
-        localStorage.setItem("myHeart", value.toString());
+        this.saveLocale("myHeart", value)
     }
 
-    // #region NumberMax
-    public get NumberMax(): number {
-        const saved = localStorage.getItem("numberMax");
-        return saved !== null ? parseInt(saved) : 8;
-    }
+    // // #region NumberMax
+    // public async GetNumberMax() {
+    //     const saved = await this.getLocale("numberMax");
+    //     return saved !== null ? parseInt(saved) : 8;
+    // }
 
-    public set NumberMax(value: number) {
-        localStorage.setItem("numberMax", value.toString());
-    }
+    // public set NumberMax(value: number) {
+    //     localStorage.setItem("numberMax", value.toString());
+    // }
 
-    // #region numberMin
-    public get NumberMin(): number {
-        const saved = localStorage.getItem("numberMin");
-        return saved !== null ? parseInt(saved) : 1;
-    }
+    // // #region numberMin
+    // public get NumberMin(): number {
+    //     const saved = localStorage.getItem("numberMin");
+    //     return saved !== null ? parseInt(saved) : 1;
+    // }
 
-    public set NumberMin(value: number) {
-        localStorage.setItem("numberMin", value.toString());
-    }
+    // public set NumberMin(value: number) {
+    //     localStorage.setItem("numberMin", value.toString());
+    // }
 
     // #region language
     public get Language(): string {
@@ -58,28 +57,31 @@ export class DataManager extends BaseSingleton<DataManager> {
     }
 
     // #region HighScore
-    public get highScore(): number {
-        const saved = localStorage.getItem("highScore");
-        return saved ? parseInt(saved) : 0;
+    public async GethighScore() {
+        const saved = await this.getLocale("highScore")
+        return saved == null ? 0 : saved
     }
 
-    public set highScore(value: number) {
-        localStorage.setItem("highScore", value.toString());
+    public async SethighScore(value: number) {
+        await this.saveLocale("highScore", value)
+
     }
 
     // #region CoreInPlayGame
-    public get CoreInPlayGame(): number {
-        const saved = localStorage.getItem("CoreInPlayGame");
+    public async GetCoreInPlayGame() {
+        const saved = await this.getLocale("CoreInPlayGame")
         return saved ? parseInt(saved) : 0;
     }
 
-    public set CoreInPlayGame(value: number) {
-        localStorage.setItem("CoreInPlayGame", value.toString());
+    public async SetCoreInPlayGame(value: number) {
+        await this.saveLocale("CoreInPlayGame", value)
     }
 
     // #region gold
     public async GetGold() {
-        return await this.getLocale("Gold")
+        const saved = await this.getLocale("Gold")
+        return saved == null ? 0 : saved
+
     }
 
     public async SetGold(value: number) {
@@ -87,18 +89,20 @@ export class DataManager extends BaseSingleton<DataManager> {
     }
 
     // #region first
-    public get First(): boolean {
-        const saved = localStorage.getItem("First");
-        return saved !== null && saved === 'false' ? false : true;
+    public async GetFirst() {
+        const saved = await this.getLocale("First")
+        return saved == null ? true : saved;
     }
 
-    public set First(value: boolean) {
-        localStorage.setItem("First", value.toString());
+    public async SetFirst(value: boolean) {
+        await this.saveLocale("First", value)
+
     }
 
     // #region DataMusic
     public async GetDataMusic() {
-        return await this.getLocale("DataMusic")
+        const saved = await this.getLocale("DataMusic")
+        return saved == null ? true : saved;
     }
 
     public async SetDataMusic(value: boolean) {
@@ -107,7 +111,8 @@ export class DataManager extends BaseSingleton<DataManager> {
 
     // #region DataSound
     public async GetDataSound() {
-        return await this.getLocale("DataSound")
+        const saved = await this.getLocale("DataSound")
+        return saved == null ? true : saved;
     }
 
     public async SetDataSound(value: boolean) {
