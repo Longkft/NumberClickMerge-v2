@@ -91,10 +91,15 @@ export class PopupUnlockMax extends Component {
     btnClaim() {
         this.node.active = false
 
-        PopupManager.getInstance().PopupGold.gold = this.valueGoldPlus;
-        PopupManager.getInstance().PopupGold.Show(this.valueGoldPlus);
+        let checkMinCurrent = GridManager.getInstance().CheckUpDateMinCurrent();
+        if (checkMinCurrent) {
+            PopupManager.getInstance().popupUnlockMin.valueGoldPlus = this.valueGoldPlus;
+        } else {
+            PopupManager.getInstance().PopupGold.gold = this.valueGoldPlus;
+            PopupManager.getInstance().PopupGold.Show(this.valueGoldPlus);
+        }
 
-        GridManager.getInstance().CheckUpDateMinCurrent();
+
         EventBus.emit('UIColorRecycle', GridManager.getInstance().numberMin); // cập nhật ui recycle
     }
 

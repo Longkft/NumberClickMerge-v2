@@ -187,7 +187,7 @@ export class Cell {
 
         let random = randomRange(0, 1)
 
-        return random > 0.2 ? ECELL_CLICK_EFFECT.Up : ECELL_CLICK_EFFECT.Down
+        return random > 0.4 ? ECELL_CLICK_EFFECT.Up : ECELL_CLICK_EFFECT.Down
     }
 
     GetDataCountDown() {

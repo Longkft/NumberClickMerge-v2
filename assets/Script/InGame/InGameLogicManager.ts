@@ -598,14 +598,13 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             return;
         }
 
-        gridMgr.ResetDataMatch(cellsToRemove);
-
         for (const c of cellsToRemove) {
             if (this.cells[c.row][c.col]) {
                 this.cells[c.row][c.col].cellUI.PlayAnimationShakeLoop();
                 this.isProcessing = true;
 
                 this.scheduleOnce(() => {
+                    gridMgr.ResetDataMatch(cellsToRemove);
                     this.cells[c.row][c.col].cellUI.StopAnimationShake();
                     this.cells[c.row][c.col].Dispose();
                     this.cells[c.row][c.col] = null;

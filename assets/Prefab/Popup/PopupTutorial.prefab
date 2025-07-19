@@ -196,7 +196,7 @@
       "b": 255,
       "a": 255
     },
-    "_string": "Select the middle node to increase the value",
+    "_string": "",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 60,
@@ -276,7 +276,7 @@
     "node": {
       "__id__": 2
     },
-    "_enabled": true,
+    "_enabled": false,
     "__prefab": {
       "__id__": 10
     },
@@ -406,7 +406,7 @@
       "b": 255,
       "a": 255
     },
-    "_string": "Select the middle node to proceed with the value reduction",
+    "_string": "",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 60,
@@ -486,7 +486,7 @@
     "node": {
       "__id__": 12
     },
-    "_enabled": true,
+    "_enabled": false,
     "__prefab": {
       "__id__": 20
     },

@@ -277,7 +277,9 @@ export class GridManager extends BaseSingleton<GridManager> {
         const diff = this.numberMax + 1 - 9;
         if (diff % 2 !== 0) return
         this.numberMin = (diff / 2) + 1
-        PopupManager.getInstance().ShowPopupUnlockMin()
+        PopupManager.getInstance().ShowPopupUnlockMin();
+
+        return true;
 
         log('numberMin: ', this.numberMin)
         log('numberMax: ', this.numberMax)

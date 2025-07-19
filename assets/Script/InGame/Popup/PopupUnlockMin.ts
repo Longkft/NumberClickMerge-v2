@@ -3,6 +3,7 @@ import { InGameLogicManager } from '../InGameLogicManager';
 import { CellPopupMin } from '../Cell/CellPopupMin';
 import { CellPopupState } from '../Cell/CellPopupMax';
 import { GridManager } from '../GridManager';
+import { PopupManager } from '../../Manager/PopupManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupUnlockMin')
@@ -12,6 +13,8 @@ export class PopupUnlockMin extends Component {
 
     @property(Prefab)
     cellPrefab: Prefab = null
+
+    valueGoldPlus: number = 0;
 
     protected start(): void {
         // this.show()
@@ -55,7 +58,10 @@ export class PopupUnlockMin extends Component {
         this.node.active = false;
 
         InGameLogicManager.getInstance().removeAllMinCells();
-        GridManager.getInstance().numberMin++;
+        // GridManager.getInstance().numberMin++;
+
+        PopupManager.getInstance().PopupGold.gold = this.valueGoldPlus;
+        PopupManager.getInstance().PopupGold.Show(this.valueGoldPlus);
     }
 }
 
