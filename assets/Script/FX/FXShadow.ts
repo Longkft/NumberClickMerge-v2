@@ -19,6 +19,10 @@ export class FXShadow extends AutoComponent {
 
     ShowFxShadow(): Promise<void> {
         return new Promise((resolve) => {
+            this.node.children.forEach(element => {
+                element.active = false;
+            });
+
             this.shadow.node.active = true;
             this.shadow.opacity = 155;
             tween(this.shadow)

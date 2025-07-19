@@ -72,15 +72,11 @@ export class SettingScene extends BaseTouch {
     SetUIOnOff(status: boolean, btn: Sprite, effNode: Sprite) {
         if (status) {
             effNode.spriteFrame = this.spriteOn;
-
-            btn.node.setPosition(-50, 0, 0);
+            btn.node.setPosition(50, 0, 0); // True -> Phải
         } else {
             effNode.spriteFrame = this.spriteOff;
-
-            btn.node.setPosition(50, 0, 0);
+            btn.node.setPosition(-50, 0, 0); // False -> Trái
         }
-
-        log('status: ', status, btn, effNode)
     }
 
     LoadDataMusic() {
@@ -183,7 +179,7 @@ export class SettingScene extends BaseTouch {
             return;
         }
 
-        const posBtn = status ? new Vec3(-50, 0, 0) : new Vec3(50, 0, 0);
+        const posBtn = status ? new Vec3(50, 0, 0) : new Vec3(-50, 0, 0);
         const posNode = status ? new Vec3(30, 0, 0) : new Vec3(-30, 0, 0);
         const onOrOff = status ? `on` : `off`;
         const SpriteOnOrOff = status ? this.spriteOn : this.spriteOff;
