@@ -265,7 +265,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 374.841796875,
+      "width": 386.98797607421875,
       "height": 105.84
     },
     "_anchorPoint": {
@@ -311,7 +311,7 @@
     "_overflow": 0,
     "_enableWrapText": true,
     "_font": {
-      "__uuid__": "0b5633ba-1365-4208-809c-70b681d692fb",
+      "__uuid__": "b414b1a6-ddba-42a7-a4d6-1e0770b61834",
       "__expectedType__": "cc.TTFFont"
     },
     "_isSystemFontUsed": false,
@@ -581,7 +581,7 @@
     "_overflow": 3,
     "_enableWrapText": true,
     "_font": {
-      "__uuid__": "6e883b6a-ccbb-4a1c-af6b-46f1d3766006",
+      "__uuid__": "e7c93665-b44e-4656-90e8-efcf3d72e645",
       "__expectedType__": "cc.TTFFont"
     },
     "_isSystemFontUsed": false,
@@ -966,7 +966,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 164.1796875,
+      "width": 164.39999389648438,
       "height": 100.8
     },
     "_anchorPoint": {
@@ -1012,7 +1012,7 @@
     "_overflow": 0,
     "_enableWrapText": true,
     "_font": {
-      "__uuid__": "0b5633ba-1365-4208-809c-70b681d692fb",
+      "__uuid__": "e7c93665-b44e-4656-90e8-efcf3d72e645",
       "__expectedType__": "cc.TTFFont"
     },
     "_isSystemFontUsed": false,
@@ -1217,7 +1217,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 140.0634765625,
+      "width": 135.19998168945312,
       "height": 63
     },
     "_anchorPoint": {
@@ -1263,7 +1263,7 @@
     "_overflow": 0,
     "_enableWrapText": false,
     "_font": {
-      "__uuid__": "481b80a3-a854-4751-a2a2-dc1b9a014b7a",
+      "__uuid__": "b414b1a6-ddba-42a7-a4d6-1e0770b61834",
       "__expectedType__": "cc.TTFFont"
     },
     "_isSystemFontUsed": false,
@@ -1837,8 +1837,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1080,
-      "height": 1920
+      "width": 2160,
+      "height": 3840
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1879,7 +1879,7 @@
     },
     "_type": 0,
     "_fillType": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
       "x": 0,

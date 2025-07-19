@@ -48,7 +48,7 @@ export class CoinEff extends BaseSingleton<CoinEff> {
     playSingleCoin(coin: Node, target: Vec3): Promise<void> {
         return new Promise((resolve) => {
             const vec0 = new Vec3(0, 0, 0);
-            coin.setPosition(vec0);
+            coin.setWorldPosition(vec0);
             coin.active = true;
 
             this.scheduleOnce(() => {

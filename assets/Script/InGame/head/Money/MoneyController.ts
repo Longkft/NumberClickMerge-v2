@@ -41,9 +41,6 @@ export class MoneyController extends BaseSingleton<MoneyController> {
         EventBus.off(EventGame.UPDATE_COIN_UI, this.UpdateUiCoin)
     }
 
-
-
-
     UpdateUiCoin(gold: number) {
         // Cộng điểm vào Gold
         const previousGold = this.GoldCurrent;

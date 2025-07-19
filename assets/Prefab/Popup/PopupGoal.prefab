@@ -259,7 +259,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 190.517578125,
+      "width": 185.72396850585938,
       "height": 105.84
     },
     "_anchorPoint": {
@@ -305,7 +305,7 @@
     "_overflow": 0,
     "_enableWrapText": true,
     "_font": {
-      "__uuid__": "0b5633ba-1365-4208-809c-70b681d692fb",
+      "__uuid__": "b414b1a6-ddba-42a7-a4d6-1e0770b61834",
       "__expectedType__": "cc.TTFFont"
     },
     "_isSystemFontUsed": false,
@@ -674,7 +674,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 126.13877868652344,
+      "width": 128.74197387695312,
       "height": 62.873999999999995
     },
     "_anchorPoint": {
@@ -720,7 +720,7 @@
     "_overflow": 0,
     "_enableWrapText": true,
     "_font": {
-      "__uuid__": "0b5633ba-1365-4208-809c-70b681d692fb",
+      "__uuid__": "b414b1a6-ddba-42a7-a4d6-1e0770b61834",
       "__expectedType__": "cc.TTFFont"
     },
     "_isSystemFontUsed": false,
@@ -1047,8 +1047,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1080,
-      "height": 1920
+      "width": 2160,
+      "height": 3840
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1209,10 +1209,10 @@
     },
     "_alignFlags": 45,
     "_target": null,
-    "_left": 0,
-    "_right": 0,
-    "_top": 0,
-    "_bottom": 0,
+    "_left": -540,
+    "_right": -540,
+    "_top": -960,
+    "_bottom": -960,
     "_horizontalCenter": 0,
     "_verticalCenter": 0,
     "_isAbsLeft": true,

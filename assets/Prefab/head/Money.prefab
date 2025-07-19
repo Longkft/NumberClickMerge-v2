@@ -104,7 +104,7 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -95.08122253417969,
+      "x": -97.5997543334961,
       "y": 0,
       "z": 0
     },
@@ -281,7 +281,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 127.16244506835938,
+      "width": 132.1995086669922,
       "height": 49.5306
     },
     "_anchorPoint": {
@@ -327,7 +327,7 @@
     "_overflow": 0,
     "_enableWrapText": true,
     "_font": {
-      "__uuid__": "0ff06f25-3789-4ca6-9c66-1a7fb61aaef6",
+      "__uuid__": "e7c93665-b44e-4656-90e8-efcf3d72e645",
       "__expectedType__": "cc.TTFFont"
     },
     "_isSystemFontUsed": false,
@@ -402,7 +402,7 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 97.08122253417969,
+      "x": 99.5997543334961,
       "y": 0,
       "z": 0
     },
@@ -529,7 +529,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 253.16244506835938,
+      "width": 258.1995086669922,
       "height": 83
     },
     "_anchorPoint": {
@@ -677,6 +677,7 @@
     "gold": {
       "__id__": 11
     },
+    "effGold": null,
     "_id": ""
   },
   {
@@ -698,6 +699,7 @@
     "moneyUi": {
       "__id__": 28
     },
+    "coinUi": null,
     "_id": ""
   },
   {
@@ -713,6 +715,7 @@
       "__id__": 0
     },
     "fileId": "d0sZWOimBFV5RjvrmITKcR",
+    "instance": null,
     "targetOverrides": []
   }
 ]

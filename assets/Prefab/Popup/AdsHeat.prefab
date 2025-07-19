@@ -262,7 +262,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 384.7265625,
+      "width": 392.44793701171875,
       "height": 105.84
     },
     "_anchorPoint": {
@@ -308,7 +308,7 @@
     "_overflow": 0,
     "_enableWrapText": true,
     "_font": {
-      "__uuid__": "0b5633ba-1365-4208-809c-70b681d692fb",
+      "__uuid__": "b414b1a6-ddba-42a7-a4d6-1e0770b61834",
       "__expectedType__": "cc.TTFFont"
     },
     "_isSystemFontUsed": false,
@@ -532,7 +532,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 413.5009765625,
+      "width": 457.39996337890625,
       "height": 131.07999999999998
     },
     "_anchorPoint": {
@@ -578,7 +578,7 @@
     "_overflow": 0,
     "_enableWrapText": true,
     "_font": {
-      "__uuid__": "01aa6cc8-198b-4234-9d42-aa7dedb56ef6",
+      "__uuid__": "1267843c-61c5-4617-8660-3c6c89d84968",
       "__expectedType__": "cc.TTFFont"
     },
     "_isSystemFontUsed": false,
@@ -1619,7 +1619,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 162.1875,
+      "width": 156.6299285888672,
       "height": 37.8
     },
     "_anchorPoint": {
@@ -1665,7 +1665,7 @@
     "_overflow": 0,
     "_enableWrapText": true,
     "_font": {
-      "__uuid__": "0b5633ba-1365-4208-809c-70b681d692fb",
+      "__uuid__": "b414b1a6-ddba-42a7-a4d6-1e0770b61834",
       "__expectedType__": "cc.TTFFont"
     },
     "_isSystemFontUsed": false,
@@ -2280,8 +2280,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1080,
-      "height": 1920
+      "width": 2160,
+      "height": 3840
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
