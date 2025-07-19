@@ -18,7 +18,7 @@ export class DataManager extends BaseSingleton<DataManager> {
     // #region My Heart
     public async GetMyHeart() {
         const saved = await this.getLocale("myHeart");
-        return saved !== null ? parseInt(saved) : 5;
+        return saved == null ? 5 : saved
     }
 
     public async SetMyHeart(value: number) {
@@ -47,13 +47,14 @@ export class DataManager extends BaseSingleton<DataManager> {
     // }
 
     // #region language
-    public get Language(): string {
-        const saved = localStorage.getItem("language");
+    public async GetLanguage() {
+
+        const saved = await this.getLocale("language")
         return saved ? saved : sys.language;
     }
 
-    public set Language(value: string) {
-        localStorage.setItem("language", value.toString());
+    public async SetLanguage(value: string) {
+        await this.saveLocale("language", value)
     }
 
     // #region HighScore
@@ -155,8 +156,11 @@ export class DataManager extends BaseSingleton<DataManager> {
     }
 
     public async getLocale(key) {
+
         let saved = await localStorage.getItem(key)
-        return saved ? JSON.parse(saved) : null;
+        console.log(key)
+        console.log(JSON.parse(saved))
+        return (saved == null || saved == undefined) ? null : JSON.parse(saved);
     }
 
 

@@ -11,6 +11,8 @@ export class BtnLanguage extends BaseTouch {
     @property(Label)
     en: Label = null!;
 
+
+
     // TouchStart(event: EventTouch): void {
     //     this.changeLanguage();
     // }
@@ -73,18 +75,19 @@ export class BtnLanguage extends BaseTouch {
     // }
 
     async UpdateChangeEn() {
-        DataManager.getInstance().Language = 'en'
-        let lang = DataManager.getInstance().Language;
+        await DataManager.getInstance().SetLanguage("en")
+        let lang = await DataManager.getInstance().GetLanguage();
         await LanguageManager.getInstance().loadLanguage(lang);
         this.updateText();
         this.updateAllLocalizedText();
     }
 
     async UpdateChangeRu() {
-        DataManager.getInstance().Language = 'ru'
-        let lang = DataManager.getInstance().Language;
+        await DataManager.getInstance().SetLanguage("ru")
+        let lang = await DataManager.getInstance().GetLanguage();
         await LanguageManager.getInstance().loadLanguage(lang);
         this.updateText();
         this.updateAllLocalizedText();
     }
+
 }

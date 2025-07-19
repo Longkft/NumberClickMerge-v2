@@ -11,7 +11,7 @@ export class LanguageGame extends Component {
 
         director.addPersistRootNode(this.node) // giữ lại khi đổi scene
 
-        let lang = DataManager.getInstance().Language;
+        // let lang = DataManager.getInstance().Language;
         await LanguageManager.getInstance().init();
     }
 }

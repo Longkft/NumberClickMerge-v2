@@ -49,6 +49,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
         this.RegisEventBeforUnload();
         this.currentHeart = await DataManager.getInstance().GetMyHeart()
+        console.log(this.currentHeart)
         let first = await DataManager.getInstance().GetFirst()
         console.log(first)
         if (first) {
@@ -62,13 +63,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
 
     protected start(): void {
-        // this.init()
-        // this.InitContainCells()
-        // this.InitCells()
-
         this.LoadGame();
-
-        // EventBus.on(EventGame.GRID_CELL_UPDATED_EVENT, this.OnUpdateUi, this);
     }
 
     DestroyEvent() {
@@ -947,8 +942,6 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             );
             GridManager.getInstance().numberMin = savedData.numberMin;
             GridManager.getInstance().numberMax = savedData.numberMax;
-
-            this.currentHeart = savedData.heart;
             // DataManager.getInstance().CoreInPlayGame = savedData.score;
             EventBus.emit(EventGame.UPDATE_HEARt_UI);
             EventBus.emit(EventGame.UPGRADE_SCORE, 0);
