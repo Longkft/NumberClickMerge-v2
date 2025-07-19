@@ -3,6 +3,7 @@ import { DataManager } from '../../Manager/DataManager';
 import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
 import { Utils } from '../../Utils/Utils';
+import { InGameLogicManager } from '../InGameLogicManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('HeartUi')
@@ -33,7 +34,8 @@ export class HeartUi extends Component {
     }
 
     UpdateUiheart() {
-        let myHeart = DataManager.getInstance().MyHeart;
+        let myHeart = InGameLogicManager.getInstance().currentHeart;
+        console.log(InGameLogicManager.getInstance().currentHeart, '13123213123123')
         for (let i = 0; i < myHeart; i++) {
             let heartNode = this.listHeart[i];
             let ActiveHeartNode = heartNode.getChildByName('heatActive');

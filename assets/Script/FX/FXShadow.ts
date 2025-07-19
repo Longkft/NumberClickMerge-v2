@@ -50,8 +50,6 @@ export class FXShadow extends AutoComponent {
         return new Promise((resolve) => {
             guide.children.forEach((element) => {
                 element.active = false;
-
-                log(element, element.name)
             })
 
             guide.active = true;

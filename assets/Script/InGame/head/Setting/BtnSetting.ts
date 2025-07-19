@@ -9,21 +9,7 @@ export class BtnSetting extends BaseTouch {
     settingScene: Node = null;
 
     TouchStart(event: EventTouch): void {
-        // this.settingScene.active = true;
-
-        // let shadow = this.settingScene.getChildByName('shadow');
-        // let box = this.settingScene.getChildByName('box');
-
-        // let ActiveBox = () => {
-        //     box.active = true;
-        // }
-
-        // this.FXShadow(shadow, ActiveBox);
-
         PopupManager.getInstance().SettingScene.Show();
-
-        log(1)
-
     }
 }
 

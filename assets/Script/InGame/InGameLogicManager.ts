@@ -15,7 +15,8 @@ import { AudioManager } from '../Manager/AudioManager';
 import { SFXType } from '../Enum/Enum';
 import { PopupManager } from '../Manager/PopupManager';
 import { Utils } from '../Utils/Utils';
-import { TutorialManager } from './Tools/TutorialManager';
+import { MoneyController } from './head/Money/MoneyController';
+import { ScoreController } from './head/score/ScoreController';
 const { ccclass, property } = _decorator;
 
 @ccclass('InGameLogicManager')
@@ -41,30 +42,28 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         this.isProcessing = value;
     }
 
-    protected onLoad(): void {
+    public currentHeart: number = 0
+
+    protected async onLoad() {
         super.onLoad();
 
         this.RegisEventBeforUnload();
-
-        log('DataManager.getInstance().First: ', DataManager.getInstance().First);
-
-        if (DataManager.getInstance().First) {
-            DataManager.getInstance().First = false;
+        this.currentHeart = await DataManager.getInstance().GetMyHeart()
+        console.log(this.currentHeart)
+        let first = await DataManager.getInstance().GetFirst()
+        console.log(first)
+        if (first) {
+            DataManager.getInstance().SetFirst(false)
             PopupManager.getInstance().PopupTutorial.Show();
-
         } else {
             PopupManager.getInstance().PopupGoal.Show();
         }
     }
 
+
+
     protected start(): void {
-        // this.init()
-        // this.InitContainCells()
-        // this.InitCells()
-
         this.LoadGame();
-
-        // EventBus.on(EventGame.GRID_CELL_UPDATED_EVENT, this.OnUpdateUi, this);
     }
 
     DestroyEvent() {
@@ -88,8 +87,6 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
             InGameUIManager.getInstance().UpdateLayoutContainCell()
         }
-
-        log('this.contains: ', this.contains)
     }
 
 
@@ -222,7 +219,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         this.ResetGrid(matched);
         this.isProcessing = false;
 
-        DataManager.getInstance().MyHeart += 1;
+        this.currentHeart += 1;
         EventBus.emit(EventGame.UPDATE_HEARt_UI);
 
         AudioManager.getInstance().playSFX(SFXType.Merge);
@@ -237,7 +234,6 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
     private RewardGoldByCombo() {
         const chance = Math.random();
-        log('change: ', chance);
         if (chance > 0.3) return; // 70% không nhận
         if (this.consecutiveMerges < 3) return; // chỉ từ combo 3
 
@@ -245,8 +241,6 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         PopupManager.getInstance().PopupClainGoldCombo.gold = gold;
 
         return new Promise(resolve => {
-            // DataManager.getInstance().Gold += gold;
-            // EventBus.emit(EventGame.UPDATE_COIN_UI, gold);
             PopupManager.getInstance().PopupClainGoldCombo.Show(gold, this.consecutiveMerges, () => {
                 // Hàm callback khi người chơi bấm claim
                 resolve(true);
@@ -442,7 +436,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
                 console.error("Ô được click không tạo ra nhóm phù hợp.");
                 this.isProcessing = false;
                 // Thêm logic hiển thị popup hết tim nếu cần
-                if (DataManager.getInstance().MyHeart <= 0) {
+                if (this.currentHeart <= 0) {
                     PopupManager.getInstance().OutOfMove.Show();
                 }
                 return;
@@ -481,7 +475,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
         // Sau khi tất cả animation di chuyển hoàn thành, xử lý logic merge
         AudioManager.getInstance().playSFX(SFXType.Merge);
-        // DataManager.getInstance().MyHeart += 1; // Tim đã trừ khi click, không cộng lại ở đây (chỉ khi match)
+        // this.currentHeart += 1; // Tim đã trừ khi click, không cộng lại ở đây (chỉ khi match)
         // EventBus.emit(EventGame.UPDATE_HEARt_UI); // Cập nhật UI tim nếu có thay đổi
 
         const gridMgr = GridManager.getInstance();
@@ -580,11 +574,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         const rows = GameManager.getInstance().dataGame.json["row"];
         const cols = GameManager.getInstance().dataGame.json["col"];
         const minVal = gridMgr.numberMin - 1; // chưa hiểu vì sao trừ 1
-
-        log('minVal: ', minVal)
-
         const cellsToRemove: { row: number, col: number }[] = [];
-
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < cols; j++) {
                 if (gridMgr.grid[i][j].value === minVal) {
@@ -670,7 +660,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             EventBus.emit(EventGame.TOOL_FINISHED);
 
             for (const c of cellsToRemove) {
-                const cellRef = this.cells[c.row][c.col];
+                let cellRef = this.cells[c.row][c.col];
                 if (cellRef) {
                     cellRef.cellUI.StopAnimationShake();
                     cellRef.Dispose();
@@ -853,6 +843,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         }
 
         for (const node of this.cellContainColllection) {
+
             node.destroy(); // hoặc node.destroy() nếu không dùng pool
         }
 
@@ -909,6 +900,10 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
     private handleBeforeUnload(): void {
         this.SaveGame();
+        AudioManager.getInstance().SaveState()
+        MoneyController.getInstance().SaveGold()
+        ScoreController.getInstance().SaveScoreCurrent()
+        DataManager.getInstance().SetMyHeart(this.currentHeart)
     }
 
     public SaveGame() {
@@ -921,9 +916,11 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             }))),
             numberMin: GridManager.getInstance().numberMin,
             numberMax: GridManager.getInstance().numberMax,
-            heart: DataManager.getInstance().MyHeart,
-            score: DataManager.getInstance().CoreInPlayGame, // hoặc score hiện tại
+            // heart: this.currentHeart,
+            // score: DataManager.getInstance().CoreInPlayGame, // hoặc score hiện tại
         });
+
+
 
     }
 
@@ -945,14 +942,11 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             );
             GridManager.getInstance().numberMin = savedData.numberMin;
             GridManager.getInstance().numberMax = savedData.numberMax;
-
-            DataManager.getInstance().MyHeart = savedData.heart;
-            DataManager.getInstance().CoreInPlayGame = savedData.score;
+            // DataManager.getInstance().CoreInPlayGame = savedData.score;
             EventBus.emit(EventGame.UPDATE_HEARt_UI);
             EventBus.emit(EventGame.UPGRADE_SCORE, 0);
 
         } else {
-            log("🔥 No save data, starting a new game...");
 
             GridManager.getInstance().initNewGrid();
         }
