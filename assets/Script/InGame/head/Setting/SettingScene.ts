@@ -1,4 +1,4 @@
-import { _decorator, Component, director, EventTouch, Label, log, Node, Sprite, SpriteFrame, tween, Vec3 } from 'cc';
+import { _decorator, Component, director, EventTouch, find, Label, log, Node, Sprite, SpriteFrame, tween, Vec3 } from 'cc';
 import { BaseTouch } from '../../../Base/BaseTouch';
 import { AudioManager } from '../../../Manager/AudioManager';
 import { DataManager } from '../../../Manager/DataManager';
@@ -33,6 +33,9 @@ export class SettingScene extends BaseTouch {
     @property(Node)
     box: Node = null;
 
+    @property(Node)
+    boxTools: Node = null;
+
     @property(SpriteFrame)
     spriteOn: SpriteFrame = null;
     @property(SpriteFrame)
@@ -62,6 +65,10 @@ export class SettingScene extends BaseTouch {
     LoadExit() {
         if (this.exit != null) return;
         this.exit = this.node.getChildByPath('setting/exit');
+    }
+    LoadBoxTools() {
+        if (this.boxTools != null) return;
+        this.boxTools = find('Canvas').getChildByPath('IngameUIManager/shadow');
     }
 
     LoadDataAudio() {
@@ -102,6 +109,7 @@ export class SettingScene extends BaseTouch {
         // this.LoadOnOffSoundNode();
         // this.LoadExit();
         this.LoadDataAudio();
+        this.LoadBoxTools();
     }
 
     start() {
@@ -217,7 +225,16 @@ export class SettingScene extends BaseTouch {
 
         this.shadow.HideFXShadow();
 
+        this.hideBoxTools();
+
         PopupManager.getInstance().PopupGoal.Show();
+    }
+
+    hideBoxTools() {
+        let guide = this.boxTools.getChildByName('Guide');
+        this.shadow.HideFxGuide(guide);
+
+        this.boxTools.active = false;
     }
 }
 
