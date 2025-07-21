@@ -6,4 +6,5 @@ export enum EventGame {
     RESET_SCORE = 'reset_score',
     UPGRADE_SCOREPLUSH = 'upgrade_scoreplus',
     UPDATE_COIN_UI = 'update_ui_coin',
+    EXP_UPDATED = "EXP_UPDATED",
 }

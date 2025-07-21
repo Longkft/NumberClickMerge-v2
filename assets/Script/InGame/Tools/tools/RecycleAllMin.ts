@@ -1,6 +1,6 @@
 import { EventGame } from "../../../Enum/EEvent";
 import { GameManager } from "../../../Manager/GameManager";
-import { ToolManager } from "../../../Manager/ToolManager";
+import { ToolManager, ToolType } from "../../../Manager/ToolManager";
 import { EventBus } from "../../../Utils/EventBus";
 import { GridManager } from "../../GridManager";
 import { InGameLogicManager } from "../../InGameLogicManager";
@@ -19,7 +19,7 @@ export class RecycleAllMin implements IToolStrategy {
 
         await logicManager.removeAllMinCellsTools();
 
-        EventBus.emit(EventGame.TOOL_FINISHED);
+        EventBus.emit(EventGame.TOOL_FINISHED, ToolType.REMOVE_MIN);
         ToolManager.getInstance().deactivateCurrentTool();
     }
 

@@ -1,5 +1,5 @@
 import { EventGame } from "../../../Enum/EEvent";
-import { ToolManager } from "../../../Manager/ToolManager";
+import { ToolManager, ToolType } from "../../../Manager/ToolManager";
 import { EventBus } from "../../../Utils/EventBus";
 import { GridManager } from "../../GridManager";
 import { InGameLogicManager } from "../../InGameLogicManager";
@@ -27,7 +27,7 @@ export class HammerTool implements IToolStrategy {
             logicManager.IsProcessing = false;
         }
 
-        EventBus.emit(EventGame.TOOL_FINISHED);
+        EventBus.emit(EventGame.TOOL_FINISHED, ToolType.HAMMER);
         ToolManager.getInstance().deactivateCurrentTool();
     }
 

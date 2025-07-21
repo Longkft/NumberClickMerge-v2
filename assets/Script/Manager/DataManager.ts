@@ -135,21 +135,31 @@ export class DataManager extends BaseSingleton<DataManager> {
         this.removeData("gameState")
     }
 
-    // #region Level
-    public async getLevel() {
-        return await this.getLocale("DataLevel")
+    // // #region Level
+    // public async getLevel() {
+    //     return await this.getLocale("DataLevel")
+    // }
+
+    // public async setLevel(level: number, bar: number, exp: number) {
+    //     let obj = {
+    //         level: level,
+    //         bar: bar,
+    //         exp: exp,
+    //     };
+
+    //     await this.saveLocale("DataLevel", obj)
+    // }
+
+
+    // #region TotalExp
+    public async GetTotalExp() {
+        const saved = await this.getLocale("TotalExp");
+        return saved == null ? 0 : Number(saved);
     }
 
-    public async setLevel(level: number, bar: number, exp: number) {
-        let obj = {
-            level: level,
-            bar: bar,
-            exp: exp,
-        };
-
-        await this.saveLocale("DataLevel", obj)
+    public async SetTotalExp(value: number) {
+        await this.saveLocale("TotalExp", value);
     }
-
 
     public async saveLocale(key, value) {
         await localStorage.setItem(key, JSON.stringify(value));

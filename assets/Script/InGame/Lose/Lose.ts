@@ -4,6 +4,7 @@ import { DataManager } from '../../Manager/DataManager';
 import { FXShadow } from '../../FX/FXShadow';
 import { InGameLogicManager } from '../InGameLogicManager';
 import { PopupManager } from '../../Manager/PopupManager';
+import { ScoreController } from '../head/score/ScoreController';
 const { ccclass, property } = _decorator;
 
 @ccclass('Lose')
@@ -56,10 +57,12 @@ export class Lose extends AutoComponent {
         await this.fxShadow.HideFXShadow();
     }
 
-    GetScoreGamePlay() {
-        let score = DataManager.getInstance().CoreInPlayGame;
+    async GetScoreGamePlay() {
+        // let score = await DataManager.getInstance().GetCoreInPlayGame();
+        let score = ScoreController.getInstance().scoreCurrent;
         this.AnimationScoreChange(0, score, this.scoreGame);
-        let maxScore = DataManager.getInstance().highScore;
+        // let maxScore = await DataManager.getInstance().GethighScore();
+        let maxScore = ScoreController.getInstance().highScoreCurrent;
         this.AnimationScoreChange(0, maxScore, this.maxScoreGame);
     }
 

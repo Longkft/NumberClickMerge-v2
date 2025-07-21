@@ -1,5 +1,5 @@
 import { EventGame } from "../../../Enum/EEvent";
-import { ToolManager } from "../../../Manager/ToolManager";
+import { ToolManager, ToolType } from "../../../Manager/ToolManager";
 import { EventBus } from "../../../Utils/EventBus";
 import { GridManager } from "../../GridManager";
 import { InGameLogicManager } from "../../InGameLogicManager";
@@ -29,7 +29,7 @@ export class UpgradeOne implements IToolStrategy {
             logicManager.triggerPostActionCheck();
         }
 
-        EventBus.emit(EventGame.TOOL_FINISHED);
+        EventBus.emit(EventGame.TOOL_FINISHED, ToolType.UPGRADE);
         ToolManager.getInstance().deactivateCurrentTool();
     }
 

@@ -1,6 +1,6 @@
 // FILE: src/UI/Ingame_Tool.ts
 
-import { _decorator, CCInteger, Component, Enum, Label, Node } from 'cc';
+import { _decorator, CCInteger, Component, Enum, Label, log, Node } from 'cc';
 import { FXShadow } from '../../FX/FXShadow';
 import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
@@ -63,8 +63,14 @@ export class Ingame_Tool extends Component {
     /**
      * Được gọi khi tool thực thi xong
      */
-    private onToolFinished() {
-        // Chỉ trừ tiền khi tool dùng thành công
+    private onToolFinished(finishedToolType: ToolType) {
+        // KIỂM TRA: nếu tool vừa hoàn thành không phải là tool này, thì bỏ qua
+        if (this.type !== finishedToolType) {
+            return;
+        }
+
+        // Nếu đúng là tool này, thì mới thực hiện trừ tiền và ẩn hiệu ứng
+        log(`Tool ${ToolType[this.type]} đã dùng xong, trừ ${this.coin} coin`);
         EventBus.emit(EventGame.UPDATE_COIN_UI, -this.coin);
         this.HideFxShadow();
     }

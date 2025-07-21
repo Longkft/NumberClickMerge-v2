@@ -17,6 +17,7 @@ import { PopupManager } from '../Manager/PopupManager';
 import { Utils } from '../Utils/Utils';
 import { MoneyController } from './head/Money/MoneyController';
 import { ScoreController } from './head/score/ScoreController';
+import { LevelController } from './head/Level/LevelController';
 const { ccclass, property } = _decorator;
 
 @ccclass('InGameLogicManager')
@@ -230,6 +231,22 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         const groupSize = matched.length; // Lấy số lượng ô trong nhóm
         const score = value * groupSize * this.consecutiveMerges; // Áp dụng công thức
         EventBus.emit(EventGame.UPGRADE_SCORE, score);
+
+        // Gọi hàm xử lý EXP, truyền điểm số vừa tính được
+        this.AwardExpAfterMerge(score);
+    }
+
+    private AwardExpAfterMerge(score: number) {
+        if (score <= 0) return;
+
+        // 1. Quyết định lượng EXP nhận được dựa trên điểm số
+        // Ví dụ: Lấy điểm số chia 10 và làm tròn, cộng thêm 1.
+        const expGained = Math.floor(score / 5) + 1;
+
+        // 2. Phát ra sự kiện cộng EXP
+        if (expGained > 0) {
+            EventBus.emit(EventGame.EXP_UPDATED, expGained);
+        }
     }
 
     private RewardGoldByCombo() {
@@ -1047,6 +1064,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         MoneyController.getInstance().SaveGold()
         ScoreController.getInstance().SaveScoreCurrent()
         DataManager.getInstance().SetMyHeart(this.currentHeart)
+        LevelController.getInstance().SaveTotalExp();
     }
 
     public SaveGame() {
@@ -1062,9 +1080,6 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             // heart: this.currentHeart,
             // score: DataManager.getInstance().CoreInPlayGame, // hoặc score hiện tại
         });
-
-
-
     }
 
     async LoadGame() {

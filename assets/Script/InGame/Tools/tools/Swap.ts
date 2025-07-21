@@ -1,7 +1,7 @@
 import { tween } from "cc";
 import { InGameLogicManager } from "../../InGameLogicManager";
 import { IToolStrategy } from "./IToolStrategy ";
-import { ToolManager } from "../../../Manager/ToolManager";
+import { ToolManager, ToolType } from "../../../Manager/ToolManager";
 // === IMPORT THÊM ===
 import { EventBus } from "../../../Utils/EventBus";
 import { EventGame } from "../../../Enum/EEvent";
@@ -59,7 +59,7 @@ export class Swap implements IToolStrategy {
             this.logicManager.triggerPostActionCheck();
 
             // === THÊM 2: GỬI TÍN HIỆU ĐỂ TẮT POPUP/SHADOW ===
-            EventBus.emit(EventGame.TOOL_FINISHED);
+            EventBus.emit(EventGame.TOOL_FINISHED, ToolType.SWAP);
 
             // Tự động hủy tool sau khi thực thi xong
             ToolManager.getInstance().deactivateCurrentTool();
