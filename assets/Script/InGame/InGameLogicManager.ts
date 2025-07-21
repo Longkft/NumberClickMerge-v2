@@ -614,217 +614,360 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
     }
 
     //#region xoá tất cả min khi dùng tools
-    public removeAllMinCellsTools(): void {
-        if (this.isProcessing) return;
+    // public removeAllMinCellsTools(): void {
+    //     if (this.isProcessing) return;
 
+    //     const gridMgr = GridManager.getInstance();
+    //     const rows = GameManager.getInstance().dataGame.json["row"];
+    //     const cols = GameManager.getInstance().dataGame.json["col"];
+
+    //     const collectCells = (value: number) => {
+    //         const list: { row: number, col: number }[] = [];
+    //         for (let i = 0; i < rows; i++) {
+    //             for (let j = 0; j < cols; j++) {
+    //                 if (gridMgr.grid[i][j].value === value) list.push({ row: i, col: j });
+    //             }
+    //         }
+    //         return list;
+    //     };
+
+    //     let targetVal = 1; // lấy min là 1 luôn cho bao quát trường hợp
+    //     let cellsToRemove: { row: number, col: number }[] = [];
+
+    //     while (targetVal <= gridMgr.numberMax) {
+    //         cellsToRemove = collectCells(targetVal);
+    //         if (cellsToRemove.length > 0) break;     // đã tìm được
+    //         targetVal++;                             // thử giá trị kế tiếp
+    //     }
+
+    //     if (cellsToRemove.length === 0) {
+    //         console.warn(`[removeAllMinCells] Không tìm thấy ô nào trong khoảng ${gridMgr.numberMin}…${gridMgr.numberMax}.`);
+    //         return;
+    //     }
+
+    //     gridMgr.ResetDataMatch(cellsToRemove);
+
+    //     for (const c of cellsToRemove) {
+    //         const cellRef = this.cells[c.row][c.col];
+    //         if (cellRef) {
+    //             cellRef.cellUI.PlayAnimationShakeLoop();
+    //         }
+    //     }
+
+    //     this.isProcessing = true;
+
+    //     this.scheduleOnce(() => {
+    //         EventBus.emit(EventGame.TOOL_FINISHED);
+
+    //         for (const c of cellsToRemove) {
+    //             let cellRef = this.cells[c.row][c.col];
+    //             if (cellRef) {
+    //                 cellRef.cellUI.StopAnimationShake();
+    //                 cellRef.Dispose();
+    //                 this.cells[c.row][c.col] = null;
+    //             }
+    //         }
+
+    //         this.fillIntheBlank();
+    //         gridMgr.FillIntheValue();
+
+    //         this.scheduleOnce(() => {
+    //             this.checkAllMatchingGroupsLoop();   // tự mở khoá click khi xong
+    //         }, 0.3);
+    //     }, 1);
+    // }
+
+    // //#region Hammer tools
+    // public async HandleHammerAt(row: number, col: number) {
+    //     if (this.isProcessing) return;
+
+    //     EventBus.emit(EventGame.TOOL_FINISHED);
+
+    //     this.isProcessing = true;
+
+    //     const gridMgr = GridManager.getInstance();
+
+    //     const targetCell = this.cells[row][col];
+    //     if (!targetCell) {
+    //         this.isProcessing = false;
+    //         return;
+    //     }
+
+    //     targetCell.cellUI.PlayAnimationShakeLoop();
+
+    //     await new Promise(r => setTimeout(r, 1000)); // chờ rung 1 s
+
+    //     targetCell.cellUI.StopAnimationShake();
+
+    //     // Xoá dữ liệu logic
+    //     gridMgr.grid[row][col].value = -1;
+    //     this.cells[row][col].Dispose();
+    //     this.cells[row][col] = null;
+
+    //     // Rơi và fill
+    //     await this.FillAfter();
+
+    //     // Tự check merge
+    //     this.checkAllMatchingGroupsLoop();
+    // }
+
+    // /** Cho cell rơi xuống và fill lại sau khi dùng búa */
+    // public async FillAfter(): Promise<void> {
+    //     this.fillIntheBlank();
+    //     GridManager.getInstance().FillIntheValue();
+
+    //     return new Promise(resolve => {
+    //         this.scheduleOnce(() => {
+    //             resolve();
+    //         }, 0.3);
+    //     });
+    // }
+
+    // //#region Upgrade tools
+    // public HandleUpgradeAt(row: number, col: number): void {
+    //     if (this.isProcessing) return;
+
+    //     EventBus.emit(EventGame.TOOL_FINISHED);
+
+    //     const gridMgr = GridManager.getInstance();
+    //     const cell = this.cells[row][col];
+    //     if (!cell) return;
+
+    //     const maxUpgradeVal = gridMgr.numberMax - 1;
+    //     const cellModel = cell.cellData;
+
+    //     // Không nâng cấp nếu đã >= max
+    //     if (cellModel.value >= maxUpgradeVal) {
+    //         cell.cellUI.PlayAnimationShake();
+    //         return;
+    //     }
+
+    //     // Cập nhật model
+    //     cellModel.value = maxUpgradeVal;
+    //     cellModel.color = gridMgr.GetColorByValue(maxUpgradeVal);
+
+    //     // Cập nhật UI
+    //     cell.cellUI.UpdateUICell(cellModel, cell.clickEffect, cell.cellState);
+
+    //     this.UpdateAllFrames();
+
+    //     // Nếu chạm mốc max, cập nhật unlock max
+    //     if (gridMgr.CheckUpdateMaxCurrent(maxUpgradeVal)) {
+    //         this.isUpLevel = true;
+    //     }
+
+    //     // Tự check merge
+    //     this.checkAllMatchingGroupsLoop();
+    // }
+
+    // //#region Swap tools
+    // public swapCallback: ((row: number, col: number) => void) = null;
+
+    // public EnableSwapMode(callback: ((row: number, col: number) => void) | null) {
+    //     this.swapCallback = callback;
+    // }
+
+    // public async HandleSwap(a: { row: number, col: number }, b: { row: number, col: number }) {
+    //     if (this.isProcessing) return;
+    //     this.isProcessing = true;
+
+    //     const cellA = this.cells[a.row][a.col];
+    //     const cellB = this.cells[b.row][b.col];
+
+    //     if (!cellA || !cellB) {
+    //         this.isProcessing = false;
+    //         return;
+    //     }
+
+    //     // Hoán đổi logic data
+    //     const tempModel = GridManager.getInstance().grid[a.row][a.col];
+    //     GridManager.getInstance().grid[a.row][a.col] = GridManager.getInstance().grid[b.row][b.col];
+    //     GridManager.getInstance().grid[b.row][b.col] = tempModel;
+
+    //     // Cập nhật vị trí trong model
+    //     GridManager.getInstance().grid[a.row][a.col].row = a.row;
+    //     GridManager.getInstance().grid[a.row][a.col].col = a.col;
+    //     GridManager.getInstance().grid[b.row][b.col].row = b.row;
+    //     GridManager.getInstance().grid[b.row][b.col].col = b.col;
+
+    //     // Hoán đổi tham chiếu trong mảng UI
+    //     const posA = this.contains[a.row][a.col].position.clone();
+    //     const posB = this.contains[b.row][b.col].position.clone();
+    //     const nodeA = cellA.GetCellUI();
+    //     const nodeB = cellB.GetCellUI();
+    //     this.cells[a.row][a.col] = cellB;
+    //     this.cells[b.row][b.col] = cellA;
+
+    //     // Chạy animation di chuyển
+    //     const tweenA = new Promise(resolve => {
+    //         tween(nodeA).to(0.2, { position: posB }).call(resolve).start();
+    //     });
+    //     const tweenB = new Promise(resolve => {
+    //         tween(nodeB).to(0.2, { position: posA }).call(resolve).start();
+    //     });
+
+    //     await Promise.all([tweenA, tweenB]);
+
+    //     // Cập nhật lại UI của 2 ô vừa hoán đổi
+    //     this.UpdateValueCellBeforeTween(a.row, a.col, this.cells[a.row][a.col]);
+    //     this.UpdateValueCellBeforeTween(b.row, b.col, this.cells[b.row][b.col]);
+
+    //     // Kiểm tra xem có nhóm nào được tạo ở vị trí A hoặc B không
+    //     const matchA = GridManager.getInstance().findConnectedCells(a.row, a.col);
+    //     const matchB = GridManager.getInstance().findConnectedCells(b.row, b.col);
+
+    //     if (matchA.length >= 3 || matchB.length >= 3) {
+    //         // Nếu có, gọi vòng lặp xử lý chính của game
+    //         this.scheduleOnce(() => {
+    //             this.checkAllMatchingGroupsLoop();
+    //         }, 0.1);
+    //     } else {
+    //         // Nếu không có nhóm nào được tạo, mở khóa và cho người chơi đi tiếp
+    //         this.isProcessing = false;
+    //     }
+    // }
+
+    //#region api tool
+    /**
+     * API: Xóa một ô tại tọa độ, bao gồm data và UI.
+     * Được gọi bởi HammerToolStrategy.
+     */
+    public removeCellAt(row: number, col: number): void {
         const gridMgr = GridManager.getInstance();
-        const rows = GameManager.getInstance().dataGame.json["row"];
-        const cols = GameManager.getInstance().dataGame.json["col"];
-
-        const collectCells = (value: number) => {
-            const list: { row: number, col: number }[] = [];
-            for (let i = 0; i < rows; i++) {
-                for (let j = 0; j < cols; j++) {
-                    if (gridMgr.grid[i][j].value === value) list.push({ row: i, col: j });
-                }
-            }
-            return list;
-        };
-
-        let targetVal = 1; // lấy min là 1 luôn cho bao quát trường hợp
-        let cellsToRemove: { row: number, col: number }[] = [];
-
-        while (targetVal <= gridMgr.numberMax) {
-            cellsToRemove = collectCells(targetVal);
-            if (cellsToRemove.length > 0) break;     // đã tìm được
-            targetVal++;                             // thử giá trị kế tiếp
+        if (gridMgr.grid[row]?.[col]) {
+            gridMgr.grid[row][col].value = -1; // Đánh dấu ô logic là trống
         }
-
-        if (cellsToRemove.length === 0) {
-            console.warn(`[removeAllMinCells] Không tìm thấy ô nào trong khoảng ${gridMgr.numberMin}…${gridMgr.numberMax}.`);
-            return;
+        if (this.cells[row]?.[col]) {
+            this.cells[row][col].Dispose();
+            this.cells[row][col] = null;
         }
-
-        gridMgr.ResetDataMatch(cellsToRemove);
-
-        for (const c of cellsToRemove) {
-            const cellRef = this.cells[c.row][c.col];
-            if (cellRef) {
-                cellRef.cellUI.PlayAnimationShakeLoop();
-            }
-        }
-
-        this.isProcessing = true;
-
-        this.scheduleOnce(() => {
-            EventBus.emit(EventGame.TOOL_FINISHED);
-
-            for (const c of cellsToRemove) {
-                let cellRef = this.cells[c.row][c.col];
-                if (cellRef) {
-                    cellRef.cellUI.StopAnimationShake();
-                    cellRef.Dispose();
-                    this.cells[c.row][c.col] = null;
-                }
-            }
-
-            this.fillIntheBlank();
-            gridMgr.FillIntheValue();
-
-            this.scheduleOnce(() => {
-                this.checkAllMatchingGroupsLoop();   // tự mở khoá click khi xong
-            }, 0.3);
-        }, 1);
     }
 
-    //#region Hammer tools
-    public async HandleHammerAt(row: number, col: number) {
-        if (this.isProcessing) return;
-
-        EventBus.emit(EventGame.TOOL_FINISHED);
-
-        this.isProcessing = true;
-
-        const gridMgr = GridManager.getInstance();
-
-        const targetCell = this.cells[row][col];
-        if (!targetCell) {
-            this.isProcessing = false;
-            return;
-        }
-
-        targetCell.cellUI.PlayAnimationShakeLoop();
-
-        await new Promise(r => setTimeout(r, 1000)); // chờ rung 1 s
-
-        targetCell.cellUI.StopAnimationShake();
-
-        // Xoá dữ liệu logic
-        gridMgr.grid[row][col].value = -1;
-        this.cells[row][col].Dispose();
-        this.cells[row][col] = null;
-
-        // Rơi và fill
-        await this.FillAfterHammer();
-
-        // Tự check merge
-        this.checkAllMatchingGroupsLoop();
-    }
-
-    /** Cho cell rơi xuống và fill lại sau khi dùng búa */
-    private async FillAfterHammer(): Promise<void> {
-        this.fillIntheBlank();
-        GridManager.getInstance().FillIntheValue();
-
-        return new Promise(resolve => {
-            this.scheduleOnce(() => {
-                resolve();
-            }, 0.3);
-        });
-    }
-
-    //#region Upgrade tools
-    public HandleUpgradeAt(row: number, col: number): void {
-        if (this.isProcessing) return;
-
-        EventBus.emit(EventGame.TOOL_FINISHED);
-
-        const gridMgr = GridManager.getInstance();
-        const cell = this.cells[row][col];
+    /**
+     * API: Nâng cấp giá trị một ô tại tọa độ.
+     * Được gọi bởi UpgradeToolStrategy.
+     */
+    public upgradeCellAt(row: number, col: number, newValue: number): void {
+        const cell = this.cells[row]?.[col];
         if (!cell) return;
 
-        const maxUpgradeVal = gridMgr.numberMax - 1;
         const cellModel = cell.cellData;
-
-        // Không nâng cấp nếu đã >= max
-        if (cellModel.value >= maxUpgradeVal) {
-            cell.cellUI.PlayAnimationShake();
-            return;
-        }
-
-        // Cập nhật model
-        cellModel.value = maxUpgradeVal;
-        cellModel.color = gridMgr.GetColorByValue(maxUpgradeVal);
-
-        // Cập nhật UI
+        cellModel.value = newValue;
+        cellModel.color = GridManager.getInstance().GetColorByValue(newValue);
         cell.cellUI.UpdateUICell(cellModel, cell.clickEffect, cell.cellState);
 
-        this.UpdateAllFrames();
-
-        // Nếu chạm mốc max, cập nhật unlock max
-        if (gridMgr.CheckUpdateMaxCurrent(maxUpgradeVal)) {
+        if (GridManager.getInstance().CheckUpdateMaxCurrent(newValue)) {
             this.isUpLevel = true;
         }
-
-        // Tự check merge
-        this.checkAllMatchingGroupsLoop();
+        this.UpdateAllFrames();
     }
 
-    //#region Swap tools
-    public swapCallback: ((row: number, col: number) => void) = null;
-
-    public EnableSwapMode(callback: ((row: number, col: number) => void) | null) {
-        this.swapCallback = callback;
-    }
-
-    public async HandleSwap(a: { row: number, col: number }, b: { row: number, col: number }) {
-        if (this.isProcessing) return;
-        this.isProcessing = true;
-
-        const cellA = this.cells[a.row][a.col];
-        const cellB = this.cells[b.row][b.col];
-
+    /**
+     * API: Hoán đổi hai ô.
+     * Được gọi bởi SwapToolStrategy.
+     */
+    public async swapCells(a: { row: number, col: number }, b: { row: number, col: number }): Promise<void> {
+        const cellA = this.cells[a.row]?.[a.col];
+        const cellB = this.cells[b.row]?.[b.col];
         if (!cellA || !cellB) {
             this.isProcessing = false;
             return;
         }
 
         // Hoán đổi logic data
-        const tempModel = GridManager.getInstance().grid[a.row][a.col];
-        GridManager.getInstance().grid[a.row][a.col] = GridManager.getInstance().grid[b.row][b.col];
-        GridManager.getInstance().grid[b.row][b.col] = tempModel;
+        const gridMgr = GridManager.getInstance();
+        const tempModel = gridMgr.grid[a.row][a.col];
+        gridMgr.grid[a.row][a.col] = gridMgr.grid[b.row][b.col];
+        gridMgr.grid[b.row][b.col] = tempModel;
 
         // Cập nhật vị trí trong model
-        GridManager.getInstance().grid[a.row][a.col].row = a.row;
-        GridManager.getInstance().grid[a.row][a.col].col = a.col;
-        GridManager.getInstance().grid[b.row][b.col].row = b.row;
-        GridManager.getInstance().grid[b.row][b.col].col = b.col;
+        gridMgr.grid[a.row][a.col].row = a.row;
+        gridMgr.grid[a.row][a.col].col = a.col;
+        gridMgr.grid[b.row][b.col].row = b.row;
+        gridMgr.grid[b.row][b.col].col = b.col;
 
         // Hoán đổi tham chiếu trong mảng UI
-        const posA = this.contains[a.row][a.col].position.clone();
-        const posB = this.contains[b.row][b.col].position.clone();
-        const nodeA = cellA.GetCellUI();
-        const nodeB = cellB.GetCellUI();
         this.cells[a.row][a.col] = cellB;
         this.cells[b.row][b.col] = cellA;
 
-        // Chạy animation di chuyển
-        const tweenA = new Promise(resolve => {
-            tween(nodeA).to(0.2, { position: posB }).call(resolve).start();
-        });
-        const tweenB = new Promise(resolve => {
-            tween(nodeB).to(0.2, { position: posA }).call(resolve).start();
-        });
+        const posA = this.contains[a.row][a.col].position.clone();
+        const posB = this.contains[b.row][b.col].position.clone();
 
+        // Chạy animation di chuyển
+        const tweenA = new Promise(resolve => tween(cellA.GetCellUI()).to(0.2, { position: posB }).call(resolve).start());
+        const tweenB = new Promise(resolve => tween(cellB.GetCellUI()).to(0.2, { position: posA }).call(resolve).start());
         await Promise.all([tweenA, tweenB]);
 
-        // Cập nhật lại UI của 2 ô vừa hoán đổi
+        // Cập nhật lại UI của 2 ô
         this.UpdateValueCellBeforeTween(a.row, a.col, this.cells[a.row][a.col]);
         this.UpdateValueCellBeforeTween(b.row, b.col, this.cells[b.row][b.col]);
+    }
 
-        // Kiểm tra xem có nhóm nào được tạo ở vị trí A hoặc B không
-        const matchA = GridManager.getInstance().findConnectedCells(a.row, a.col);
-        const matchB = GridManager.getInstance().findConnectedCells(b.row, b.col);
+    /**
+     * API: Xóa tất cả các ô có giá trị nhỏ nhất khi dùng tool.
+     * Được gọi bởi RemoveMinToolStrategy.
+     */
+    public async removeAllMinCellsTools(): Promise<void> {
+        const gridMgr = GridManager.getInstance();
+        const rows = GameManager.getInstance().dataGame.json["row"];
+        const cols = GameManager.getInstance().dataGame.json["col"];
 
-        if (matchA.length >= 3 || matchB.length >= 3) {
-            // Nếu có, gọi vòng lặp xử lý chính của game
+        let targetVal = 1;
+        let cellsToRemove: { row: number, col: number }[] = [];
+
+        while (targetVal <= gridMgr.numberMax) {
+            const list = [];
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    if (gridMgr.grid[i][j].value === targetVal) list.push({ row: i, col: j });
+                }
+            }
+            if (list.length > 0) {
+                cellsToRemove = list;
+                break;
+            }
+            targetVal++;
+        }
+
+        if (cellsToRemove.length === 0) return;
+
+        // Bắt đầu animation và logic xóa
+        cellsToRemove.forEach(c => this.cells[c.row]?.[c.col]?.cellUI.PlayAnimationShakeLoop());
+        await new Promise(r => setTimeout(r, 1000));
+
+        gridMgr.ResetDataMatch(cellsToRemove);
+        cellsToRemove.forEach(c => {
+            const cellRef = this.cells[c.row]?.[c.col];
+            if (cellRef) {
+                cellRef.cellUI.StopAnimationShake();
+                cellRef.Dispose();
+                this.cells[c.row][c.col] = null;
+            }
+        });
+
+        await this.triggerFillAndMatchCheck();
+    }
+
+    /**
+     * API: Kích hoạt chuỗi làm đầy ô trống và kiểm tra match.
+     */
+    public async triggerFillAndMatchCheck(): Promise<void> {
+        this.fillIntheBlank(); // Hàm này chạy tween không đồng bộ
+        GridManager.getInstance().FillIntheValue();
+
+        return new Promise(resolve => {
             this.scheduleOnce(() => {
                 this.checkAllMatchingGroupsLoop();
-            }, 0.1);
-        } else {
-            // Nếu không có nhóm nào được tạo, mở khóa và cho người chơi đi tiếp
-            this.isProcessing = false;
-        }
+                resolve();
+            }, 0.3); // Đợi animation rơi
+        });
+    }
+
+    /**
+     * API: Chỉ kiểm tra match mà không cần làm đầy, và mở khóa input nếu không có match.
+     */
+    public triggerPostActionCheck(): void {
+        this.checkAllMatchingGroupsLoop();
     }
 
     //#region restart game

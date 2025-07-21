@@ -16,6 +16,7 @@ import { AudioManager } from '../../Manager/AudioManager';
 import { SFXType } from '../../Enum/Enum';
 import { DataManager } from '../../Manager/DataManager';
 import { PopupManager } from '../../Manager/PopupManager';
+import { ToolManager } from '../../Manager/ToolManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('Cell')
@@ -26,7 +27,6 @@ export class Cell {
     public cellUI: CellUI = null
     clickEffect: ECELL_CLICK_EFFECT = ECELL_CLICK_EFFECT.Up
     cellState: ECELL_STATE = ECELL_STATE.None
-    public clickMode: ECLICK_MODE = ECLICK_MODE.NORMAL;
 
     private readonly MAX_DOWN = 6;
 
@@ -56,30 +56,21 @@ export class Cell {
     }
 
     onClick() {
-        if (InGameLogicManager.getInstance().IsProcessing) {
-            return;
-        }
+        const toolManager = ToolManager.getInstance();
+        const activeTool = toolManager.getActiveTool();
 
         AudioManager.getInstance().playSFX(SFXType.Spawn);
 
-        const currentMode = this.clickMode;
-
-        switch (currentMode) {
-            case ECLICK_MODE.NORMAL:
-                this.HandleNormalClick();
-                break;
-
-            case ECLICK_MODE.HAMMER:
-                this.HandleHammerClick();
-                break;
-
-            case ECLICK_MODE.UPGRADE:
-                this.HandleUpgradeClick();
-                break;
-
-            case ECLICK_MODE.SWAP:
-                this.HandleSwapClick();
-                break;
+        // 1. Ưu tiên kiểm tra tool
+        if (activeTool) {
+            // Nếu có tool đang chạy, giao toàn bộ việc xử lý cho ToolManager
+            toolManager.useActiveToolOnCell(this.cellData.row, this.cellData.col);
+        } else {
+            // 2. Nếu không có tool, chạy logic game bình thường
+            if (InGameLogicManager.getInstance().IsProcessing) {
+                return;
+            }
+            this.HandleNormalClick();
         }
     }
 
@@ -102,29 +93,6 @@ export class Cell {
         }
 
         InGameLogicManager.getInstance().ClickCheckToMove(this.cellData.row, this.cellData.col, matched);
-    }
-
-    HandleHammerClick() {
-        this.SetEclickNoMal();
-        const inGameLogic = InGameLogicManager.getInstance();
-        inGameLogic.HandleHammerAt(this.cellData.row, this.cellData.col);
-    }
-
-    HandleUpgradeClick() {
-        if (this.cellData.value == GridManager.getInstance().numberMax - 1) return;
-        this.SetEclickNoMal();
-        const inGameLogic = InGameLogicManager.getInstance();
-        inGameLogic.HandleUpgradeAt(this.cellData.row, this.cellData.col);
-    }
-
-    HandleSwapClick() {
-        log('Swap click ---');
-        this.cellUI.PlayAnimationShakeLoop();
-        const inGameLogic = InGameLogicManager.getInstance();
-        if (inGameLogic.swapCallback) {
-            inGameLogic.swapCallback(this.cellData.row, this.cellData.col);
-            return;
-        }
     }
 
     UpdateCellWhenClick() {
@@ -189,13 +157,6 @@ export class Cell {
         // add cellUi vào pooling
         PoolObjectManager.getInstance().RecycleObject(this.GetCellUI(), PrefabManager.getInstance().cellPrefab);
         InGameLogicManager.getInstance().cellCollection.RemoveItem(this)
-    }
-
-    SetEclickNoMal() {
-        let CellCollection = InGameLogicManager.getInstance().cellCollection;
-        CellCollection.forEach(element => {
-            element.clickMode = ECLICK_MODE.NORMAL;
-        });
     }
 }
 
