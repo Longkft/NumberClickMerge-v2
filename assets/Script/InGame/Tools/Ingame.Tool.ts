@@ -6,6 +6,7 @@ import { PopupManager } from '../../Manager/PopupManager';
 import { MoneyController } from '../head/Money/MoneyController';
 import { ToolManager, ToolType } from '../../Manager/ToolManager';
 import { ToolProgress } from './ToolProgress';
+import { InGameLogicManager } from '../InGameLogicManager';
 
 const { ccclass, property } = _decorator;
 
@@ -59,6 +60,8 @@ export class Ingame_Tool extends Component {
             PopupManager.getInstance().PopupAdsGold.Show();
             return;
         }
+
+        InGameLogicManager.getInstance().consecutiveMerges = 0; // reset combo
 
         // Hiển thị hiệu ứng và BÁO CHO TOOLMANAGER
         this.ShowFxShadow();
