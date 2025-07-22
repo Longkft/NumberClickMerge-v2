@@ -1,10 +1,12 @@
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, log, Node } from 'cc';
 import { LevelUI } from './LevelUI';
 import { DataManager } from '../../../Manager/DataManager';
 import { BaseSingleton } from '../../../Base/BaseSingleton';
 import { EventBus } from '../../../Utils/EventBus';
 import { EventGame } from '../../../Enum/EEvent';
 import { Utils } from '../../../Utils/Utils';
+import { PopupManager } from '../../../Manager/PopupManager';
+import { ToolManager, ToolType } from '../../../Manager/ToolManager';
 
 const { ccclass, property } = _decorator;
 
@@ -36,6 +38,8 @@ export class LevelController extends BaseSingleton<LevelController> {
     private async onAddExp(expGained: number) {
         if (expGained <= 0) return;
 
+        const ratioLevel = 2;
+
         // 1. Lấy dữ liệu cũ
         const oldTotalExp = this.newTotalExp;
         const oldLevelInfo = Utils.getLevelInfo(oldTotalExp);
@@ -47,6 +51,17 @@ export class LevelController extends BaseSingleton<LevelController> {
 
         // 3. Ra lệnh cho UI cập nhật với cả thông tin cũ và mới để tạo animation
         this.levelUi.updateView(oldLevelInfo, newLevelInfo);
+
+        // ToolManager.getInstance().chooseTool = ToolType.NONE;
+
+        if (newLevelInfo.level > oldLevelInfo.level) {
+            log('newLevelInfo.level: ', newLevelInfo.level)
+            if (newLevelInfo.level % ratioLevel == 0) {
+                ToolManager.getInstance().triggerRandomToolUpgrade();
+            }
+
+            PopupManager.getInstance().PopupLevelUp.show(newLevelInfo.level);
+        }
     }
 
     SaveTotalExp() {

@@ -21,7 +21,6 @@ export class Utils extends BaseSingleton<Utils> {
         console.log(heart)
         let newHeart = heart + subtraction;
         if (newHeart < 0 || newHeart > 5) return;
-        console.log("new heart", newHeart)
         InGameLogicManager.getInstance().currentHeart = newHeart;
     }
 

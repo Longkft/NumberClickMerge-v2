@@ -1,5 +1,7 @@
-import { _decorator, Component, Node, sys } from 'cc';
+import { _decorator, Component, log, Node, sys } from 'cc';
 import { BaseSingleton } from '../Base/BaseSingleton';
+import { ToolProgress } from '../InGame/Tools/ToolProgress';
+import { ToolType } from './ToolManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('DataManager')
@@ -135,21 +137,27 @@ export class DataManager extends BaseSingleton<DataManager> {
         this.removeData("gameState")
     }
 
-    // // #region Level
-    // public async getLevel() {
-    //     return await this.getLocale("DataLevel")
-    // }
+    // #region Tool Progress
+    public async GetToolProgress(): Promise<Record<string, ToolProgress>> {
+        const saved = await this.getLocale("ToolProgress");
 
-    // public async setLevel(level: number, bar: number, exp: number) {
-    //     let obj = {
-    //         level: level,
-    //         bar: bar,
-    //         exp: exp,
-    //     };
+        log('save: ', saved)
 
-    //     await this.saveLocale("DataLevel", obj)
-    // }
+        if (saved && Object.keys(saved).length === 0 || !saved) {
+            return {
+                [ToolType.HAMMER]: { points: 0, isUpgraded: false },
+                [ToolType.SWAP]: { points: 0, isUpgraded: false },
+                [ToolType.UPGRADE]: { points: 0, isUpgraded: false },
+                [ToolType.REMOVE_MIN]: { points: 0, isUpgraded: false },
+            };
+        }
+        return saved;
+    }
 
+    public async SetToolProgress(progress: Record<string, ToolProgress>) {
+        await this.saveLocale("ToolProgress", progress);
+    }
+    // #endregion
 
     // #region TotalExp
     public async GetTotalExp() {
@@ -167,12 +175,21 @@ export class DataManager extends BaseSingleton<DataManager> {
 
     public async getLocale(key) {
 
-        let saved = await localStorage.getItem(key)
-        console.log(key)
-        console.log(JSON.parse(saved))
-        return (saved == null || saved == undefined) ? null : JSON.parse(saved);
-    }
+        // let saved = await localStorage.getItem(key)
+        // console.log(key)
+        // console.log(JSON.parse(saved))
+        // return (saved == null || saved == undefined) ? null : JSON.parse(saved);
 
+        try {
+            let saved = await localStorage.getItem(key)
+            console.log(key)
+            // console.log(JSON.parse(saved))
+            return (saved == null || saved == undefined) ? null : JSON.parse(saved);
+        } catch (e) {
+            console.error(`Failed to parse key "${key}" from localStorage:`, e);
+            return null;
+        }
+    }
 
     public async removeData(key) {
         await localStorage.removeItem(key);

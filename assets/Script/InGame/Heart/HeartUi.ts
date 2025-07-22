@@ -35,7 +35,6 @@ export class HeartUi extends Component {
 
     UpdateUiheart() {
         let myHeart = InGameLogicManager.getInstance().currentHeart;
-        console.log(InGameLogicManager.getInstance().currentHeart, '13123213123123')
         for (let i = 0; i < myHeart; i++) {
             let heartNode = this.listHeart[i];
             let ActiveHeartNode = heartNode.getChildByName('heatActive');

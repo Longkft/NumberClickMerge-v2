@@ -1,3 +1,5 @@
+import { ToolProgress } from "../ToolProgress";
+
 export interface IToolStrategy {
     /**
      * Kích hoạt công cụ, chuẩn bị cho việc người dùng tương tác trên lưới.
@@ -10,7 +12,7 @@ export interface IToolStrategy {
      * @param row - Hàng của ô được chọn.
      * @param col - Cột của ô được chọn.
      */
-    execute(row: number, col: number): Promise<void>;
+    execute(row: number, col: number, toolState: ToolProgress | null): Promise<void>;
 
     /**
      * Hủy kích hoạt công cụ, dọn dẹp và trả lại trạng thái bình thường.

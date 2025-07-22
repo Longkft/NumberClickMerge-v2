@@ -35,7 +35,6 @@ export class RecycleUI extends Component {
     }
 
     SetUIRecycle(value: number) {
-        log(11111111111)
         let color: Color = new Color()
         Color.fromHEX(color, GridManager.getInstance().GetColorByValue(value))
         this.cellBackground.color = color;

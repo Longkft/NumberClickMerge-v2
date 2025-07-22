@@ -3,7 +3,7 @@ import { ToolManager, ToolType } from "../../../Manager/ToolManager";
 import { EventBus } from "../../../Utils/EventBus";
 import { GridManager } from "../../GridManager";
 import { InGameLogicManager } from "../../InGameLogicManager";
-import { IToolStrategy } from "./IToolStrategy ";
+import { IToolStrategy } from "./IToolStrategy";
 
 export class UpgradeOne implements IToolStrategy {
     activate(): void {
@@ -27,10 +27,9 @@ export class UpgradeOne implements IToolStrategy {
             logicManager.IsProcessing = true;
             logicManager.upgradeCellAt(row, col, maxUpgradeVal);
             logicManager.triggerPostActionCheck();
+            EventBus.emit(EventGame.TOOL_FINISHED, ToolType.UPGRADE);
+            ToolManager.getInstance().deactivateCurrentTool();
         }
-
-        EventBus.emit(EventGame.TOOL_FINISHED, ToolType.UPGRADE);
-        ToolManager.getInstance().deactivateCurrentTool();
     }
 
     deactivate(): void {

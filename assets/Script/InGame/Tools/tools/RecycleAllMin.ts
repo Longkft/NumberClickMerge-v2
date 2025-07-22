@@ -4,7 +4,7 @@ import { ToolManager, ToolType } from "../../../Manager/ToolManager";
 import { EventBus } from "../../../Utils/EventBus";
 import { GridManager } from "../../GridManager";
 import { InGameLogicManager } from "../../InGameLogicManager";
-import { IToolStrategy } from "./IToolStrategy ";
+import { IToolStrategy } from "./IToolStrategy";
 
 export class RecycleAllMin implements IToolStrategy {
     activate(): void {

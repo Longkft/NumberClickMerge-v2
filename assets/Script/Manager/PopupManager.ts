@@ -12,6 +12,7 @@ import { PopupAdsGold } from '../InGame/Popup/PopupAdsGold';
 import { AdsHeat } from '../InGame/Popup/AdsHeat';
 import { PopUpGoal } from '../InGame/Popup/PopUpGoal';
 import { TutorialManager } from '../InGame/Tools/TutorialManager';
+import { PopupLevelUp } from '../InGame/Popup/PopupLevelUp';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupManager')
@@ -30,6 +31,7 @@ export class PopupManager extends BaseSingleton<PopupManager> {
     private _popupAdsheat: AdsHeat = null
     private _popupGoal: PopUpGoal = null
     private _popupTutorial: TutorialManager = null
+    private _popupLevelUp: PopupLevelUp = null
 
     get popupUnlockMax() {
         if (this._popupUnlockMax == null) {
@@ -137,6 +139,14 @@ export class PopupManager extends BaseSingleton<PopupManager> {
             this.node.addChild(this._popupTutorial.node)
         }
         return this._popupTutorial
+    }
+
+    get PopupLevelUp() {
+        if (this._popupLevelUp == null) {
+            this._popupLevelUp = instantiate(PrefabManager.getInstance().popupLevelUp).getComponent(PopupLevelUp);
+            this.node.addChild(this._popupLevelUp.node)
+        }
+        return this._popupLevelUp
     }
 }
 

@@ -18,6 +18,7 @@ import { Utils } from '../Utils/Utils';
 import { MoneyController } from './head/Money/MoneyController';
 import { ScoreController } from './head/score/ScoreController';
 import { LevelController } from './head/Level/LevelController';
+import { ToolManager } from '../Manager/ToolManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('InGameLogicManager')
@@ -47,12 +48,10 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
     protected async onLoad() {
         super.onLoad();
-
+        await ToolManager.getInstance().initialize();
         this.RegisEventBeforUnload();
         this.currentHeart = await DataManager.getInstance().GetMyHeart()
-        console.log(this.currentHeart)
         let first = await DataManager.getInstance().GetFirst()
-        console.log(first)
         if (first) {
             DataManager.getInstance().SetFirst(false)
             PopupManager.getInstance().PopupTutorial.Show();
@@ -239,9 +238,11 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
     private AwardExpAfterMerge(score: number) {
         if (score <= 0) return;
 
+        const ratio = 1;
+
         // 1. Quyết định lượng EXP nhận được dựa trên điểm số
         // Ví dụ: Lấy điểm số chia 10 và làm tròn, cộng thêm 1.
-        const expGained = Math.floor(score / 5) + 1;
+        const expGained = Math.floor(score / ratio) + 1;
 
         // 2. Phát ra sự kiện cộng EXP
         if (expGained > 0) {
@@ -1065,6 +1066,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         ScoreController.getInstance().SaveScoreCurrent()
         DataManager.getInstance().SetMyHeart(this.currentHeart)
         LevelController.getInstance().SaveTotalExp();
+        ToolManager.getInstance().SetToolState();
     }
 
     public SaveGame() {

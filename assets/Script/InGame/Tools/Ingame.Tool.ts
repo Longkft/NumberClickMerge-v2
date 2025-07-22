@@ -1,12 +1,11 @@
-// FILE: src/UI/Ingame_Tool.ts
-
-import { _decorator, CCInteger, Component, Enum, Label, log, Node } from 'cc';
+import { _decorator, CCInteger, Component, Enum, Label, log, Node, Sprite, SpriteFrame } from 'cc';
 import { FXShadow } from '../../FX/FXShadow';
 import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
 import { PopupManager } from '../../Manager/PopupManager';
 import { MoneyController } from '../head/Money/MoneyController';
 import { ToolManager, ToolType } from '../../Manager/ToolManager';
+import { ToolProgress } from './ToolProgress';
 
 const { ccclass, property } = _decorator;
 
@@ -28,6 +27,12 @@ export class Ingame_Tool extends Component {
     @property({ type: Node })
     guide: Node = null;
 
+    @property({ type: Sprite })
+    bar: Sprite = null;
+
+    @property({ type: Node })
+    bgUpTool: Node = null;
+
     @property(CCInteger)
     coin: number = 0;
 
@@ -35,27 +40,27 @@ export class Ingame_Tool extends Component {
         this.txtCoin.string = this.coin.toString();
         this.node.on(Node.EventType.TOUCH_START, this.OnClick, this);
         EventBus.on(EventGame.TOOL_FINISHED, this.onToolFinished, this);
+        EventBus.on(EventGame.TOOL_UPGRADEUITOOLUP, this.UpgradeUiToolUp, this);
+
+        this.UpgradeUiToolUp(this.type); // cập nhật ui tool up
     }
 
     protected onDestroy(): void {
         this.node.off(Node.EventType.TOUCH_START, this.OnClick, this);
         EventBus.off(EventGame.TOOL_FINISHED, this.onToolFinished);
+        EventBus.off(EventGame.TOOL_UPGRADEUITOOLUP, this.UpgradeUiToolUp);
     }
 
     /**
      * Hàm xử lý click duy nhất cho tất cả các tool
      */
     private OnClick() {
-        // 1. Kiểm tra tiền
         if (!this.CheckCoinUseToolGame()) {
             PopupManager.getInstance().PopupAdsGold.Show();
             return;
         }
 
-        // 2. Trừ tiền (ToolManager sẽ quyết định tool có được dùng hay không)
-        // EventBus.emit(EventGame.UPDATE_COIN_UI, -this.coin); // Tạm thời có thể để ToolManager xử lý việc này sau khi dùng thành công
-
-        // 3. Hiển thị hiệu ứng và BÁO CHO TOOLMANAGER
+        // Hiển thị hiệu ứng và BÁO CHO TOOLMANAGER
         this.ShowFxShadow();
         ToolManager.getInstance().activateTool(this.type);
     }
@@ -90,7 +95,32 @@ export class Ingame_Tool extends Component {
     private async HideFxShadow() {
         const shadowCpn = this.shadow.getComponent(FXShadow);
         await shadowCpn.HideFxGuide(this.guide.parent);
-        this.guide.active = true; // Có vẻ logic này cần xem lại, nhưng giữ nguyên
+        this.guide.active = true;
         await shadowCpn.HideFXShadow();
+    }
+
+    private updateProgressBarFromToolState(toolState: ToolProgress | null) {
+        if (!this.bar || !toolState) {
+            return;
+        }
+
+        const fillAmount = toolState.points / 5.0;
+        this.bar.fillRange = fillAmount;
+    }
+
+
+    UpgradeUiToolUp(finishedToolType: ToolType) {
+        if (this.type !== finishedToolType) return;
+
+        const toolState = ToolManager.getInstance().getToolState(this.type);
+        this.updateProgressBarFromToolState(toolState);
+
+        // if
+        log('toolState: ', toolState);
+
+        if (toolState.isUpgraded || toolState.points == 5) {
+            toolState.isUpgraded = true;
+            this.bgUpTool.active = true;
+        }
     }
 }
