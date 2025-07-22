@@ -2,6 +2,7 @@ import { _decorator, Color, Component, Label, log, Node, Sprite } from 'cc';
 import { GridManager } from '../GridManager';
 import { EventBus } from '../../Utils/EventBus';
 import { DataManager } from '../../Manager/DataManager';
+import { EventGame } from '../../Enum/EEvent';
 const { ccclass, property } = _decorator;
 
 @ccclass('RecycleUI')
@@ -27,11 +28,11 @@ export class RecycleUI extends Component {
     }
 
     RegisEvent() {
-        EventBus.on('UIColorRecycle', this.SetUIRecycle, this);
+        EventBus.on(EventGame.UI_COLOR_TOOLRECYCLE, this.SetUIRecycle, this);
     }
 
     DestroyEvent() {
-        EventBus.off('UIColorRecycle', this.SetUIRecycle);
+        EventBus.off(EventGame.UI_COLOR_TOOLRECYCLE, this.SetUIRecycle);
     }
 
     SetUIRecycle(value: number) {

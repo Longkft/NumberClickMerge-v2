@@ -5,6 +5,8 @@ import { ToolManager, ToolType } from "../../../Manager/ToolManager";
 // === IMPORT THÊM ===
 import { EventBus } from "../../../Utils/EventBus";
 import { EventGame } from "../../../Enum/EEvent";
+import { ToolProgress } from "../ToolProgress";
+import { GridManager } from "../../GridManager";
 
 export class Swap implements IToolStrategy {
     private firstSwapCell: { row: number, col: number } | null = null;
@@ -19,7 +21,7 @@ export class Swap implements IToolStrategy {
         this.firstSwapCell = null;
     }
 
-    async execute(row: number, col: number): Promise<void> {
+    async execute(row: number, col: number, toolState: ToolProgress | null): Promise<void> {
         if (!this.firstSwapCell) {
             // ---- Lượt click đầu tiên ----
             this.firstSwapCell = { row, col };
@@ -54,16 +56,69 @@ export class Swap implements IToolStrategy {
             }
 
             // === Nếu hợp lệ, tiếp tục thực hiện swap ===
-            this.logicManager.IsProcessing = true;
-            await this.logicManager.swapCells(this.firstSwapCell, secondSwapCell);
-            this.logicManager.triggerPostActionCheck();
+            // this.logicManager.IsProcessing = true;
+            // await this.logicManager.swapCells(this.firstSwapCell, secondSwapCell);
+            // this.logicManager.triggerPostActionCheck();
+
+            if (toolState && toolState.isUpgraded) {
+                console.log("Executing UPGRADED Swap (All matching patterns)!");
+                await this.executeUpgraded(this.firstSwapCell, secondSwapCell);
+            } else {
+                console.log("Executing normal Swap (One pair).");
+                await this.executeNormal(this.firstSwapCell, secondSwapCell);
+            }
 
             // === THÊM 2: GỬI TÍN HIỆU ĐỂ TẮT POPUP/SHADOW ===
             EventBus.emit(EventGame.TOOL_FINISHED, ToolType.SWAP);
-
             // Tự động hủy tool sau khi thực thi xong
             ToolManager.getInstance().deactivateCurrentTool();
+            this.firstSwapCell = null;
         }
+    }
+
+    private async executeNormal(cellA: { row, col }, cellB: { row, col }) {
+        this.logicManager.IsProcessing = true;
+        await this.logicManager.swapCells(cellA, cellB);
+        this.logicManager.triggerPostActionCheck();
+    }
+
+    private async executeUpgraded(cellA: { row, col }, cellB: { row, col }) {
+        const grid = GridManager.getInstance().grid;
+        const inGameLogic = InGameLogicManager.getInstance();
+
+        // 1. Xác định "pattern": giá trị và hướng
+        const valueA = grid[cellA.row][cellA.col].value;
+        const valueB = grid[cellB.row][cellB.col].value;
+        const deltaRow = cellB.row - cellA.row; // Vd: 1 (dưới), -1 (trên), 0
+        const deltaCol = cellB.col - cellA.col; // Vd: 1 (phải), -1 (trái), 0
+
+        const pairsToSwap: { cellA: { row, col }, cellB: { row, col } }[] = [];
+
+        // 2. Quét toàn bộ bàn cờ để tìm các cặp có cùng pattern
+        for (let r = 0; r < grid.length; r++) {
+            for (let c = 0; c < grid[r].length; c++) {
+                // Tọa độ của ô B tương ứng
+                const partnerRow = r + deltaRow;
+                const partnerCol = c + deltaCol;
+
+                // Kiểm tra biên
+                if (partnerRow >= 0 && partnerRow < grid.length && partnerCol >= 0 && partnerCol < grid[0].length) {
+                    // Kiểm tra xem cặp [r, c] và [partnerRow, partnerCol] có khớp pattern không
+                    if (grid[r][c].value === valueA && grid[partnerRow][partnerCol].value === valueB) {
+                        pairsToSwap.push({ cellA: { row: r, col: c }, cellB: { row: partnerRow, col: partnerCol } });
+                    }
+                }
+            }
+        }
+
+        console.log(`Found ${pairsToSwap.length} matching pairs to swap.`);
+
+        // 3. Thực hiện hoán đổi hàng loạt
+        const swapPromises = pairsToSwap.map(pair => inGameLogic.swapCells(pair.cellA, pair.cellB));
+        await Promise.all(swapPromises);
+
+        // 4. Kích hoạt kiểm tra match sau khi tất cả đã hoán đổi xong
+        inGameLogic.triggerPostActionCheck();
     }
 
     deactivate(): void {

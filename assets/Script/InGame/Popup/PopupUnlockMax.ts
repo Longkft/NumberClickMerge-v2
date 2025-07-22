@@ -5,6 +5,7 @@ import { InGameLogicManager } from '../InGameLogicManager';
 import { CellPopupMax, CellPopupState } from '../Cell/CellPopupMax';
 import { PopupManager } from '../../Manager/PopupManager';
 import { EventBus } from '../../Utils/EventBus';
+import { EventGame } from '../../Enum/EEvent';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupUnlockMax')
@@ -100,7 +101,7 @@ export class PopupUnlockMax extends Component {
         }
 
 
-        EventBus.emit('UIColorRecycle', GridManager.getInstance().numberMin); // cập nhật ui recycle
+        EventBus.emit(EventGame.UI_COLOR_TOOLRECYCLE, GridManager.getInstance().numberMin); // cập nhật ui recycle
     }
 
 }

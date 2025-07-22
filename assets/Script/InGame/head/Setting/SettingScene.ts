@@ -7,6 +7,7 @@ import { InGameLogicManager } from '../../InGameLogicManager';
 import { EventBus } from '../../../Utils/EventBus';
 import { EventGame } from '../../../Enum/EEvent';
 import { PopupManager } from '../../../Manager/PopupManager';
+import { GridManager } from '../../GridManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('SettingScene')
@@ -228,6 +229,8 @@ export class SettingScene extends BaseTouch {
         this.hideBoxTools();
 
         PopupManager.getInstance().PopupGoal.Show();
+
+        EventBus.emit(EventGame.UI_COLOR_TOOLRECYCLE, GridManager.getInstance().numberMin); // cập nhật ui recycle
     }
 
     hideBoxTools() {

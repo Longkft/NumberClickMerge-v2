@@ -115,7 +115,6 @@ export class Ingame_Tool extends Component {
         const toolState = ToolManager.getInstance().getToolState(this.type);
         this.updateProgressBarFromToolState(toolState);
 
-        // if
         log('toolState: ', toolState);
 
         if (toolState.isUpgraded || toolState.points == 5) {
