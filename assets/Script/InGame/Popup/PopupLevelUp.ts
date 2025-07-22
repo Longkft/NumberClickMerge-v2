@@ -1,9 +1,10 @@
-import { _decorator, Component, Label, Node } from 'cc';
+import { _decorator, Component, Label, log, Node } from 'cc';
 import { FXShadow } from '../../FX/FXShadow';
 import { LevelController } from '../head/Level/LevelController';
 import { ToolManager } from '../../Manager/ToolManager';
 import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
+import { PopupManager } from '../../Manager/PopupManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupLevelUp')
@@ -32,6 +33,12 @@ export class PopupLevelUp extends Component {
 
     async BtnContinute() {
         await this.Hide();
+
+        if (ToolManager.getInstance().isShowHint) {
+            log(11111)
+            ToolManager.getInstance().isShowHint = false;
+            PopupManager.getInstance().PopupHintTool.Show();
+        }
 
         EventBus.emit(EventGame.TOOL_UPGRADEUITOOLUP, ToolManager.getInstance().chooseTool);
     }

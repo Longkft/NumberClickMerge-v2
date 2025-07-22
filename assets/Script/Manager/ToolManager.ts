@@ -12,8 +12,8 @@ import { DataManager } from './DataManager';
 export enum ToolType {
     HAMMER,
     SWAP,
-    UPGRADE,
     REMOVE_MIN,
+    UPGRADE,
     NONE
 }
 
@@ -27,6 +27,10 @@ export class ToolManager extends BaseSingleton<ToolManager> {
 
     private toolProgress: Record<string, ToolProgress> = {};
     chooseTool: ToolType = null;
+
+    isShowHint: boolean = false;
+
+    numberPoint: number = 1;
 
     protected async onLoad() {
         super.onLoad();
@@ -63,8 +67,8 @@ export class ToolManager extends BaseSingleton<ToolManager> {
         }
 
         // 2. Random chọn 1 tool
-        const randomIndex = Math.floor(Math.random() * eligibleTools.length);
-        const chosenTool: ToolType = eligibleTools[randomIndex];
+        // const randomIndex = Math.floor(Math.random() * eligibleTools.length);
+        const chosenTool: ToolType = eligibleTools[0]; // chọn cái đầu tiên
 
         // 3. Thực hiện nâng cấp điểm
         this.upgradeTool(chosenTool);
@@ -76,13 +80,13 @@ export class ToolManager extends BaseSingleton<ToolManager> {
         const allToolValues: ToolType[] = [
             ToolType.HAMMER,
             ToolType.SWAP,
-            ToolType.UPGRADE,
-            ToolType.REMOVE_MIN
+            ToolType.REMOVE_MIN,
+            ToolType.UPGRADE
         ];
 
         const toolsCanUpgrade = allToolValues.filter(toolType => {
             const progress = this.toolProgress[toolType.toString()];
-            return progress && progress.points < 5;
+            return progress && progress.points < this.numberPoint;
         });
 
         log('toolsCanUpgrade: ', toolsCanUpgrade);
@@ -97,12 +101,23 @@ export class ToolManager extends BaseSingleton<ToolManager> {
         progress.points++;
         console.log(`Tool ${ToolType[toolType]} được cộng 1 điểm, tổng điểm hiện tại: ${progress.points}`);
 
-        if (progress.points === 5 && !progress.isUpgraded) {
+        // 1. Tính tổng điểm của TẤT CẢ các tool sau khi đã cộng
+        const totalPointsAfter = Object.keys(this.toolProgress).map(key => this.toolProgress[key]).reduce((sum, tool) => sum + tool.points, 0);
+        log('totalPointsAfter: ', totalPointsAfter)
+        if (totalPointsAfter === 1) {
+            this.isShowHint = true;
+        }
+
+        if (progress.points === this.numberPoint && !progress.isUpgraded) {
             progress.isUpgraded = true;
             console.log(`--- TOOL ${ToolType[toolType]} ĐÃ ĐƯỢC NÂNG CẤP! ---`);
             // Có thể phát thêm sự kiện tại đây nếu cần
             // EventBus.emit(EventGame.TOOL_LEVELED_UP, toolType);
         }
+    }
+
+    ShowHint() {
+
     }
 
     async SetToolState() {

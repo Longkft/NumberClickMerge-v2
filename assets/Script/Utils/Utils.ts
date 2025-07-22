@@ -48,8 +48,8 @@ export class Utils extends BaseSingleton<Utils> {
 
 
     public static getExpToLevel(level: number): number {
-        const base = 100;
-        const factor = 50;
+        const base = 200;
+        const factor = 100;
         const exponent = 1.1;
         return Math.floor(base + factor * Math.pow(level, exponent));
     }

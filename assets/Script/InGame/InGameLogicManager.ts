@@ -19,6 +19,7 @@ import { MoneyController } from './head/Money/MoneyController';
 import { ScoreController } from './head/score/ScoreController';
 import { LevelController } from './head/Level/LevelController';
 import { ToolManager } from '../Manager/ToolManager';
+import { ECELL_CLICK_EFFECT, ECELL_STATE } from '../Enum/ECell';
 const { ccclass, property } = _decorator;
 
 @ccclass('InGameLogicManager')
@@ -46,6 +47,9 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
     public currentHeart: number = 0
 
+    private clickToInherit: ECELL_CLICK_EFFECT = ECELL_CLICK_EFFECT.Down; // lưu stage của cell khi được click
+    private justClicked: boolean = false;
+
     protected async onLoad() {
         super.onLoad();
         await ToolManager.getInstance().initialize();
@@ -59,8 +63,6 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             PopupManager.getInstance().PopupGoal.Show();
         }
     }
-
-
 
     protected start(): void {
         this.LoadGame();
@@ -114,6 +116,17 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         if (this.isProcessing) {
             log("Đang xử lý, không cho click.");
             return;
+        }
+
+        // Lấy đối tượng Cell từ tọa độ được click
+        const clickedCell = this.cells[rootRow]?.[rootCol];
+
+        // Lấy cellState của nó và lưu vào biến tạm
+        if (clickedCell) {
+            this.clickToInherit = clickedCell.clickEffect;
+            this.justClicked = true;
+        } else {
+            this.clickToInherit = ECELL_CLICK_EFFECT.Up; // Reset về mặc định nếu không tìm thấy cell
         }
 
         // Khi người chơi tự click, reset combo và bắt đầu một chuỗi mới
@@ -541,9 +554,23 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             gridMgr.grid[root.row][root.col] = newCellModel;
 
             const nodeCell = this.CreateCells(newCellModel);
+
             nodeCell.GetCellUI().setPosition(this.contains[root.row][root.col].position.clone());
             this.cells[root.row][root.col] = nodeCell;
             this.UpdateValueCellBeforeTween(root.row, root.col, nodeCell);
+
+            if (this.justClicked) {
+                // 2. Gán trực tiếp clickEffect đã lưu
+                nodeCell.clickEffect = this.clickToInherit;
+
+                // 3. CẬP NHẬT LẠI UI NGAY LẬP TỨC để nó hiển thị đúng
+                nodeCell.cellUI.UpdateUICell(nodeCell.cellData, nodeCell.clickEffect, nodeCell.cellState);
+
+                // 4. Hạ cờ xuống để các ô combo sau không bị ảnh hưởng
+                this.justClicked = false;
+
+                console.log(`Ô mới tại [${data.root.row},${data.root.col}] đã kế thừa clickEffect.`);
+            }
 
             if (GridManager.getInstance().CheckUpdateMaxCurrent(newValue)) {
                 this.isUpLevel = true;

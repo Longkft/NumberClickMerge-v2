@@ -107,7 +107,9 @@ export class Ingame_Tool extends Component {
             return;
         }
 
-        const fillAmount = toolState.points / 5.0;
+        const point = ToolManager.getInstance().numberPoint;
+
+        const fillAmount = toolState.points / point;
         this.bar.fillRange = fillAmount;
     }
 
@@ -120,7 +122,9 @@ export class Ingame_Tool extends Component {
 
         log('toolState: ', toolState);
 
-        if (toolState.isUpgraded || toolState.points == 5) {
+        const point = ToolManager.getInstance().numberPoint;
+
+        if (toolState.isUpgraded || toolState.points == point) {
             toolState.isUpgraded = true;
             this.bgUpTool.active = true;
         }

@@ -16,6 +16,7 @@ export class RecycleAllMin implements IToolStrategy {
             console.log("UPGRADED: Select a cell to clear all cells with the same value.");
         } else {
             console.log("NORMAL: Click anywhere to clear all cells with the lowest value.");
+            this.execute(0, 0, toolState);
         }
     }
 

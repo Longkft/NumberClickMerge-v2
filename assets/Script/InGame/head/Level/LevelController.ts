@@ -38,7 +38,7 @@ export class LevelController extends BaseSingleton<LevelController> {
     private async onAddExp(expGained: number) {
         if (expGained <= 0) return;
 
-        const ratioLevel = 2;
+        const ratioLevel = 1;
 
         // 1. Lấy dữ liệu cũ
         const oldTotalExp = this.newTotalExp;
