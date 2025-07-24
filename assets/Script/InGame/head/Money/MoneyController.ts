@@ -19,7 +19,7 @@ export class MoneyController extends BaseSingleton<MoneyController> {
 
     GoldCurrent: number = 0
 
-    protected async start() {
+    protected async onLoad() {
         await this.LoadGoldCurrent()
         this.updateGold();
         this.RegisterEvent();

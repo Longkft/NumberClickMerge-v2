@@ -6,6 +6,7 @@ import { EventGame } from '../../Enum/EEvent';
 import { Utils } from '../../Utils/Utils';
 import { InGameUIManager } from '../InGameUIManager';
 import { PopupManager } from '../../Manager/PopupManager';
+import { MoneyController } from '../head/Money/MoneyController';
 const { ccclass, property } = _decorator;
 
 @ccclass('OutOfMove')
@@ -17,7 +18,22 @@ export class OutOfMove extends Component {
     @property({ type: Node })
     box: Node = null;
 
+    @property({ type: Node })
+    btnGold: Node = null;
+
+    @property({ type: Node })
+    btnAds: Node = null;
+
     async Show() {
+        let gold = MoneyController.getInstance().GoldCurrent;
+        if (gold < 200) {
+            this.btnGold.active = false;
+            this.btnAds.active = true;
+        } else {
+            this.btnGold.active = true;
+            this.btnAds.active = false;
+        }
+
         await this.shadow.ShowFxShadow();
 
         await this.shadow.ShowFxBox(this.box);
