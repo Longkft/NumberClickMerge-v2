@@ -42,7 +42,6 @@ export class Ingame_Tool extends Component {
         this.node.on(Node.EventType.TOUCH_START, this.OnClick, this);
         EventBus.on(EventGame.TOOL_FINISHED, this.onToolFinished, this);
         EventBus.on(EventGame.TOOL_UPGRADEUITOOLUP, this.UpgradeUiToolUp, this);
-
         this.UpgradeUiToolUp(this.type); // cập nhật ui tool up
     }
 
@@ -60,9 +59,7 @@ export class Ingame_Tool extends Component {
             PopupManager.getInstance().PopupAdsGold.Show();
             return;
         }
-
         InGameLogicManager.getInstance().consecutiveMerges = 0; // reset combo
-
         // Hiển thị hiệu ứng và BÁO CHO TOOLMANAGER
         this.ShowFxShadow();
         ToolManager.getInstance().activateTool(this.type);
@@ -76,9 +73,7 @@ export class Ingame_Tool extends Component {
         if (this.type !== finishedToolType) {
             return;
         }
-
         // Nếu đúng là tool này, thì mới thực hiện trừ tiền và ẩn hiệu ứng
-        log(`Tool ${ToolType[this.type]} đã dùng xong, trừ ${this.coin} coin`);
         EventBus.emit(EventGame.UPDATE_COIN_UI, -this.coin);
         this.HideFxShadow();
     }
@@ -106,9 +101,7 @@ export class Ingame_Tool extends Component {
         if (!this.bar || !toolState) {
             return;
         }
-
         const point = ToolManager.getInstance().numberPoint;
-
         const fillAmount = toolState.points / point;
         this.bar.fillRange = fillAmount;
     }
@@ -116,14 +109,9 @@ export class Ingame_Tool extends Component {
 
     UpgradeUiToolUp(finishedToolType: ToolType) {
         if (this.type !== finishedToolType) return;
-
         const toolState = ToolManager.getInstance().getToolState(this.type);
         this.updateProgressBarFromToolState(toolState);
-
-        log('toolState: ', toolState);
-
         const point = ToolManager.getInstance().numberPoint;
-
         if (toolState.isUpgraded || toolState.points == point) {
             toolState.isUpgraded = true;
             this.bgUpTool.active = true;
