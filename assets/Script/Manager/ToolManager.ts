@@ -26,6 +26,7 @@ export class ToolManager extends BaseSingleton<ToolManager> {
     private toolMapping: Map<ToolType, IToolStrategy>;
 
     private toolProgress: Record<string, ToolProgress> = {};
+    
     chooseTool: ToolType = null;
 
     isShowHint: boolean = false;
@@ -41,7 +42,6 @@ export class ToolManager extends BaseSingleton<ToolManager> {
             [ToolType.REMOVE_MIN, new RecycleAllMin()],
         ]);
 
-        console.log('ToolType:', ToolType);
     }
 
     async GetToolGame() {
