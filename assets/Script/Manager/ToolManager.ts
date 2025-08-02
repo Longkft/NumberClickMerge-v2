@@ -26,12 +26,12 @@ export class ToolManager extends BaseSingleton<ToolManager> {
     private toolMapping: Map<ToolType, IToolStrategy>;
 
     private toolProgress: Record<string, ToolProgress> = {};
-    
+
     chooseTool: ToolType = null;
 
     isShowHint: boolean = false;
 
-    numberPoint: number = 1;
+    numberPoint: number = 5;
 
     protected async onLoad() {
         super.onLoad();
@@ -83,7 +83,7 @@ export class ToolManager extends BaseSingleton<ToolManager> {
         if (!progress) return;
         progress.points++;
         const totalPointsAfter = Object.keys(this.toolProgress).map(key => this.toolProgress[key]).reduce((sum, tool) => sum + tool.points, 0);
-        if (totalPointsAfter === 1) {
+        if (totalPointsAfter === this.numberPoint) {
             this.isShowHint = true;
         }
         if (progress.points === this.numberPoint && !progress.isUpgraded) {

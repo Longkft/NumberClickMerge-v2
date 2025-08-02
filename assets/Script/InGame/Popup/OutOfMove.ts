@@ -48,18 +48,6 @@ export class OutOfMove extends Component {
     }
 
     async BtnUseGold() {
-        let gold = await DataManager.getInstance().GetGold();
-        log('gold: ', gold)
-        if (gold === null) return;
-        log(1)
-        let goldAfter = Number(gold) - 200;
-        if (goldAfter < 0) {
-            log(2)
-            this.Hide();
-            PopupManager.getInstance().PopupAdsGold.Show();
-            return;
-        }
-        log(3)
         this.Hide();
 
         Utils.getInstance().UpdateHeart(5); // reset lại heart là 5
