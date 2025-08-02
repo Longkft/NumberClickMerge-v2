@@ -1,4 +1,4 @@
-import { _decorator, Color, Component, EventTouch, Label, log, Node, Sprite, tween } from 'cc';
+import { _decorator, CCBoolean, CCInteger, Color, Component, EventTouch, Label, log, Node, Sprite, tween } from 'cc';
 import { ECELL_CLICK_EFFECT } from '../../Enum/ECell';
 import { CellUI } from './CellUI';
 import { GridManager } from '../GridManager';
@@ -10,13 +10,13 @@ const { ccclass, property } = _decorator;
 @ccclass('CellTutorial')
 export class CellTutorial extends BaseTouch {
 
-    @property(Boolean)
+    @property(CCBoolean)
     isUp: boolean = false;
 
-    @property(Boolean)
+    @property(CCBoolean)
     isClick: boolean = false;
 
-    @property(Number)
+    @property(CCInteger)
     data: number = 2;
 
     @property(Label)
