@@ -3242,9 +3242,7 @@
     "__prefab": {
       "__id__": 139
     },
-    "ru": {
-      "__id__": 115
-    },
+    "vi": null,
     "en": {
       "__id__": 126
     },
@@ -3408,7 +3406,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "ru",
+    "_name": "vi",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -3476,7 +3474,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 198.1399688720703,
+      "width": 362.17999267578125,
       "height": 83.6
     },
     "_anchorPoint": {
@@ -3512,7 +3510,7 @@
       "b": 255,
       "a": 255
     },
-    "_string": "Russia",
+    "_string": "VietNamese",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 60,
@@ -3691,7 +3689,7 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 109.06998443603516,
+      "x": 191.08999633789062,
       "y": 0,
       "z": 0
     },
@@ -3932,7 +3930,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 437.8199157714844,
+      "width": 601.8599395751953,
       "height": 100
     },
     "_anchorPoint": {
@@ -3996,7 +3994,7 @@
     "__prefab": {
       "__id__": 174
     },
-    "ru": {
+    "vi": {
       "__id__": 150
     },
     "en": {

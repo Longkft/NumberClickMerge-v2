@@ -50,6 +50,13 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
     private clickToInherit: ECELL_CLICK_EFFECT = ECELL_CLICK_EFFECT.Down; // lưu stage của cell khi được click
     private justClicked: boolean = false;
 
+    // --- CÁC THUỘC TÍNH CHO HỆ THỐNG GỢI Ý ---
+    private hintTimer: number = 0;
+    private readonly HINT_DELAY: number = 30; // Thời gian chờ (giây)
+    // ---------------------------------------------
+
+    private isGameReady: boolean = false;
+
     protected async onLoad() {
         super.onLoad();
         await ToolManager.getInstance().initialize();
@@ -62,6 +69,8 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         } else {
             PopupManager.getInstance().PopupGoal.Show();
         }
+
+        this.isGameReady = true; // load xong
     }
 
     protected start(): void {
@@ -128,6 +137,8 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         } else {
             this.clickToInherit = ECELL_CLICK_EFFECT.Up; // Reset về mặc định nếu không tìm thấy cell
         }
+
+        this.resetHintTimer(); // Reset timer mỗi khi người chơi có hành động
 
         // Khi người chơi tự click, reset combo và bắt đầu một chuỗi mới
         this.consecutiveMerges = 0;
@@ -933,7 +944,47 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         EventBus.on(EventGame.GRID_CELL_UPDATED_EVENT, this.OnUpdateUi, this);
     }
 
+    //#region hint
+    protected update(dt: number): void {
+        // Timer chỉ chạy khi game không xử lý tự động và đã sẵn sàng
+        if (!this.isProcessing && this.isGameReady) {
+            this.hintTimer += dt;
 
+            if (this.hintTimer >= this.HINT_DELAY) {
+                this.showHint();
+            }
+        }
+    }
+
+    public resetHintTimer(): void {
+        this.hintTimer = 0;
+    }
+
+    /**
+     * Tìm và hiển thị gợi ý cho người chơi.
+     */
+    private showHint(): void {
+        // Reset timer ngay lập tức để nó không gọi liên tục
+        this.hintTimer = 0;
+
+        const hintCellPos = GridManager.getInstance().findPossibleMove();
+
+        if (hintCellPos) {
+            const cellToShowHint = this.cells[hintCellPos.row]?.[hintCellPos.col];
+            if (cellToShowHint) {
+                console.log(`Hiển thị gợi ý tại ô [${hintCellPos.row}, ${hintCellPos.col}]`);
+                cellToShowHint.cellUI.PlayAnimationShakeLoop();
+
+                this.scheduleOnce(() => {
+                    if (cellToShowHint && cellToShowHint.cellUI) {
+                        cellToShowHint.cellUI.StopAnimationShake();
+                    }
+                }, 1);
+            }
+        } else {
+            console.log("Không tìm thấy nước đi nào!");
+        }
+    }
 }
 
 

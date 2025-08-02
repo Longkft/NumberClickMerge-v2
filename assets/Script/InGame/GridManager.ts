@@ -293,6 +293,40 @@ export class GridManager extends BaseSingleton<GridManager> {
         this.CreateBoard();
     }
 
+    //#region hint
+    /**
+     * Tìm một nước đi hợp lệ có thể thực hiện trên mảng.
+     * @returns Trả về tọa độ của ô có thể click, hoặc null nếu không có nước đi nào.
+     */
+    public findPossibleMove(): { row: number, col: number } | null {
+        // Lặp qua từng ô trên bàn cờ
+        for (let r = 0; r < this.grid.length; r++) {
+            for (let c = 0; c < this.grid[r].length; c++) {
+                const originalValue = this.grid[r][c].value;
+                if (originalValue <= 0) continue; // Bỏ qua ô trống
+
+                // THỬ TĂNG GIÁ TRỊ (CLICK UP)
+                this.grid[r][c].value = originalValue + 1;
+                // Kiểm tra xem có tạo thành match không
+                if (this.findConnectedCells(r, c).length >= 3) {
+                    this.grid[r][c].value = originalValue; // Hoàn tác lại giá trị
+                    return { row: r, col: c }; // Tìm thấy nước đi!
+                }
+
+                // THỬ GIẢM GIÁ TRỊ (CLICK DOWN)
+                this.grid[r][c].value = originalValue - 1;
+                if (this.grid[r][c].value > 0 && this.findConnectedCells(r, c).length >= 3) {
+                    this.grid[r][c].value = originalValue; // Hoàn tác lại giá trị
+                    return { row: r, col: c }; // Tìm thấy nước đi!
+                }
+
+                // Hoàn tác lại giá trị để không ảnh hưởng đến game
+                this.grid[r][c].value = originalValue;
+            }
+        }
+
+        return null; // Không tìm thấy nước đi nào
+    }
 }
 
 

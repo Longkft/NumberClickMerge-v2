@@ -9,12 +9,12 @@ export class LanguageManager extends BaseSingleton<LanguageManager> {
     private _data: Record<string, string> = {};
     private _currentLang: string = 'en';
 
-    private _supportedLangs = ['en', 'ru'];
+    private _supportedLangs = ['en', 'vi'];
 
     public async init() {
         // const savedLang = sys.localStorage.getItem('lang') || defaultLang;
         let savedLang = await DataManager.getInstance().GetLanguage();
-        if (savedLang != 'ru') {
+        if (savedLang != 'vi') {
             DataManager.getInstance().SetLanguage("en")
         }
 

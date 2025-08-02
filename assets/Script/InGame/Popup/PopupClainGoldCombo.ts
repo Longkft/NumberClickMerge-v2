@@ -6,6 +6,8 @@ import { AutoComponent } from '../../Base/AutoComponent';
 import { PopupManager } from '../../Manager/PopupManager';
 import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
+import { InGameUIManager } from '../InGameUIManager';
+import { FXTween } from '../../FX/FXTween';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupClainGoldCombo')
@@ -54,8 +56,20 @@ export class PopupClainGoldCombo extends AutoComponent {
         }
     }
 
+    isNoAds: boolean = false;
     async Hide() {
         this.ads(async () => {
+
+            if (!this.isNoAds) {
+
+                let errAds = InGameUIManager.getInstance().errAds;
+                errAds.active = true;
+
+                FXTween.getInstance().FxTween(errAds)
+
+                return;
+            }
+
             const box = this.node.getChildByName('box');
 
             EventBus.emit(EventGame.UPDATE_COIN_UI, this.gold);

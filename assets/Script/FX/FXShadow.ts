@@ -1,4 +1,4 @@
-import { _decorator, Component, find, log, Node, tween, UIOpacity, Vec3 } from 'cc';
+import { _decorator, Component, find, log, Node, Tween, tween, UIOpacity, Vec3 } from 'cc';
 import { AutoComponent } from '../Base/AutoComponent';
 const { ccclass, property } = _decorator;
 
@@ -22,6 +22,8 @@ export class FXShadow extends AutoComponent {
             this.node.children.forEach(element => {
                 element.active = false;
             });
+
+            Tween.stopAllByTarget(this.node);
 
             this.shadow.node.active = true;
             this.shadow.opacity = 155;
@@ -51,7 +53,7 @@ export class FXShadow extends AutoComponent {
             guide.children.forEach((element) => {
                 element.active = false;
             })
-
+            Tween.stopAllByTarget(guide);
             guide.active = true;
             const posLocal = guide.getPosition().clone();
             guide.setPosition(-1080, posLocal.y, posLocal.z);
@@ -79,6 +81,7 @@ export class FXShadow extends AutoComponent {
 
     ShowFxBox(guide: Node): Promise<void> {
         return new Promise((resolve) => {
+            Tween.stopAllByTarget(guide);
             guide.active = true;
             const posLocal = guide.getPosition().clone();
             guide.setPosition(-1080, posLocal.y, posLocal.z);

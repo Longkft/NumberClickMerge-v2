@@ -16,6 +16,9 @@ export class InGameUIManager extends BaseSingleton<InGameUIManager> {
     @property(Node)
     cellNode: Node = null
 
+    @property(Node)
+    errAds: Node = null
+
     @property(Lose)
     lose: Lose = null
 

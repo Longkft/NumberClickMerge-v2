@@ -6,6 +6,9 @@ import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
 import { PopupManager } from '../../Manager/PopupManager';
 import { MoneyController } from '../head/Money/MoneyController';
+import { InGameLogicManager } from '../InGameLogicManager';
+import { InGameUIManager } from '../InGameUIManager';
+import { FXTween } from '../../FX/FXTween';
 const { ccclass, property } = _decorator;
 
 @ccclass('AdsHeat')
@@ -45,8 +48,19 @@ export class AdsHeat extends Component {
         EventBus.emit(EventGame.UPDATE_COIN_UI, - 200);
     }
 
+    isNoAds: boolean = false;
     BtnAds() {
         this.Ads(() => {
+            if (!this.isNoAds) {
+
+                let errAds = InGameUIManager.getInstance().errAds;
+                errAds.active = true;
+
+                FXTween.getInstance().FxTween(errAds)
+
+                return;
+            }
+
             this.Hide();
 
             Utils.getInstance().ResetHeart(5); // reset lại heart là 5

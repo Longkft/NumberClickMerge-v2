@@ -32,7 +32,8 @@ export class Cell {
 
     constructor(cellData: CellModel) {
         this.cellData = cellData
-        this.clickEffect = this.RandomEffectClick()
+        // this.clickEffect = this.RandomEffectClick()
+        this.clickEffect = ECELL_CLICK_EFFECT.Up;
         this.CreateCellUI()
 
         // chỉ bind MỘT lần rồi lưu lại

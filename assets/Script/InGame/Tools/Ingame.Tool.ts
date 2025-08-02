@@ -10,7 +10,6 @@ import { InGameLogicManager } from '../InGameLogicManager';
 
 const { ccclass, property } = _decorator;
 
-// Đổi tên Enum để khớp với ToolManager
 export { ToolType as TYPE_TOOL };
 Enum(ToolType);
 
@@ -59,7 +58,11 @@ export class Ingame_Tool extends Component {
             PopupManager.getInstance().PopupAdsGold.Show();
             return;
         }
+
         InGameLogicManager.getInstance().consecutiveMerges = 0; // reset combo
+
+        InGameLogicManager.getInstance().resetHintTimer(); // reset hint time
+
         // Hiển thị hiệu ứng và BÁO CHO TOOLMANAGER
         this.ShowFxShadow();
         ToolManager.getInstance().activateTool(this.type);

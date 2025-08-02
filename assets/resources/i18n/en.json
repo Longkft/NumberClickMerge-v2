@@ -60,5 +60,6 @@
     "awesome": "You have made a big number!!",
     "blockJustExcludedTT": "Block Just Excluded",
     "blockJustExcluded": "This block is removed and will not be displayed later.",
-    "continue": "Continue"
+    "continue": "Continue",
+    "errAds": "There are currently no ads"
 }

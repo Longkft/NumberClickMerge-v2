@@ -95,12 +95,12 @@ export class CellTutorial extends BaseTouch {
                         PopupManager.getInstance().PopupTutorial.fx.active = true;
 
                         this.scheduleOnce(async () => {
-                            if (PopupManager.getInstance().PopupTutorial.countTutorial < 2) {
-                                await PopupManager.getInstance().PopupTutorial.HideFxUp();
-                                PopupManager.getInstance().PopupTutorial.SetUpDown(false);
-                                PopupManager.getInstance().PopupTutorial.fx.active = false;
-                                return;
-                            }
+                            // if (PopupManager.getInstance().PopupTutorial.countTutorial < 2) { // mở tutorial cell down
+                            //     await PopupManager.getInstance().PopupTutorial.HideFxUp();
+                            //     PopupManager.getInstance().PopupTutorial.SetUpDown(false);
+                            //     PopupManager.getInstance().PopupTutorial.fx.active = false;
+                            //     return;
+                            // }
                             let shadow = PopupManager.getInstance().PopupTutorial.shadow;
                             await shadow.HideFXShadow();
 

@@ -7,11 +7,9 @@ const { ccclass, property } = _decorator;
 @ccclass('BtnLanguage')
 export class BtnLanguage extends BaseTouch {
     @property(Label)
-    ru: Label = null!;
+    vi: Label = null!;
     @property(Label)
     en: Label = null!;
-
-
 
     // TouchStart(event: EventTouch): void {
     //     this.changeLanguage();
@@ -32,7 +30,7 @@ export class BtnLanguage extends BaseTouch {
         let display = '';
         switch (lang) {
             case 'en': display = 'English'; break;
-            case 'ru': display = 'Россия'; break;
+            case 'vi': display = 'Россия'; break;
             default: display = lang; break;
         }
         // this.label.string = `${display}`;
@@ -45,11 +43,11 @@ export class BtnLanguage extends BaseTouch {
         switch (lang) {
             case 'en': {
                 this.en.color = color;
-                this.ru.color = new Color(255, 255, 255, 255);
+                this.vi.color = new Color(255, 255, 255, 255);
             }
                 break;
-            case 'ru': {
-                this.ru.color = color;
+            case 'vi': {
+                this.vi.color = color;
                 this.en.color = new Color(255, 255, 255, 255);
             }
                 break;
@@ -83,7 +81,7 @@ export class BtnLanguage extends BaseTouch {
     }
 
     async UpdateChangeRu() {
-        await DataManager.getInstance().SetLanguage("ru")
+        await DataManager.getInstance().SetLanguage("vi")
         let lang = await DataManager.getInstance().GetLanguage();
         await LanguageManager.getInstance().loadLanguage(lang);
         this.updateText();

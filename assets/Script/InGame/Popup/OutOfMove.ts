@@ -7,6 +7,7 @@ import { Utils } from '../../Utils/Utils';
 import { InGameUIManager } from '../InGameUIManager';
 import { PopupManager } from '../../Manager/PopupManager';
 import { MoneyController } from '../head/Money/MoneyController';
+import { FXTween } from '../../FX/FXTween';
 const { ccclass, property } = _decorator;
 
 @ccclass('OutOfMove')
@@ -56,8 +57,19 @@ export class OutOfMove extends Component {
         EventBus.emit(EventGame.UPDATE_COIN_UI, - 200);
     }
 
+    isNoAds: boolean = false;
     BtnAds() {
         this.Ads(() => {
+            if (!this.isNoAds) {
+
+                let errAds = InGameUIManager.getInstance().errAds;
+                errAds.active = true;
+
+                FXTween.getInstance().FxTween(errAds)
+
+                return;
+            }
+
             this.Hide();
 
             Utils.getInstance().UpdateHeart(5); // reset lại heart là 5

@@ -1,8 +1,9 @@
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, Node, tween, UIOpacity } from 'cc';
 import { BaseSingleton } from '../../Base/BaseSingleton';
 import { FXShadow } from '../../FX/FXShadow';
 import { DataManager } from '../../Manager/DataManager';
 import { TypewriterEffect } from '../../FX/TypewriterEffect';
+import { PopupManager } from '../../Manager/PopupManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('TutorialManager')
@@ -27,6 +28,9 @@ export class TutorialManager extends Component {
     fx: Node = null;
 
     @property(Node)
+    close: Node = null;
+
+    @property(Node)
     hand: Node = null;
 
     isUp: boolean = false;
@@ -41,6 +45,12 @@ export class TutorialManager extends Component {
         await this.shadow.ShowFxBox(this.up);
 
         this.SetUpDown(true);
+
+        this.scheduleOnce(() => {
+            this.close.active = true;
+            let uiopaCloseNode = this.close.getComponent(UIOpacity);
+            tween(uiopaCloseNode).to(0.5, { opacity: 255 }).start();
+        }, 2);
     }
 
     async HideFxUp() {
@@ -50,6 +60,15 @@ export class TutorialManager extends Component {
         await this.shadow.ShowFxBox(this.down);
 
         this.hand.active = false;
+    }
+
+    async HideFx() {
+
+        await this.shadow.HideFxBox(this.up);
+
+        await this.shadow.HideFXShadow();
+
+        PopupManager.getInstance().PopupGoal.Show();
     }
 
     SetUpDown(up: boolean) {

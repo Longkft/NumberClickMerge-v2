@@ -4,6 +4,8 @@ import { MoneyController } from '../head/Money/MoneyController';
 import { FXShadow } from '../../FX/FXShadow';
 import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
+import { InGameUIManager } from '../InGameUIManager';
+import { FXTween } from '../../FX/FXTween';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupAdsGold')
@@ -28,8 +30,20 @@ export class PopupAdsGold extends Component {
         await this.shadow.ShowFxBox(box);
     }
 
+    isNoAds: boolean = false;
     async Hide() {
         this.ads(async () => {
+
+            if (!this.isNoAds) {
+
+                let errAds = InGameUIManager.getInstance().errAds;
+                errAds.active = true;
+
+                FXTween.getInstance().FxTween(errAds)
+
+                return;
+            }
+
             this.gold = 1 * 100;
             EventBus.emit(EventGame.UPDATE_COIN_UI, this.gold);
 
