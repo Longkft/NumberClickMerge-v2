@@ -30,7 +30,6 @@ export class FbSdk extends Component {
         this.FBInstant = (typeof FBInstant !== 'undefined') ? FBInstant : null;
         //
         if (this.FBInstant != null) {
-            await this.FBInstant.initializeAsync();
             this.FBInstant.setLoadingProgress(100); // Hoặc từng bước preload
             await this.FBInstant.startGameAsync();
             //     const entryPointData = this.FBInstant.getEntryPointData();
