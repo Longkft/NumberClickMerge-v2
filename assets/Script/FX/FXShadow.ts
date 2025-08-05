@@ -8,15 +8,6 @@ export class FXShadow extends AutoComponent {
     @property({ type: UIOpacity })
     shadow: UIOpacity = null;
 
-    // LoadShadow() {
-    //     if (this.shadow != null) return;
-    //     this.shadow = find('Canvas/IngameUIManager/Shadow').getComponent(UIOpacity);
-    // }
-
-    // protected LoadComponent(): void {
-    //     this.LoadShadow();
-    // }
-
     ShowFxShadow(): Promise<void> {
         return new Promise((resolve) => {
             this.node.children.forEach(element => {

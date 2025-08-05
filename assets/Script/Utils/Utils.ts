@@ -1,4 +1,4 @@
-import { _decorator, Component, log, Node } from 'cc';
+import { _decorator, Asset, Component, log, Node, resources } from 'cc';
 import { BaseSingleton } from '../Base/BaseSingleton';
 import { DataManager } from '../Manager/DataManager';
 import { InGameLogicManager } from '../InGame/InGameLogicManager';
@@ -8,6 +8,22 @@ const { ccclass, property } = _decorator;
 @ccclass('Utils')
 export class Utils extends BaseSingleton<Utils> {
 
+    public static PreloadAsset<T extends Asset>(
+        path: string,
+        type: any,
+        callBack?: (asset) => void
+    ) {
+        resources.load(path, type, (err, asset) => {
+            if (err) {
+                console.error(`Lỗi preload asset tại ${path}:`, err);
+                return;
+            }
+
+            if (callBack) {
+                callBack(asset);
+            }
+        });
+    }
 
     //#region Heart
     LoadHeartGameDefault() {

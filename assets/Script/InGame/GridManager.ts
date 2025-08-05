@@ -5,6 +5,7 @@ import { GameManager } from '../Manager/GameManager';
 import { EventBus } from '../Utils/EventBus';
 import { EventGame } from '../Enum/EEvent';
 import { PopupManager } from '../Manager/PopupManager';
+import { GameMode } from '../Enum/Enum';
 
 const { ccclass, property } = _decorator;
 
@@ -18,6 +19,8 @@ export class GridManager extends BaseSingleton<GridManager> {
     public numberMin = 1
 
     public colors: string[] = ["#CDC958", "#31DA28", "#FF963D", "#12D5C6", "#F54444", "#1592DD", "#DA36B3", "#4449DE", "#8C37E4"]
+
+    GameMode: GameMode = GameMode.CLASSIC;
 
     protected onLoad(): void {
         this.initGrid();
@@ -273,10 +276,14 @@ export class GridManager extends BaseSingleton<GridManager> {
     }
 
     CheckUpDateMinCurrent() {
-        if (this.numberMax + 1 < 9) return
-        const diff = this.numberMax + 1 - 9;
-        if (diff % 2 !== 0) return
-        this.numberMin = (diff / 2) + 1
+        // if (this.numberMax + 1 < 9) return
+        // const diff = this.numberMax + 1 - 9;
+        // if (diff % 2 !== 0) return
+        // this.numberMin = (diff / 2) + 1;
+
+        if (this.numberMax + 1 < 9) return;
+        this.numberMin = this.numberMax - 7;
+
         PopupManager.getInstance().ShowPopupUnlockMin();
 
         return true;

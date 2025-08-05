@@ -12,7 +12,7 @@ import { EventBus } from '../Utils/EventBus';
 import { EventGame } from '../Enum/EEvent';
 import { DataManager } from '../Manager/DataManager';
 import { AudioManager } from '../Manager/AudioManager';
-import { SFXType } from '../Enum/Enum';
+import { GameMode, SFXType } from '../Enum/Enum';
 import { PopupManager } from '../Manager/PopupManager';
 import { Utils } from '../Utils/Utils';
 import { MoneyController } from './head/Money/MoneyController';
@@ -74,7 +74,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
     }
 
     protected start(): void {
-        this.LoadGame();
+        // this.LoadGame();
     }
 
     DestroyEvent() {
@@ -884,12 +884,6 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
     private handleBeforeUnload(): void {
         this.SaveGame();
-        AudioManager.getInstance().SaveState()
-        MoneyController.getInstance().SaveGold()
-        ScoreController.getInstance().SaveScoreCurrent()
-        DataManager.getInstance().SetMyHeart(this.currentHeart)
-        LevelController.getInstance().SaveTotalExp();
-        ToolManager.getInstance().SetToolState();
     }
 
     public SaveGame() {
@@ -905,6 +899,13 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             // heart: this.currentHeart,
             // score: DataManager.getInstance().CoreInPlayGame, // hoặc score hiện tại
         });
+
+        AudioManager.getInstance().SaveState()
+        MoneyController.getInstance().SaveGold()
+        ScoreController.getInstance().SaveScoreCurrent()
+        DataManager.getInstance().SetMyHeart(this.currentHeart)
+        LevelController.getInstance().SaveTotalExp();
+        ToolManager.getInstance().SetToolState();
     }
 
     async LoadGame() {

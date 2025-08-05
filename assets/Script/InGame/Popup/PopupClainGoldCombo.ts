@@ -60,15 +60,15 @@ export class PopupClainGoldCombo extends AutoComponent {
     async Hide() {
         this.ads(async () => {
 
-            if (!this.isNoAds) {
+            // if (!this.isNoAds) {
 
-                let errAds = InGameUIManager.getInstance().errAds;
-                errAds.active = true;
+            //     let errAds = InGameUIManager.getInstance().errAds;
+            //     errAds.active = true;
 
-                FXTween.getInstance().FxTween(errAds)
+            //     FXTween.getInstance().FxTween(errAds)
 
-                return;
-            }
+            //     return;
+            // }
 
             const box = this.node.getChildByName('box');
 

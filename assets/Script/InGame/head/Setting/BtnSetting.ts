@@ -5,8 +5,6 @@ const { ccclass, property } = _decorator;
 
 @ccclass('BtnSetting')
 export class BtnSetting extends BaseTouch {
-    @property({ type: Node })
-    settingScene: Node = null;
 
     TouchStart(event: EventTouch): void {
         PopupManager.getInstance().SettingScene.Show();

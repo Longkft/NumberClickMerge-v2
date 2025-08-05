@@ -7,6 +7,8 @@ const { ccclass, property } = _decorator;
 @ccclass('DataManager')
 export class DataManager extends BaseSingleton<DataManager> {
 
+    _scenePlay: boolean = false;
+
     // #region FirstGame
     // public get FirstGame(): boolean {
     //     const saved = localStorage.getItem("firstGame");

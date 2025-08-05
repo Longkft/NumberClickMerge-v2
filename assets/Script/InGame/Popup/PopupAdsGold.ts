@@ -34,15 +34,15 @@ export class PopupAdsGold extends Component {
     async Hide() {
         this.ads(async () => {
 
-            if (!this.isNoAds) {
+            // if (!this.isNoAds) {
 
-                let errAds = InGameUIManager.getInstance().errAds;
-                errAds.active = true;
+            //     let errAds = InGameUIManager.getInstance().errAds;
+            //     errAds.active = true;
 
-                FXTween.getInstance().FxTween(errAds)
+            //     FXTween.getInstance().FxTween(errAds)
 
-                return;
-            }
+            //     return;
+            // }
 
             this.gold = 1 * 100;
             EventBus.emit(EventGame.UPDATE_COIN_UI, this.gold);

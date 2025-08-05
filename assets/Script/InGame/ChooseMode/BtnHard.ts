@@ -1,0 +1,24 @@
+import { _decorator, Component, EventTouch, Node } from 'cc';
+import { BaseTouch } from '../../Base/BaseTouch';
+import { InGameLogicManager } from '../InGameLogicManager';
+import { GridManager } from '../GridManager';
+import { GameMode } from '../../Enum/Enum';
+import { HomeManager } from '../../Manager/HomeManager';
+const { ccclass, property } = _decorator;
+
+@ccclass('BtnHard')
+export class BtnHard extends BaseTouch {
+
+    TouchStart(event: EventTouch): void {
+        GridManager.getInstance().GameMode = GameMode.CLASSIC;
+        // GridManager.getInstance().initNewGrid();
+
+        // InGameLogicManager.getInstance().RestartGame();
+
+        HomeManager.getInstance().TouchPlayGame();
+
+        InGameLogicManager.getInstance().LoadGame();
+    }
+}
+
+

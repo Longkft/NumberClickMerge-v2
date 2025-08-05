@@ -69,7 +69,7 @@ export class SettingScene extends BaseTouch {
     }
     LoadBoxTools() {
         if (this.boxTools != null) return;
-        this.boxTools = find('Canvas').getChildByPath('IngameUIManager/shadow');
+        this.boxTools = find('Canvas').getChildByPath('GamePlay/InGame/IngameUIManager/shadow');
     }
 
     LoadDataAudio() {
