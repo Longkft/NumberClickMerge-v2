@@ -11,9 +11,6 @@ export class BtnClassic extends BaseTouch {
 
     TouchStart(event: EventTouch): void {
         GridManager.getInstance().GameMode = GameMode.CLASSIC;
-        // GridManager.getInstance().initNewGrid();
-
-        // InGameLogicManager.getInstance().RestartGame();
 
         HomeManager.getInstance().TouchPlayGame();
 

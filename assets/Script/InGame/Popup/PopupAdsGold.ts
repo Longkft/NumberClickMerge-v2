@@ -6,6 +6,7 @@ import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
 import { InGameUIManager } from '../InGameUIManager';
 import { FXTween } from '../../FX/FXTween';
+import { PopupNoAds } from './PopupNoAds';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupAdsGold')
@@ -22,7 +23,7 @@ export class PopupAdsGold extends Component {
     async Show(gold: number = 100) {
         const box = this.node.getChildByName('box');
 
-        Utils.getInstance().setCamLayer(MoneyController.getInstance().node, Layers.Enum.PROFILER);
+        Utils.getInstance().setCamLayer(MoneyController.getInstance().node, 1 << Utils.getInstance().layerMaxIndex);
 
         this.SetValueGoldUI(gold);
 
@@ -34,15 +35,16 @@ export class PopupAdsGold extends Component {
     async Hide() {
         this.ads(async () => {
 
-            // if (!this.isNoAds) {
+            if (!this.isNoAds) {
 
-            //     let errAds = InGameUIManager.getInstance().errAds;
-            //     errAds.active = true;
+                this.hidePopup();
 
-            //     FXTween.getInstance().FxTween(errAds)
+                PopupNoAds.getInstance().show();
 
-            //     return;
-            // }
+                FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
+
+                return;
+            }
 
             this.gold = 1 * 100;
             EventBus.emit(EventGame.UPDATE_COIN_UI, this.gold);

@@ -9,6 +9,7 @@ import { MoneyController } from '../head/Money/MoneyController';
 import { InGameLogicManager } from '../InGameLogicManager';
 import { InGameUIManager } from '../InGameUIManager';
 import { FXTween } from '../../FX/FXTween';
+import { PopupNoAds } from './PopupNoAds';
 const { ccclass, property } = _decorator;
 
 @ccclass('AdsHeat')
@@ -53,10 +54,11 @@ export class AdsHeat extends Component {
         this.Ads(() => {
             if (!this.isNoAds) {
 
-                let errAds = InGameUIManager.getInstance().errAds;
-                errAds.active = true;
+                this.Hide();
 
-                FXTween.getInstance().FxTween(errAds)
+                PopupNoAds.getInstance().show();
+
+                FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
 
                 return;
             }

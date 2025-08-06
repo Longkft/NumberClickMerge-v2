@@ -42,7 +42,7 @@ export class PopupClainGoldCombo extends AutoComponent {
     async Show(gold: number, combo: number, call: CallableFunction) {
         const box = this.node.getChildByName('box');
 
-        Utils.getInstance().setCamLayer(MoneyController.getInstance().node, Layers.Enum.PROFILER);
+        Utils.getInstance().setCamLayer(MoneyController.getInstance().node, 1 << Utils.getInstance().layerMaxIndex);
 
         this.SetValueGoldUI(gold, combo);
 

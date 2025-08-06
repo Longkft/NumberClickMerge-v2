@@ -10,10 +10,7 @@ const { ccclass, property } = _decorator;
 export class BtnHard extends BaseTouch {
 
     TouchStart(event: EventTouch): void {
-        GridManager.getInstance().GameMode = GameMode.CLASSIC;
-        // GridManager.getInstance().initNewGrid();
-
-        // InGameLogicManager.getInstance().RestartGame();
+        GridManager.getInstance().GameMode = GameMode.HARD;
 
         HomeManager.getInstance().TouchPlayGame();
 

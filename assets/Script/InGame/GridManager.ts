@@ -13,7 +13,9 @@ const { ccclass, property } = _decorator;
 export class GridManager extends BaseSingleton<GridManager> {
     private GRID_ROWS = 6;
     private GRID_COLS = 5;
+
     public grid: CellModel[][] = [];
+
     public numberMax = 8
 
     public numberMin = 1

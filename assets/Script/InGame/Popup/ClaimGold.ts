@@ -51,7 +51,7 @@ export class ClaimGold extends AutoComponent {
             element.active = false;
         });
 
-        Utils.getInstance().setCamLayer(MoneyController.getInstance().node, Layers.Enum.PROFILER);
+        Utils.getInstance().setCamLayer(MoneyController.getInstance().node, 1 << Utils.getInstance().layerMaxIndex);
 
         this.SetValueGoldUI(gold);
 

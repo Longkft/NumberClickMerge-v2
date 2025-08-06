@@ -7,6 +7,7 @@ import { MoneyController } from '../head/Money/MoneyController';
 import { ToolManager, ToolType } from '../../Manager/ToolManager';
 import { ToolProgress } from './ToolProgress';
 import { InGameLogicManager } from '../InGameLogicManager';
+import { Config } from '../../Config';
 
 const { ccclass, property } = _decorator;
 
@@ -104,7 +105,7 @@ export class Ingame_Tool extends Component {
         if (!this.bar || !toolState) {
             return;
         }
-        const point = ToolManager.getInstance().numberPoint;
+        const point = Config.numberPointUpLv;
         const fillAmount = toolState.points / point;
         this.bar.fillRange = fillAmount;
     }
@@ -114,7 +115,7 @@ export class Ingame_Tool extends Component {
         if (this.type !== finishedToolType) return;
         const toolState = ToolManager.getInstance().getToolState(this.type);
         this.updateProgressBarFromToolState(toolState);
-        const point = ToolManager.getInstance().numberPoint;
+        const point = Config.numberPointUpLv;
         if (toolState.isUpgraded || toolState.points == point) {
             toolState.isUpgraded = true;
             this.bgUpTool.active = true;

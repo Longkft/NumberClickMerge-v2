@@ -1619,7 +1619,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 156.6299285888672,
+      "width": 200,
       "height": 37.8
     },
     "_anchorPoint": {
@@ -1658,11 +1658,11 @@
     "_string": "Watch Ads",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 30,
+    "_actualFontSize": 31,
     "_fontSize": 30,
     "_fontFamily": "Arial",
     "_lineHeight": 30,
-    "_overflow": 0,
+    "_overflow": 2,
     "_enableWrapText": true,
     "_font": {
       "__uuid__": "b414b1a6-ddba-42a7-a4d6-1e0770b61834",

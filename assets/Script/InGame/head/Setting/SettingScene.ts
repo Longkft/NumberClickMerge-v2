@@ -8,6 +8,7 @@ import { EventBus } from '../../../Utils/EventBus';
 import { EventGame } from '../../../Enum/EEvent';
 import { PopupManager } from '../../../Manager/PopupManager';
 import { GridManager } from '../../GridManager';
+import { HomeManager } from '../../../Manager/HomeManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('SettingScene')
@@ -216,6 +217,14 @@ export class SettingScene extends BaseTouch {
     }
 
     BtnResumeAndHome() {
+        this.box.active = false;
+
+        this.shadow.HideFXShadow();
+    }
+
+    btnHome() {
+        HomeManager.getInstance().ShowHome();
+
         this.box.active = false;
 
         this.shadow.HideFXShadow();

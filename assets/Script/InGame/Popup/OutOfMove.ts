@@ -8,6 +8,7 @@ import { InGameUIManager } from '../InGameUIManager';
 import { PopupManager } from '../../Manager/PopupManager';
 import { MoneyController } from '../head/Money/MoneyController';
 import { FXTween } from '../../FX/FXTween';
+import { PopupNoAds } from './PopupNoAds';
 const { ccclass, property } = _decorator;
 
 @ccclass('OutOfMove')
@@ -62,10 +63,11 @@ export class OutOfMove extends Component {
         this.Ads(() => {
             if (!this.isNoAds) {
 
-                let errAds = InGameUIManager.getInstance().errAds;
-                errAds.active = true;
+                this.Hide();
 
-                FXTween.getInstance().FxTween(errAds)
+                PopupNoAds.getInstance().show();
+
+                FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
 
                 return;
             }

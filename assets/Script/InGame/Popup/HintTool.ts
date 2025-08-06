@@ -19,7 +19,7 @@ export class HintTool extends AutoComponent {
 
     LoadHammer() {
         if (this.hammerTool) return;
-        this.hammerTool = find('Canvas/IngameUIManager/tools/Hammer');
+        this.hammerTool = find('Canvas/tools/Hammer');
     }
 
     protected LoadComponent(): void {
@@ -35,7 +35,7 @@ export class HintTool extends AutoComponent {
 
         this.titleHint.getComponent(TypewriterEffect).playEffect(text);
 
-        Utils.getInstance().setCamLayer(this.hammerTool, Layers.Enum.PROFILER);
+        Utils.getInstance().setCamLayer(this.hammerTool, 1 << Utils.getInstance().layerMaxIndex);
 
         this.hammerTool.getChildByPath('tool/block').active = true;
     }

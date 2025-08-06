@@ -12,8 +12,9 @@ export class ScoreController extends BaseSingleton<ScoreController> {
     @property({ type: ScoreUi })
     scoreUiCpn: ScoreUi = null;
 
-    scoreCurrent: number = 0
-    highScoreCurrent: number = 0
+    scoreCurrent: number = 0;
+    highScoreCurrent: number = 0;
+
     protected async onLoad() {
         this.LoadScoreCurrent()
     }

@@ -13,7 +13,7 @@ import { HeartUi } from '../Heart/HeartUi';
 import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
 import { AudioManager } from '../../Manager/AudioManager';
-import { SFXType } from '../../Enum/Enum';
+import { GameMode, SFXType } from '../../Enum/Enum';
 import { DataManager } from '../../Manager/DataManager';
 import { PopupManager } from '../../Manager/PopupManager';
 import { ToolManager } from '../../Manager/ToolManager';
@@ -31,9 +31,9 @@ export class Cell {
     private readonly MAX_DOWN = 6;
 
     constructor(cellData: CellModel) {
-        this.cellData = cellData
+        this.cellData = cellData;
         // this.clickEffect = this.RandomEffectClick()
-        this.clickEffect = ECELL_CLICK_EFFECT.Up;
+        this.clickEffect = GridManager.getInstance().GameMode == GameMode.CLASSIC ? ECELL_CLICK_EFFECT.Up : this.RandomEffectClick();
         this.CreateCellUI()
 
         // chỉ bind MỘT lần rồi lưu lại

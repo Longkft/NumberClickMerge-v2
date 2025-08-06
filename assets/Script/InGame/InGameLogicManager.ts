@@ -61,14 +61,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         super.onLoad();
         await ToolManager.getInstance().initialize();
         this.RegisEventBeforUnload();
-        this.currentHeart = await DataManager.getInstance().GetMyHeart()
-        let first = await DataManager.getInstance().GetFirst()
-        if (first) {
-            DataManager.getInstance().SetFirst(false)
-            PopupManager.getInstance().PopupTutorial.Show();
-        } else {
-            PopupManager.getInstance().PopupGoal.Show();
-        }
+        this.currentHeart = await DataManager.getInstance().GetMyHeart();
 
         this.isGameReady = true; // load xong
     }
@@ -887,7 +880,8 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
     }
 
     public SaveGame() {
-        DataManager.getInstance().SaveGameState({
+        // Dữ liệu cần lưu là như nhau cho cả 2 chế độ
+        const gameStateData = {
             grid: GridManager.getInstance().grid.map(row => row.map(cell => ({
                 value: cell.value,
                 row: cell.row,
@@ -896,14 +890,24 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             }))),
             numberMin: GridManager.getInstance().numberMin,
             numberMax: GridManager.getInstance().numberMax,
-            // heart: this.currentHeart,
-            // score: DataManager.getInstance().CoreInPlayGame, // hoặc score hiện tại
-        });
+        };
 
-        AudioManager.getInstance().SaveState()
-        MoneyController.getInstance().SaveGold()
-        ScoreController.getInstance().SaveScoreCurrent()
-        DataManager.getInstance().SetMyHeart(this.currentHeart)
+        // KIỂM TRA CHẾ ĐỘ CHƠI HIỆN TẠI
+        const currentMode = GridManager.getInstance().GameMode;
+
+        // if (currentMode === GameMode.HARD) {
+        //     console.log("Saving game state for HARD mode...");
+        //     DataManager.getInstance().SaveGameStateHard(gameStateData);
+        // } else {
+        //     console.log("Saving game state for CLASSIC mode...");
+        // }
+        DataManager.getInstance().SaveGameState(gameStateData);
+
+        // Các lệnh save khác không liên quan đến chế độ chơi
+        AudioManager.getInstance().SaveState();
+        MoneyController.getInstance().SaveGold();
+        ScoreController.getInstance().SaveScoreCurrent();
+        DataManager.getInstance().SetMyHeart(this.currentHeart);
         LevelController.getInstance().SaveTotalExp();
         ToolManager.getInstance().SetToolState();
     }
@@ -911,27 +915,34 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
     async LoadGame() {
         this.isProcessing = true; // Khóa input trong lúc load
 
-        this.init(); // Tạo CellCollection
+        this.init();
         this.cells = [];
         this.contains = [];
         this.cellContainColllection = [];
 
-        const savedData = await DataManager.getInstance().LoadGameState();
+        const currentMode = GridManager.getInstance().GameMode;
+        let savedData = null;
 
-        // 3. Quyết định luồng chạy
+        // if (currentMode === GameMode.HARD) {
+        //     console.log("Loading game state for HARD mode...");
+        //     savedData = await DataManager.getInstance().LoadGameStateHard();
+        // } else {
+        //     console.log("Loading game state for CLASSIC mode...");
+        // }
+        savedData = await DataManager.getInstance().LoadGameState();
+
+        // Phần xử lý dữ liệu sau khi load vẫn giữ nguyên
         if (savedData) {
-
+            console.log("Found saved data, applying state...");
             GridManager.getInstance().grid = savedData.grid.map(row =>
                 row.map(c => new CellModel({ value: c.value, color: c.color, row: c.row, col: c.col }))
             );
             GridManager.getInstance().numberMin = savedData.numberMin;
             GridManager.getInstance().numberMax = savedData.numberMax;
-            // DataManager.getInstance().CoreInPlayGame = savedData.score;
             EventBus.emit(EventGame.UPDATE_HEARt_UI);
             EventBus.emit(EventGame.UPGRADE_SCORE, 0);
-
         } else {
-
+            console.log("No saved data found, starting new grid...");
             GridManager.getInstance().initNewGrid();
         }
 
@@ -943,6 +954,14 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         }, 0.25);
 
         EventBus.on(EventGame.GRID_CELL_UPDATED_EVENT, this.OnUpdateUi, this);
+
+        let first = await DataManager.getInstance().GetFirst();
+        if (first) {
+            DataManager.getInstance().SetFirst(false)
+            PopupManager.getInstance().PopupTutorial.Show();
+        } else {
+            PopupManager.getInstance().PopupGoal.Show();
+        }
     }
 
     //#region hint

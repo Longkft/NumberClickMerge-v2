@@ -2,6 +2,8 @@ import { _decorator, Component, easing, floatToHalf, instantiate, log, Node, Pre
 import { DataManager } from './DataManager';
 import { Utils } from '../Utils/Utils';
 import { BaseSingleton } from '../Base/BaseSingleton';
+import { HighScoreMenu } from '../InGame/head/HighScoreMenu';
+import { ScoreController } from '../InGame/head/score/ScoreController';
 
 
 const { ccclass, property } = _decorator;
@@ -22,6 +24,12 @@ export class HomeManager extends BaseSingleton<HomeManager> {
 
     @property({ type: Node })
     tool: Node = null;
+
+    @property({ type: HighScoreMenu })
+    highScoreClassic: HighScoreMenu = null;
+
+    @property({ type: HighScoreMenu })
+    highScoreHard: HighScoreMenu = null;
 
     scheduleLoadShowGameplay: CallableFunction = null;
 
@@ -48,33 +56,23 @@ export class HomeManager extends BaseSingleton<HomeManager> {
 
             log(Prefab)
 
-            this.gamePlayNode = instantiate(this.gamePlayPrefab);
-            this.gamePlayNode.setParent(this.gameplayContainer);
-            this.gamePlayNode.active = false;
+            // this.gamePlayNode = instantiate(this.gamePlayPrefab);
+            // this.gamePlayNode.setParent(this.gameplayContainer);
+            // this.gamePlayNode.active = false;
         });
     }
 
     TouchPlayGame() {
+        log(1)
         if (this.gamePlayPrefab == null) {
+            log(2)
             // LoadingInScene hiện lên màn load
 
             this.loadingInScene.active = true;
 
             this.schedule(this.scheduleLoad, 0.1);
         } else {
-            // add màn play
-
-            this.scheduleLoad();
-        }
-
-        DataManager.getInstance()._scenePlay = true; // đã sang màn chơi chưa
-        if (this.gamePlayPrefab == null) {
-            // LoadingInScene hiện lên màn load
-
-            this.loadingInScene.active = true;
-
-            this.schedule(this.scheduleLoad, 0.1);
-        } else {
+            log(3)
             // add màn play
 
             this.scheduleLoad();
@@ -84,7 +82,9 @@ export class HomeManager extends BaseSingleton<HomeManager> {
     }
 
     scheduleLoad() {
+        log('no')
         if (this.gamePlayPrefab != null) {
+            log('yes')
             this.loadingInScene.active = false;
 
             // huỷ
@@ -96,10 +96,14 @@ export class HomeManager extends BaseSingleton<HomeManager> {
 
     ActiveGamePlay() {
         this.home.active = false
+        log('this.gamePlayNode: ', this.gamePlayNode);
         if (this.gamePlayNode != null) {
+            this.gamePlayNode.setParent(this.gameplayContainer);
             this.gamePlayNode.active = true;
 
-            this.activeHead();
+            log(`11111111111111111`)
+
+            this.activeHead(true);
             return;
         }
 
@@ -108,21 +112,22 @@ export class HomeManager extends BaseSingleton<HomeManager> {
         this.gamePlayNode.setParent(this.gameplayContainer);
         this.gamePlayNode.active = true;
 
-        this.activeHead();
+        this.activeHead(true);
+        log('this.gamePlayNode111: ', this.gamePlayNode);
     }
 
-    activeHead() {
+    activeHead(active: boolean) {
         let score = this.head.getChildByName('score');
-        score.active = true;
+        score.active = active;
         let heart = this.head.getChildByName('heart');
-        heart.active = true;
+        heart.active = active;
         let level = this.head.getChildByName('level');
-        level.active = true;
+        level.active = active;
         log(score)
         log(heart)
         log(level)
 
-        this.tool.active = true;
+        this.tool.active = active;
     }
 
     // #region  Score
@@ -133,7 +138,20 @@ export class HomeManager extends BaseSingleton<HomeManager> {
 
     ShowHome() {
         this.home.active = true;
-        this.gamePlayNode.active = false;
+
+        // this.gameplayContainer.removeAllChildren();
+        this.gamePlayNode.removeFromParent();
+        this.gamePlayNode.destroy();
+        this.gamePlayNode = null;
+
+        DataManager.getInstance()._scenePlay = false;
+
+        this.highScoreClassic.highScore = ScoreController.getInstance().highScoreCurrent;
+        this.highScoreHard.highScore = ScoreController.getInstance().highScoreCurrent;
+        this.highScoreClassic.setValue();
+        this.highScoreHard.setValue();
+
+        this.activeHead(false);
     }
 }
 

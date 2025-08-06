@@ -5314,7 +5314,7 @@
     },
     "component": "",
     "_componentId": "70fc77tjsJJT7/BQp0cwbnm",
-    "handler": "BtnResumeAndHome",
+    "handler": "btnHome",
     "customEventData": ""
   },
   {

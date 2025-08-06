@@ -8,6 +8,7 @@ import { RecycleAllMin } from '../InGame/Tools/tools/RecycleAllMin';
 import { InGameLogicManager } from '../InGame/InGameLogicManager';
 import { ToolProgress } from '../InGame/Tools/ToolProgress';
 import { DataManager } from './DataManager';
+import { Config } from '../Config';
 
 export enum ToolType {
     HAMMER,
@@ -31,10 +32,13 @@ export class ToolManager extends BaseSingleton<ToolManager> {
 
     isShowHint: boolean = false;
 
-    numberPoint: number = 5;
+    // numberPoint: number = 1;
 
     protected async onLoad() {
         super.onLoad();
+
+
+
         this.toolMapping = new Map<ToolType, IToolStrategy>([
             [ToolType.HAMMER, new HammerTool()],
             [ToolType.SWAP, new Swap()],
@@ -72,7 +76,7 @@ export class ToolManager extends BaseSingleton<ToolManager> {
         ];
         const toolsCanUpgrade = allToolValues.filter(toolType => {
             const progress = this.toolProgress[toolType.toString()];
-            return progress && progress.points < this.numberPoint;
+            return progress && progress.points < Config.numberPointUpLv;
         });
         return toolsCanUpgrade;
     }
@@ -83,10 +87,10 @@ export class ToolManager extends BaseSingleton<ToolManager> {
         if (!progress) return;
         progress.points++;
         const totalPointsAfter = Object.keys(this.toolProgress).map(key => this.toolProgress[key]).reduce((sum, tool) => sum + tool.points, 0);
-        if (totalPointsAfter === this.numberPoint) {
+        if (totalPointsAfter === Config.numberPointUpLv) {
             this.isShowHint = true;
         }
-        if (progress.points === this.numberPoint && !progress.isUpgraded) {
+        if (progress.points === Config.numberPointUpLv && !progress.isUpgraded) {
             progress.isUpgraded = true;
         }
     }

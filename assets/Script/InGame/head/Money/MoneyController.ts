@@ -49,7 +49,7 @@ export class MoneyController extends BaseSingleton<MoneyController> {
         // Gọi hàm tween tăng điểm mượt mà
         this.moneyUi.AnimationMoneyChange(previousGold, updatedGold, this.moneyUi.gold);
 
-        Utils.getInstance().setCamLayer(this.node, Layers.Enum.PROFILER);
+        Utils.getInstance().setCamLayer(this.node, 1 << Utils.getInstance().layerMaxIndex);
     }
 
     public updateGold() {

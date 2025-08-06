@@ -2,6 +2,9 @@ import { _decorator, Component, log, Node, sys } from 'cc';
 import { BaseSingleton } from '../Base/BaseSingleton';
 import { ToolProgress } from '../InGame/Tools/ToolProgress';
 import { ToolType } from './ToolManager';
+import { GameMode } from '../Enum/Enum';
+import { GridManager } from '../InGame/GridManager';
+import { Config } from '../Config';
 const { ccclass, property } = _decorator;
 
 @ccclass('DataManager')
@@ -62,6 +65,11 @@ export class DataManager extends BaseSingleton<DataManager> {
     }
 
     // #region HighScore
+    public async GethighScoreMenu(gameMode: GameMode) {
+        const saved = await this.getLocaleMenu(`highScore` + `${Config.keyGame}` + `${gameMode}`)
+        return saved == null ? 0 : saved
+    }
+
     public async GethighScore() {
         const saved = await this.getLocale("highScore")
         return saved == null ? 0 : saved
@@ -126,12 +134,12 @@ export class DataManager extends BaseSingleton<DataManager> {
 
     // Lưu trạng thái game
     public async SaveGameState(gameState: any) {
-        await this.saveLocale("gameState", gameState)
+        await this.saveLocale(`gameState`, gameState)
     }
 
     // Tải trạng thái game
     public async LoadGameState(): Promise<any> {
-        return await this.getLocale("gameState")
+        return await this.getLocale(`gameState`)
     }
 
     // Xóa trạng thái game
@@ -172,10 +180,32 @@ export class DataManager extends BaseSingleton<DataManager> {
     }
 
     public async saveLocale(key, value) {
-        await localStorage.setItem(key, JSON.stringify(value));
+        await localStorage.setItem(key + `${Config.keyGame}` + `${GridManager.getInstance().GameMode}`, JSON.stringify(value));
     }
 
     public async getLocale(key) {
+
+        // let saved = await localStorage.getItem(key)
+        // console.log(key)
+        // console.log(JSON.parse(saved))
+        // return (saved == null || saved == undefined) ? null : JSON.parse(saved);
+
+        try {
+            let saved = await localStorage.getItem(key + `${Config.keyGame}` + `${GridManager.getInstance().GameMode}`)
+            console.log(key)
+            // console.log(JSON.parse(saved))
+            return (saved == null || saved == undefined) ? null : JSON.parse(saved);
+        } catch (e) {
+            console.error(`Failed to parse key "${key}" from localStorage:`, e);
+            return null;
+        }
+    }
+
+    public async removeData(key) {
+        await localStorage.removeItem(key + `${Config.keyGame}` + `${GridManager.getInstance().GameMode}`);
+    }
+
+    public async getLocaleMenu(key) {
 
         // let saved = await localStorage.getItem(key)
         // console.log(key)
@@ -191,10 +221,6 @@ export class DataManager extends BaseSingleton<DataManager> {
             console.error(`Failed to parse key "${key}" from localStorage:`, e);
             return null;
         }
-    }
-
-    public async removeData(key) {
-        await localStorage.removeItem(key);
     }
 }
 

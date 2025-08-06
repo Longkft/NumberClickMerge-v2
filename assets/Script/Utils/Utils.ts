@@ -1,4 +1,4 @@
-import { _decorator, Asset, Component, log, Node, resources } from 'cc';
+import { _decorator, Asset, Component, log, Node, resources, Layers } from 'cc';
 import { BaseSingleton } from '../Base/BaseSingleton';
 import { DataManager } from '../Manager/DataManager';
 import { InGameLogicManager } from '../InGame/InGameLogicManager';
@@ -7,6 +7,14 @@ const { ccclass, property } = _decorator;
 
 @ccclass('Utils')
 export class Utils extends BaseSingleton<Utils> {
+
+    layerMaxIndex: number = 0;
+
+    protected onLoad(): void {
+        super.onLoad();
+
+        this.layerMaxIndex = Layers.nameToLayer('layerMax');
+    }
 
     public static PreloadAsset<T extends Asset>(
         path: string,
