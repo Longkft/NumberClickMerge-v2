@@ -1,4 +1,4 @@
-import { _decorator, Component, log, Node } from 'cc';
+import { _decorator, Component, director, log, Node } from 'cc';
 import { LevelUI } from './LevelUI';
 import { DataManager } from '../../../Manager/DataManager';
 import { BaseSingleton } from '../../../Base/BaseSingleton';
@@ -19,12 +19,14 @@ export class LevelController extends BaseSingleton<LevelController> {
     newTotalExp: number = 0;
 
     onLoad() {
+        super.onLoad();
         // Tên sự kiện nên là ADD_EXP để rõ ràng hơn
-        EventBus.on(EventGame.EXP_UPDATED, this.onAddExp, this);
+        director.on(EventGame.EXP_UPDATED, this.onAddExp, this);
     }
 
     onDestroy() {
-        EventBus.off(EventGame.EXP_UPDATED, this.onAddExp);
+        super.onDestroy();
+        director.off(EventGame.EXP_UPDATED, this.onAddExp);
     }
 
     async start() {

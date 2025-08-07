@@ -3,6 +3,7 @@ import { FXShadow } from '../../FX/FXShadow';
 import { AutoComponent } from '../../Base/AutoComponent';
 import { Utils } from '../../Utils/Utils';
 import { TypewriterEffect } from '../../FX/TypewriterEffect';
+import { InGameLogicManager } from '../InGameLogicManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('HintTool')
@@ -19,7 +20,7 @@ export class HintTool extends AutoComponent {
 
     LoadHammer() {
         if (this.hammerTool) return;
-        this.hammerTool = find('Canvas/tools/Hammer');
+        this.hammerTool = InGameLogicManager.getInstance().node.getChildByPath('tools/Hammer');
     }
 
     protected LoadComponent(): void {

@@ -1,4 +1,4 @@
-import { _decorator, Component, EventTouch, Input, log, Node, randomRange } from 'cc';
+import { _decorator, Component, director, EventTouch, Input, log, Node, randomRange } from 'cc';
 import { CellModel } from './CellModel';
 import { CellUI } from './CellUI';
 import { ECELL_CLICK_EFFECT, ECELL_STATE, ECLICK_MODE } from '../../Enum/ECell';
@@ -114,7 +114,7 @@ export class Cell {
 
         Utils.getInstance().UpdateHeart(-1); // trừ đi 1 heart
 
-        EventBus.emit(EventGame.UPDATE_HEARt_UI);
+        director.emit(EventGame.UPDATE_HEARt_UI);
 
         this.cellData.color = GridManager.getInstance().GetColorByValue(this.cellData.value)
         this.cellUI.UpdateUICell(this.cellData, this.clickEffect, this.cellState);

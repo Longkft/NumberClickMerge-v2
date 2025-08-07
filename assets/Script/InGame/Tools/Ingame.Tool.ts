@@ -1,4 +1,4 @@
-import { _decorator, CCInteger, Component, Enum, Label, log, Node, Sprite, SpriteFrame } from 'cc';
+import { _decorator, CCInteger, Component, director, Enum, Label, log, Node, Sprite, SpriteFrame } from 'cc';
 import { FXShadow } from '../../FX/FXShadow';
 import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
@@ -40,15 +40,15 @@ export class Ingame_Tool extends Component {
     protected start(): void {
         this.txtCoin.string = this.coin.toString();
         this.node.on(Node.EventType.TOUCH_START, this.OnClick, this);
-        EventBus.on(EventGame.TOOL_FINISHED, this.onToolFinished, this);
-        EventBus.on(EventGame.TOOL_UPGRADEUITOOLUP, this.UpgradeUiToolUp, this);
+        director.on(EventGame.TOOL_FINISHED, this.onToolFinished, this);
+        director.on(EventGame.TOOL_UPGRADEUITOOLUP, this.UpgradeUiToolUp, this);
         this.UpgradeUiToolUp(this.type); // cập nhật ui tool up
     }
 
     protected onDestroy(): void {
         this.node.off(Node.EventType.TOUCH_START, this.OnClick, this);
-        EventBus.off(EventGame.TOOL_FINISHED, this.onToolFinished);
-        EventBus.off(EventGame.TOOL_UPGRADEUITOOLUP, this.UpgradeUiToolUp);
+        director.off(EventGame.TOOL_FINISHED, this.onToolFinished);
+        director.off(EventGame.TOOL_UPGRADEUITOOLUP, this.UpgradeUiToolUp);
     }
 
     /**
@@ -78,7 +78,7 @@ export class Ingame_Tool extends Component {
             return;
         }
         // Nếu đúng là tool này, thì mới thực hiện trừ tiền và ẩn hiệu ứng
-        EventBus.emit(EventGame.UPDATE_COIN_UI, -this.coin);
+        director.emit(EventGame.UPDATE_COIN_UI, -this.coin);
         this.HideFxShadow();
     }
 

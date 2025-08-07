@@ -31,6 +31,7 @@ export class EventBus {
         if (this.events[event]) {
             this.events[event] = this.events[event].filter((cb) => cb !== callback);
             if (this.events[event].length === 0) {
+                console.log("delete event")
                 delete this.events[event];
             }
         }

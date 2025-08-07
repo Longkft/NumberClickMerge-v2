@@ -1,4 +1,4 @@
-import { _decorator, Camera, Component, find, Label, Layers, Node, Vec2, Vec3 } from 'cc';
+import { _decorator, Camera, Component, director, find, Label, Layers, Node, Vec2, Vec3 } from 'cc';
 import { Utils } from '../../Utils/Utils';
 import { MoneyController } from '../head/Money/MoneyController';
 import { FXShadow } from '../../FX/FXShadow';
@@ -72,7 +72,7 @@ export class PopupClainGoldCombo extends AutoComponent {
 
             const box = this.node.getChildByName('box');
 
-            EventBus.emit(EventGame.UPDATE_COIN_UI, this.gold);
+            director.emit(EventGame.UPDATE_COIN_UI, this.gold);
 
             Utils.getInstance().setCamLayer(MoneyController.getInstance().node, Layers.Enum.DEFAULT);
 

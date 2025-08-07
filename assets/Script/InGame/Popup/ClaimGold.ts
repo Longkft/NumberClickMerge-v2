@@ -1,4 +1,4 @@
-import { _decorator, Camera, Component, find, Label, Layers, log, Node, tween, Vec2, Vec3 } from 'cc';
+import { _decorator, Camera, Component, director, find, Label, Layers, log, Node, tween, Vec2, Vec3 } from 'cc';
 import { GridManager } from '../GridManager';
 import { InGameLogicManager } from '../InGameLogicManager';
 import { FXShadow } from '../../FX/FXShadow';
@@ -71,7 +71,7 @@ export class ClaimGold extends AutoComponent {
 
     async Hide() {
         // this.ads(async () => {
-        EventBus.emit(EventGame.UPDATE_COIN_UI, this.gold);
+        director.emit(EventGame.UPDATE_COIN_UI, this.gold);
 
         Utils.getInstance().setCamLayer(MoneyController.getInstance().node, Layers.Enum.DEFAULT);
 

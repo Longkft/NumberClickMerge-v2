@@ -36,6 +36,7 @@ export class BaseSingleton<T> extends Component {
             BaseSingleton._instances.set(type, this);
         } else if (BaseSingleton._instances.get(type) !== this) {
             this.node.destroy();
+            return;
         }
     }
 

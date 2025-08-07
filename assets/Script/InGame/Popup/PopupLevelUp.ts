@@ -1,4 +1,4 @@
-import { _decorator, Component, Label, log, Node } from 'cc';
+import { _decorator, Component, director, Label, log, Node } from 'cc';
 import { FXShadow } from '../../FX/FXShadow';
 import { LevelController } from '../head/Level/LevelController';
 import { ToolManager } from '../../Manager/ToolManager';
@@ -40,7 +40,7 @@ export class PopupLevelUp extends Component {
             PopupManager.getInstance().PopupHintTool.Show();
         }
 
-        EventBus.emit(EventGame.TOOL_UPGRADEUITOOLUP, ToolManager.getInstance().chooseTool);
+        director.emit(EventGame.TOOL_UPGRADEUITOOLUP, ToolManager.getInstance().chooseTool);
     }
 }
 

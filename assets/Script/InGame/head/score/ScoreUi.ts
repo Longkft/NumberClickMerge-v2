@@ -50,7 +50,6 @@ export class ScoreUi extends AutoComponent {
     }
 
     protected onLoad(): void {
-        super.onLoad();
         this.LoadComponent();
     }
 

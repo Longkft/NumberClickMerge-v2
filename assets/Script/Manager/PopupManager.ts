@@ -143,6 +143,10 @@ export class PopupManager extends BaseSingleton<PopupManager> {
         return this._popupTutorial
     }
 
+    set PopupTutorial(popup) {
+        this._popupTutorial = popup;
+    }
+
     get PopupLevelUp() {
         if (this._popupLevelUp == null) {
             this._popupLevelUp = instantiate(PrefabManager.getInstance().popupLevelUp).getComponent(PopupLevelUp);

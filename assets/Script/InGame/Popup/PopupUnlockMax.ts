@@ -1,4 +1,4 @@
-import { _decorator, Component, instantiate, Label, Layout, Node, PageView, Prefab, tween, Vec2, Vec3 } from 'cc';
+import { _decorator, Component, director, instantiate, Label, Layout, Node, PageView, Prefab, tween, Vec2, Vec3 } from 'cc';
 import { GridManager } from '../GridManager';
 
 import { InGameLogicManager } from '../InGameLogicManager';
@@ -101,7 +101,7 @@ export class PopupUnlockMax extends Component {
         }
 
 
-        EventBus.emit(EventGame.UI_COLOR_TOOLRECYCLE, GridManager.getInstance().numberMin); // cập nhật ui recycle
+        director.emit(EventGame.UI_COLOR_TOOLRECYCLE, GridManager.getInstance().numberMin); // cập nhật ui recycle
     }
 
 }

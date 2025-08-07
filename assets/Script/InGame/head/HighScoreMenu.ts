@@ -1,6 +1,7 @@
-import { _decorator, Component, Enum, Label, log, Node, tween } from 'cc';
+import { _decorator, Component, director, Enum, Label, log, Node, tween } from 'cc';
 import { GameMode } from '../../Enum/Enum';
 import { DataManager } from '../../Manager/DataManager';
+import { EventGame } from '../../Enum/EEvent';
 const { ccclass, property } = _decorator;
 
 Enum(GameMode)
@@ -13,10 +14,14 @@ export class HighScoreMenu extends Component {
     highScore: number = 0;
 
     protected async onLoad() {
-        log('gameMode: ', this.gameMode)
-        this.highScore = await DataManager.getInstance().GethighScoreMenu(this.gameMode);
-        log('this.highScore: ' + this.gameMode, this.highScore)
+        this.updateHighScore()
 
+        director.on(EventGame.UPDATE_HIGH_SCORE, this.updateHighScore, this);
+    }
+
+    async updateHighScore() {
+        this.highScore = await DataManager.getInstance().GethighScoreMenu(this.gameMode);
+        console.log("HighScoreMenu onLoad", this.highScore, this.gameMode);
         this.setValue();
     }
 

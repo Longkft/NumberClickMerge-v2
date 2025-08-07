@@ -1,4 +1,4 @@
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, director, Node } from 'cc';
 import { ScoreUi } from './ScoreUi';
 import { DataManager } from '../../../Manager/DataManager';
 import { EventBus } from '../../../Utils/EventBus';
@@ -16,12 +16,12 @@ export class ScoreController extends BaseSingleton<ScoreController> {
     highScoreCurrent: number = 0;
 
     protected async onLoad() {
+        super.onLoad();
         this.LoadScoreCurrent()
     }
 
     start() {
         this.scoreUiCpn = this.node.getComponent(ScoreUi);
-
         this.updateScore();
         this.updateScoreMax();
 
@@ -29,17 +29,18 @@ export class ScoreController extends BaseSingleton<ScoreController> {
     }
 
     onDestroy() {
+        super.onDestroy();
         this.UnResGisterEvent();
     }
 
     ResGisterEvent() {
-        EventBus.on(EventGame.UPGRADE_SCORE, this.OnScoreUpgraded, this);
-        EventBus.on(EventGame.RESET_SCORE, this.ResetScore, this);
+        director.on(EventGame.UPGRADE_SCORE, this.OnScoreUpgraded, this);
+        director.on(EventGame.RESET_SCORE, this.ResetScore, this);
     }
 
     UnResGisterEvent() {
-        EventBus.off(EventGame.UPGRADE_SCORE, this.OnScoreUpgraded);
-        EventBus.off(EventGame.RESET_SCORE, this.ResetScore);
+        director.off(EventGame.UPGRADE_SCORE, this.OnScoreUpgraded);
+        director.off(EventGame.RESET_SCORE, this.ResetScore);
     }
 
     async LoadScoreCurrent() {

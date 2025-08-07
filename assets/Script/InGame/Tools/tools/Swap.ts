@@ -1,4 +1,4 @@
-import { tween } from "cc";
+import { director, tween } from "cc";
 import { InGameLogicManager } from "../../InGameLogicManager";
 import { IToolStrategy } from "./IToolStrategy";
 import { ToolManager, ToolType } from "../../../Manager/ToolManager";
@@ -69,7 +69,7 @@ export class Swap implements IToolStrategy {
             }
 
             // === THÊM 2: GỬI TÍN HIỆU ĐỂ TẮT POPUP/SHADOW ===
-            EventBus.emit(EventGame.TOOL_FINISHED, ToolType.SWAP);
+            director.emit(EventGame.TOOL_FINISHED, ToolType.SWAP);
             // Tự động hủy tool sau khi thực thi xong
             ToolManager.getInstance().deactivateCurrentTool();
             this.firstSwapCell = null;

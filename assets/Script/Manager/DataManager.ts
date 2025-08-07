@@ -67,7 +67,7 @@ export class DataManager extends BaseSingleton<DataManager> {
     // #region HighScore
     public async GethighScoreMenu(gameMode: GameMode) {
         const saved = await this.getLocaleMenu(`highScore` + `${Config.keyGame}` + `${gameMode}`)
-        return saved == null ? 0 : saved
+        return (saved == null || saved == undefined) ? null : JSON.parse(saved);
     }
 
     public async GethighScore() {

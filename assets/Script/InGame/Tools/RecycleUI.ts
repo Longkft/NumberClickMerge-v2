@@ -1,4 +1,4 @@
-import { _decorator, Color, Component, Label, log, Node, Sprite } from 'cc';
+import { _decorator, Color, Component, director, Label, log, Node, Sprite } from 'cc';
 import { GridManager } from '../GridManager';
 import { EventBus } from '../../Utils/EventBus';
 import { DataManager } from '../../Manager/DataManager';
@@ -28,11 +28,11 @@ export class RecycleUI extends Component {
     }
 
     RegisEvent() {
-        EventBus.on(EventGame.UI_COLOR_TOOLRECYCLE, this.SetUIRecycle, this);
+        director.on(EventGame.UI_COLOR_TOOLRECYCLE, this.SetUIRecycle, this);
     }
 
     DestroyEvent() {
-        EventBus.off(EventGame.UI_COLOR_TOOLRECYCLE, this.SetUIRecycle);
+        director.off(EventGame.UI_COLOR_TOOLRECYCLE, this.SetUIRecycle);
     }
 
     SetUIRecycle(value: number) {
@@ -41,6 +41,12 @@ export class RecycleUI extends Component {
         this.cellBackground.color = color;
         this.value.string = value.toString();
     }
+
+    protected onDestroy(): void {
+        this.DestroyEvent();
+
+    }
+
 }
 
 

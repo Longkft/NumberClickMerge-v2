@@ -1,4 +1,4 @@
-import { _decorator, Component, Label, Layers, Node } from 'cc';
+import { _decorator, Component, director, Label, Layers, Node } from 'cc';
 import { Utils } from '../../Utils/Utils';
 import { MoneyController } from '../head/Money/MoneyController';
 import { FXShadow } from '../../FX/FXShadow';
@@ -47,7 +47,7 @@ export class PopupAdsGold extends Component {
             }
 
             this.gold = 1 * 100;
-            EventBus.emit(EventGame.UPDATE_COIN_UI, this.gold);
+            director.emit(EventGame.UPDATE_COIN_UI, this.gold);
 
             Utils.getInstance().setCamLayer(MoneyController.getInstance().node, Layers.Enum.DEFAULT);
 

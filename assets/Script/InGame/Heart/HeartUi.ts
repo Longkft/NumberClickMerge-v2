@@ -1,4 +1,4 @@
-import { _decorator, Component, log, Node } from 'cc';
+import { _decorator, Component, director, log, Node } from 'cc';
 import { DataManager } from '../../Manager/DataManager';
 import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
@@ -22,11 +22,12 @@ export class HeartUi extends Component {
     }
 
     RegisterEvent() {
-        EventBus.on(EventGame.UPDATE_HEARt_UI, this.UpdateUiheart, this);
+        director.on(EventGame.UPDATE_HEARt_UI, this.UpdateUiheart, this);
     }
 
     UnRegisterEvent() {
-        EventBus.off(EventGame.UPDATE_HEARt_UI, this.UpdateUiheart);
+        console.log("UnRegisterEvent HeartUi");
+        director.off(EventGame.UPDATE_HEARt_UI, this.UpdateUiheart);
     }
 
     LoadListHeart() {
@@ -41,13 +42,17 @@ export class HeartUi extends Component {
 
             ActiveHeartNode.active = true;
         }
-
+        console.log("UpdateUiheart", this, this.listHeart);
         for (let j = myHeart; j < this.listHeart.length; j++) {
             let heartNode = this.listHeart[j];
             let ActiveHeartNode = heartNode.getChildByName('heatActive');
 
             ActiveHeartNode.active = false;
         }
+    }
+
+    protected onDestroy(): void {
+        this.UnRegisterEvent()
     }
 }
 

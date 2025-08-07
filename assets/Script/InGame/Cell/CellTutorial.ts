@@ -5,6 +5,7 @@ import { GridManager } from '../GridManager';
 import { BaseTouch } from '../../Base/BaseTouch';
 import { TutorialManager } from '../Tools/TutorialManager';
 import { PopupManager } from '../../Manager/PopupManager';
+import { GameMode } from '../../Enum/Enum';
 const { ccclass, property } = _decorator;
 
 @ccclass('CellTutorial')
@@ -95,15 +96,16 @@ export class CellTutorial extends BaseTouch {
                         PopupManager.getInstance().PopupTutorial.fx.active = true;
 
                         this.scheduleOnce(async () => {
-                            // if (PopupManager.getInstance().PopupTutorial.countTutorial < 2) { // mở tutorial cell down
-                            //     await PopupManager.getInstance().PopupTutorial.HideFxUp();
-                            //     PopupManager.getInstance().PopupTutorial.SetUpDown(false);
-                            //     PopupManager.getInstance().PopupTutorial.fx.active = false;
-                            //     return;
-                            // }
-                            let shadow = PopupManager.getInstance().PopupTutorial.shadow;
-                            await shadow.HideFXShadow();
+                            if (PopupManager.getInstance().PopupTutorial.countTutorial < 2 && GridManager.getInstance().GameMode == GameMode.HARD) { // mở tutorial cell down
+                                await PopupManager.getInstance().PopupTutorial.HideFxUp();
+                                PopupManager.getInstance().PopupTutorial.SetUpDown(false);
+                                PopupManager.getInstance().PopupTutorial.fx.active = false;
+                                PopupManager.getInstance().PopupTutorial.countTutorial++
+                                return;
+                            }
 
+                            PopupManager.getInstance().PopupTutorial.node.destroy();
+                            PopupManager.getInstance().PopupTutorial = null
                             PopupManager.getInstance().PopupGoal.Show();
                         }, 2)
                     }

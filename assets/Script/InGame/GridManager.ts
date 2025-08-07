@@ -1,4 +1,4 @@
-import { _decorator, Component, log, Node, randomRangeInt } from 'cc';
+import { _decorator, Component, director, log, Node, randomRangeInt } from 'cc';
 import { CellModel } from './Cell/CellModel';
 import { BaseSingleton } from '../Base/BaseSingleton';
 import { GameManager } from '../Manager/GameManager';
@@ -25,6 +25,7 @@ export class GridManager extends BaseSingleton<GridManager> {
     GameMode: GameMode = GameMode.CLASSIC;
 
     protected onLoad(): void {
+        super.onLoad();
         this.initGrid();
     }
 
@@ -260,7 +261,7 @@ export class GridManager extends BaseSingleton<GridManager> {
                     data.col = col;
                     this.grid[row][col] = data;
 
-                    EventBus.emit(EventGame.GRID_CELL_UPDATED_EVENT, { row, col, cell: data });
+                    director.emit(EventGame.GRID_CELL_UPDATED_EVENT, { row, col, cell: data });
                 }
             }
         }

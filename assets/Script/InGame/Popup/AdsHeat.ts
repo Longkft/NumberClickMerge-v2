@@ -1,4 +1,4 @@
-import { _decorator, Component, log, Node } from 'cc';
+import { _decorator, Component, director, log, Node } from 'cc';
 import { FXShadow } from '../../FX/FXShadow';
 import { DataManager } from '../../Manager/DataManager';
 import { Utils } from '../../Utils/Utils';
@@ -6,10 +6,8 @@ import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
 import { PopupManager } from '../../Manager/PopupManager';
 import { MoneyController } from '../head/Money/MoneyController';
-import { InGameLogicManager } from '../InGameLogicManager';
-import { InGameUIManager } from '../InGameUIManager';
-import { FXTween } from '../../FX/FXTween';
 import { PopupNoAds } from './PopupNoAds';
+import { FXTween } from '../../FX/FXTween';
 const { ccclass, property } = _decorator;
 
 @ccclass('AdsHeat')
@@ -44,29 +42,20 @@ export class AdsHeat extends Component {
         this.Hide();
 
         Utils.getInstance().UpdateHeart(5); // reset lại heart là 5
-        EventBus.emit(EventGame.UPDATE_HEARt_UI);
+        director.emit(EventGame.UPDATE_HEARt_UI);
 
-        EventBus.emit(EventGame.UPDATE_COIN_UI, - 200);
+        director.emit(EventGame.UPDATE_COIN_UI, - 200);
     }
 
-    isNoAds: boolean = false;
     BtnAds() {
         this.Ads(() => {
-            if (!this.isNoAds) {
-
-                this.Hide();
-
-                PopupNoAds.getInstance().show();
-
-                FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
-
-                return;
-            }
+            PopupNoAds.getInstance().show();
+            // FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
 
             this.Hide();
 
-            Utils.getInstance().ResetHeart(5); // reset lại heart là 5
-            EventBus.emit(EventGame.UPDATE_HEARt_UI);
+            // Utils.getInstance().ResetHeart(5); // reset lại heart là 5
+            director.emit(EventGame.UPDATE_HEARt_UI);
         });
     }
 

@@ -1,4 +1,4 @@
-import { _decorator, Component, error, game, log, Node, tween } from 'cc';
+import { _decorator, Component, director, error, game, log, Node, tween } from 'cc';
 import { CellCollection } from './Cell/CellCollection';
 import { GameManager } from '../Manager/GameManager';
 import { PoolObjectManager } from '../Manager/PoolObjectManager';
@@ -71,7 +71,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
     }
 
     DestroyEvent() {
-        EventBus.off(EventGame.GRID_CELL_UPDATED_EVENT, this.OnUpdateUi);
+        director.off(EventGame.GRID_CELL_UPDATED_EVENT, this.OnUpdateUi);
     }
 
 
@@ -224,7 +224,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         await Promise.all(animationPromises);
 
         Utils.getInstance().UpdateHeart(1);
-        EventBus.emit(EventGame.UPDATE_HEARt_UI);
+        director.emit(EventGame.UPDATE_HEARt_UI);
 
         // Sau khi tất cả đã di chuyển xong, reset lại bàn chơi
         // this.ResetAfterTween(matched);
@@ -235,7 +235,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         this.isProcessing = false;
 
         this.currentHeart += 1;
-        EventBus.emit(EventGame.UPDATE_HEARt_UI);
+        director.emit(EventGame.UPDATE_HEARt_UI);
 
         AudioManager.getInstance().playSFX(SFXType.Merge);
     }
@@ -244,7 +244,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         const value = rootModel.value; // Lấy giá trị của ô (trước khi tăng)
         const groupSize = matched.length; // Lấy số lượng ô trong nhóm
         const score = value * groupSize * this.consecutiveMerges; // Áp dụng công thức
-        EventBus.emit(EventGame.UPGRADE_SCORE, score);
+        director.emit(EventGame.UPGRADE_SCORE, score);
 
         // Gọi hàm xử lý EXP, truyền điểm số vừa tính được
         this.AwardExpAfterMerge(score);
@@ -261,7 +261,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
         // 2. Phát ra sự kiện cộng EXP
         if (expGained > 0) {
-            EventBus.emit(EventGame.EXP_UPDATED, expGained);
+            director.emit(EventGame.EXP_UPDATED, expGained);
         }
     }
 
@@ -510,7 +510,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         // Sau khi tất cả animation di chuyển hoàn thành, xử lý logic merge
         AudioManager.getInstance().playSFX(SFXType.Merge);
         // this.currentHeart += 1; // Tim đã trừ khi click, không cộng lại ở đây (chỉ khi match)
-        // EventBus.emit(EventGame.UPDATE_HEARt_UI); // Cập nhật UI tim nếu có thay đổi
+        // director.emit(EventGame.UPDATE_HEARt_UI); // Cập nhật UI tim nếu có thay đổi
 
         const gridMgr = GridManager.getInstance();
         const allCellsToRemove: { row: number, col: number }[] = [];
@@ -846,20 +846,25 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         }, 0.3);
 
         Utils.getInstance().ResetHeart(5); // reset tim
-        EventBus.emit(EventGame.UPDATE_HEARt_UI); // update Ui
-        EventBus.emit(EventGame.RESET_SCORE);
+        director.emit(EventGame.UPDATE_HEARt_UI); // update Ui
+        director.emit(EventGame.RESET_SCORE);
     }
-
+    private boundBeforeUnload: (event: BeforeUnloadEvent) => void;
     //#region Load State
 
     protected onDestroy(): void {
+        super.onDestroy();
         this.UnRegisEventBeforUnload();
+        director.off(EventGame.GRID_CELL_UPDATED_EVENT, this.OnUpdateUi);
+
     }
 
     // Đăng ký sự kiện beforeunload cho trình duyệt, sự kiện game hide/close
     RegisEventBeforUnload() {
         if (typeof window !== 'undefined') {
-            window.addEventListener('beforeunload', this.handleBeforeUnload.bind(this));
+            // Lưu reference của function đã bind để dùng lại khi remove
+            this.boundBeforeUnload = this.handleBeforeUnload.bind(this);
+            window.addEventListener('beforeunload', this.boundBeforeUnload);
         }
         // Đăng ký sự kiện game hide/close
         game.on('hide', this.SaveGame.bind(this));
@@ -868,8 +873,8 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
     UnRegisEventBeforUnload() {
         // Hủy đăng ký sự kiện
-        if (typeof window !== 'undefined') {
-            window.removeEventListener('beforeunload', this.handleBeforeUnload.bind(this));
+        if (typeof window !== 'undefined' && this.boundBeforeUnload) {
+            window.removeEventListener('beforeunload', this.boundBeforeUnload);
         }
         game.off('hide', this.SaveGame.bind(this));
         game.off('close', this.SaveGame.bind(this));
@@ -914,7 +919,6 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
     async LoadGame() {
         this.isProcessing = true; // Khóa input trong lúc load
-
         this.init();
         this.cells = [];
         this.contains = [];
@@ -939,8 +943,8 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             );
             GridManager.getInstance().numberMin = savedData.numberMin;
             GridManager.getInstance().numberMax = savedData.numberMax;
-            EventBus.emit(EventGame.UPDATE_HEARt_UI);
-            EventBus.emit(EventGame.UPGRADE_SCORE, 0);
+            director.emit(EventGame.UPDATE_HEARt_UI);
+            director.emit(EventGame.UPGRADE_SCORE, 0);
         } else {
             console.log("No saved data found, starting new grid...");
             GridManager.getInstance().initNewGrid();
@@ -953,7 +957,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             this.checkAllMatchingGroupsLoop();
         }, 0.25);
 
-        EventBus.on(EventGame.GRID_CELL_UPDATED_EVENT, this.OnUpdateUi, this);
+        director.on(EventGame.GRID_CELL_UPDATED_EVENT, this.OnUpdateUi, this);
 
         let first = await DataManager.getInstance().GetFirst();
         if (first) {

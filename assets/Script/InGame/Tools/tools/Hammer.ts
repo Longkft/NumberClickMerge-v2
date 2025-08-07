@@ -1,3 +1,4 @@
+import { director } from "cc";
 import { EventGame } from "../../../Enum/EEvent";
 import { GameManager } from "../../../Manager/GameManager";
 import { ToolManager, ToolType } from "../../../Manager/ToolManager";
@@ -38,7 +39,7 @@ export class HammerTool implements IToolStrategy {
             this.executeNormal(row, col, logicManager);
         }
 
-        EventBus.emit(EventGame.TOOL_FINISHED, ToolType.HAMMER);
+        director.emit(EventGame.TOOL_FINISHED, ToolType.HAMMER);
         ToolManager.getInstance().deactivateCurrentTool();
     }
 

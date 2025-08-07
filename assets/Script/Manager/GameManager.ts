@@ -10,10 +10,6 @@ export class GameManager extends BaseSingleton<GameManager> {
 
     @property(JsonAsset)
     dataCell: JsonAsset = null;
-
-    protected start(): void {
-
-    }
 }
 
 

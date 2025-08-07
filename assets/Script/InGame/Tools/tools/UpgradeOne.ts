@@ -1,3 +1,4 @@
+import { director } from "cc";
 import { EventGame } from "../../../Enum/EEvent";
 import { ToolManager, ToolType } from "../../../Manager/ToolManager";
 import { EventBus } from "../../../Utils/EventBus";
@@ -40,7 +41,7 @@ export class UpgradeOne implements IToolStrategy {
                 this.executeNormal(row, col, logicManager, maxUpgradeVal);
             }
 
-            EventBus.emit(EventGame.TOOL_FINISHED, ToolType.UPGRADE);
+            director.emit(EventGame.TOOL_FINISHED, ToolType.UPGRADE);
             ToolManager.getInstance().deactivateCurrentTool();
         }
     }

@@ -1,4 +1,4 @@
-import { _decorator, Component, Layers, log, Node } from 'cc';
+import { _decorator, Component, director, Layers, log, Node } from 'cc';
 import { MoneyUi } from './MoneyUi';
 import { EventBus } from '../../../Utils/EventBus';
 import { EventGame } from '../../../Enum/EEvent';
@@ -20,6 +20,7 @@ export class MoneyController extends BaseSingleton<MoneyController> {
     GoldCurrent: number = 0
 
     protected async onLoad() {
+        super.onLoad();
         await this.LoadGoldCurrent()
         this.updateGold();
         this.RegisterEvent();
@@ -30,15 +31,16 @@ export class MoneyController extends BaseSingleton<MoneyController> {
     }
 
     onDestroy() {
+        super.onDestroy();
         this.UnRegisterEvent();
     }
 
     RegisterEvent() {
-        EventBus.on(EventGame.UPDATE_COIN_UI, this.UpdateUiCoin, this)
+        director.on(EventGame.UPDATE_COIN_UI, this.UpdateUiCoin, this)
     }
 
     UnRegisterEvent() {
-        EventBus.off(EventGame.UPDATE_COIN_UI, this.UpdateUiCoin)
+         director.off(EventGame.UPDATE_COIN_UI, this.UpdateUiCoin)
     }
 
     UpdateUiCoin(gold: number) {

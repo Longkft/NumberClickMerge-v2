@@ -23,14 +23,7 @@ export class LoadingManager extends Component {
     }
 
     LoadScene() {
-        director.preloadScene("Gameplay", (completedCount, totalCount, item) => {
-
-        }, () => {
-            this.scheduleOnce(() => {
-                director.loadScene("Gameplay");
-            }, 0.5)
-
-        });
+        director.loadScene("Gameplay");
     }
 
     FXLblLoading() {

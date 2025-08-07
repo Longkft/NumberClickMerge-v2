@@ -1,4 +1,4 @@
-import { _decorator, Component, log, Node } from 'cc';
+import { _decorator, Component, director, log, Node } from 'cc';
 import { FXShadow } from '../../FX/FXShadow';
 import { DataManager } from '../../Manager/DataManager';
 import { EventBus } from '../../Utils/EventBus';
@@ -53,9 +53,9 @@ export class OutOfMove extends Component {
         this.Hide();
 
         Utils.getInstance().UpdateHeart(5); // reset lại heart là 5
-        EventBus.emit(EventGame.UPDATE_HEARt_UI);
+        director.emit(EventGame.UPDATE_HEARt_UI);
 
-        EventBus.emit(EventGame.UPDATE_COIN_UI, - 200);
+        director.emit(EventGame.UPDATE_COIN_UI, - 200);
     }
 
     isNoAds: boolean = false;
@@ -75,7 +75,7 @@ export class OutOfMove extends Component {
             this.Hide();
 
             Utils.getInstance().UpdateHeart(5); // reset lại heart là 5
-            EventBus.emit(EventGame.UPDATE_HEARt_UI);
+            director.emit(EventGame.UPDATE_HEARt_UI);
         });
     }
 

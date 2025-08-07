@@ -1,4 +1,4 @@
-import { _decorator, Component, director, EventTouch, find, Label, log, Node, Sprite, SpriteFrame, tween, Vec3 } from 'cc';
+import { _decorator, Component, director, EventTouch, find, Label, log, Node, Sprite, SpriteFrame, Tween, tween, Vec3 } from 'cc';
 import { BaseTouch } from '../../../Base/BaseTouch';
 import { AudioManager } from '../../../Manager/AudioManager';
 import { DataManager } from '../../../Manager/DataManager';
@@ -9,6 +9,7 @@ import { EventGame } from '../../../Enum/EEvent';
 import { PopupManager } from '../../../Manager/PopupManager';
 import { GridManager } from '../../GridManager';
 import { HomeManager } from '../../../Manager/HomeManager';
+import { LocalizedLabel } from '../../../i18n/LocalizedLabel';
 const { ccclass, property } = _decorator;
 
 @ccclass('SettingScene')
@@ -37,6 +38,12 @@ export class SettingScene extends BaseTouch {
 
     @property(Node)
     boxTools: Node = null;
+
+    @property(LocalizedLabel)
+    title: LocalizedLabel = null;
+
+    @property(Node)
+    listBtn: Node = null
 
     @property(SpriteFrame)
     spriteOn: SpriteFrame = null;
@@ -122,6 +129,8 @@ export class SettingScene extends BaseTouch {
         // this.RegisterButton();
         this.RegisterEventMusic();
         this.RegisterEventSound();
+
+
     }
 
     protected onDisable(): void {
@@ -140,6 +149,18 @@ export class SettingScene extends BaseTouch {
         await this.shadow.ShowFxShadow();
 
         this.box.active = true;
+
+        if (DataManager.getInstance()._scenePlay == false) {
+            this.title.key = "setting"
+            this.listBtn.active = false
+        }
+        else {
+            this.title.key = "pause"
+            this.listBtn.active = true
+        }
+
+        this.title.updateText()
+
     }
 
     TouchStart(event: EventTouch) {
@@ -223,6 +244,8 @@ export class SettingScene extends BaseTouch {
     }
 
     btnHome() {
+        Tween.stopAll()
+
         HomeManager.getInstance().ShowHome();
 
         this.box.active = false;
@@ -231,15 +254,16 @@ export class SettingScene extends BaseTouch {
     }
 
     BtnRestart() {
+        Tween.stopAll()
         InGameLogicManager.getInstance().RestartGame();
 
         this.shadow.HideFXShadow();
 
-        this.hideBoxTools();
+        // this.hideBoxTools();
 
         PopupManager.getInstance().PopupGoal.Show();
 
-        EventBus.emit(EventGame.UI_COLOR_TOOLRECYCLE, GridManager.getInstance().numberMin); // cập nhật ui recycle
+        director.emit(EventGame.UI_COLOR_TOOLRECYCLE, GridManager.getInstance().numberMin); // cập nhật ui recycle
     }
 
     hideBoxTools() {
