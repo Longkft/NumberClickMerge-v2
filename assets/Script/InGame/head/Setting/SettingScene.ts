@@ -147,7 +147,7 @@ export class SettingScene extends BaseTouch {
 
     async Show() {
         await this.shadow.ShowFxShadow();
-
+        this.node.setScale(1, 1, 1)
         this.box.active = true;
 
         if (DataManager.getInstance()._scenePlay == false) {
@@ -256,7 +256,7 @@ export class SettingScene extends BaseTouch {
     BtnRestart() {
         Tween.stopAll()
         InGameLogicManager.getInstance().RestartGame();
-
+        this.node.setScale(1, 1, 0)
         this.shadow.HideFXShadow();
 
         // this.hideBoxTools();
