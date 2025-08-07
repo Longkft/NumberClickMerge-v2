@@ -4,6 +4,7 @@ import { AutoComponent } from '../../Base/AutoComponent';
 import { Utils } from '../../Utils/Utils';
 import { TypewriterEffect } from '../../FX/TypewriterEffect';
 import { InGameLogicManager } from '../InGameLogicManager';
+import { LanguageManager } from '../../i18n/LanguageManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('HintTool')
@@ -32,7 +33,9 @@ export class HintTool extends AutoComponent {
 
         this.titleHint.active = true;
 
-        let text = 'When you level up, you will receive 1 item upgrade point which is added directly to the item from left to right.'
+        let lang = LanguageManager.getInstance().currentLang;
+
+        let text = lang == 'en' ? 'When you level up, you will receive 1 item upgrade point which is added directly to the item from left to right.' : 'Khi bạn lên cấp, bạn sẽ nhận được 1 điểm nâng cấp vật phẩm được cộng trực tiếp vào vật phẩm từ trái sang phải.';
 
         this.titleHint.getComponent(TypewriterEffect).playEffect(text);
 

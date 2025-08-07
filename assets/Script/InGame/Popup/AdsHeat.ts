@@ -50,7 +50,7 @@ export class AdsHeat extends Component {
     BtnAds() {
         this.Ads(() => {
             PopupNoAds.getInstance().show();
-            // FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
+            FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
 
             this.Hide();
 

@@ -62,5 +62,11 @@
     "blockJustExcluded": "Ô này đã bị xóa và không xuất hiện nữa.",
     "continue": "Tiếp tục",
     "errAds": "Chức năng quảng cáo sẽ khả dụng trong bản chính thức",
-    "setting": "Cài đặt"
+    "setting": "Cài đặt",
+    "classic": "Chế độ cổ điển",
+    "hard": "Chế độ khó",
+    "tttool1": "Dùng búa đập vỡ dấu cộng",
+    "tttool2": "Bạn có thể hoán đổi vị trí của 2 khối và các cặp khối tương đương",
+    "tttool3": "Chọn khối cần xóa",
+    "tttool4": "Nâng cấp tất cả các khối có giá trị đã chọn lên số lớn nhất hiện tại"
 }

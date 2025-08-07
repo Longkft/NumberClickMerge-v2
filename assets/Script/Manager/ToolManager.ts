@@ -87,7 +87,7 @@ export class ToolManager extends BaseSingleton<ToolManager> {
         if (!progress) return;
         progress.points++;
         const totalPointsAfter = Object.keys(this.toolProgress).map(key => this.toolProgress[key]).reduce((sum, tool) => sum + tool.points, 0);
-        if (totalPointsAfter === Config.numberPointUpLv) {
+        if (totalPointsAfter === 1) {
             this.isShowHint = true;
         }
         if (progress.points === Config.numberPointUpLv && !progress.isUpgraded) {

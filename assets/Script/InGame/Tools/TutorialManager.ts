@@ -4,6 +4,7 @@ import { FXShadow } from '../../FX/FXShadow';
 import { DataManager } from '../../Manager/DataManager';
 import { TypewriterEffect } from '../../FX/TypewriterEffect';
 import { PopupManager } from '../../Manager/PopupManager';
+import { LanguageManager } from '../../i18n/LanguageManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('TutorialManager')
@@ -79,12 +80,17 @@ export class TutorialManager extends Component {
 
         this.hand.active = true;
 
+        let lang = LanguageManager.getInstance().currentLang;
+
+        let text = lang == 'en' ? 'Select the middle node to increase the value.' : 'Chọn nút giữa để tăng giá trị.';
+        let textDown = lang == 'en' ? 'Select the middle node to proceed with the value reduction.' : 'Chọn nút giữa để tiến hành giảm giá trị.';
+
         if (up) {
-            this.ttUp.getComponent(TypewriterEffect).playEffect(this.ttUp.getComponent(TypewriterEffect).fullText);
+            this.ttUp.getComponent(TypewriterEffect).playEffect(text);
             return;
         }
 
-        this.ttDown.getComponent(TypewriterEffect).playEffect(this.ttDown.getComponent(TypewriterEffect).fullText);
+        this.ttDown.getComponent(TypewriterEffect).playEffect(textDown);
     }
 }
 

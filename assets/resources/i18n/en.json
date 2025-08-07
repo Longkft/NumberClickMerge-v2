@@ -62,6 +62,11 @@
     "blockJustExcluded": "This block is removed and will not be displayed later.",
     "continue": "Continue",
     "errAds": "Advertising function will be available in the official version",
-    "setting": "Setting"
-
+    "setting": "Setting",
+    "classic": "Classic Mode",
+    "hard": "Hard Mode",
+    "tttool1": "Use a hammer to break the plus sign",
+    "tttool2": "You can swap the positions of 2 blocks and equivalent block pairs",
+    "tttool3": "Select block to be deleted",
+    "tttool4": "Upgrade all blocks with selected value to the current largest number"
 }

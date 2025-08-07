@@ -66,6 +66,7 @@ export class Ingame_Tool extends Component {
 
         // Hiển thị hiệu ứng và BÁO CHO TOOLMANAGER
         this.ShowFxShadow();
+
         ToolManager.getInstance().activateTool(this.type);
     }
 
@@ -89,9 +90,22 @@ export class Ingame_Tool extends Component {
 
     private async ShowFxShadow() {
         const shadowCpn = this.shadow.getComponent(FXShadow);
+
+        const isUpgrade = this.CheckIsToolUpgrade();
+
+        this.ShowUITitleHint(isUpgrade);
+
         await shadowCpn.ShowFxShadow();
         await shadowCpn.ShowFxGuide(this.guide.parent);
         this.guide.active = true;
+    }
+
+    ShowUITitleHint(isUpgrade: boolean) {
+        const titleDontUpgrade = this.guide.getChildByName('titleHint');
+        const titleUpgrade = this.guide.getChildByName('titleHint-001');
+
+        titleDontUpgrade.active = !isUpgrade;
+        titleUpgrade.active = isUpgrade;
     }
 
     private async HideFxShadow() {
@@ -120,5 +134,19 @@ export class Ingame_Tool extends Component {
             toolState.isUpgraded = true;
             this.bgUpTool.active = true;
         }
+    }
+
+    CheckIsToolUpgrade() {
+        // 1. Gọi hàm getToolState() với type của chính tool này
+        const toolState: ToolProgress | null = ToolManager.getInstance().getToolState(this.type);
+
+        log('toolState: ', toolState)
+
+        // 2. Kiểm tra kết quả trả về
+        if (toolState && toolState.isUpgraded) {
+            return true;
+        }
+
+        return false;
     }
 }

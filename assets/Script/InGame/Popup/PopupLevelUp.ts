@@ -34,10 +34,16 @@ export class PopupLevelUp extends Component {
     async BtnContinute() {
         await this.Hide();
 
+        log('ToolManager.getInstance().isShowHint ______ BtnContinute: ', ToolManager.getInstance().isShowHint)
+
         if (ToolManager.getInstance().isShowHint) {
             log(11111)
             ToolManager.getInstance().isShowHint = false;
             PopupManager.getInstance().PopupHintTool.Show();
+
+            await new Promise<void>(resolve => { setTimeout(() => { resolve(); }, 2.5 * 1000); });
+
+            PopupManager.getInstance().PopupHintTool.Hide();
         }
 
         director.emit(EventGame.TOOL_UPGRADEUITOOLUP, ToolManager.getInstance().chooseTool);
