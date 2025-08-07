@@ -15,6 +15,7 @@ export class LoadingManager extends Component {
         this.FXLblLoading()
         this.FXProgressLoading()
         this.LoadScene()
+      
 
     }
 

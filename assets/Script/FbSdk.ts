@@ -56,9 +56,9 @@ export class FbSdk extends Component {
 
             // this.fbLanguage = this.FBInstant.getLocale().toString().split("_")[0];
 
-            // this.dataFb.fbId = this.FBInstant.player.getID();
-            // this.dataFb.sender = this.FBInstant.player.getName();
-            // this.dataFb.photoURL = this.FBInstant.player.getPhoto();
+            this.dataFb.fbId = this.FBInstant.player.getID();
+            this.dataFb.sender = this.FBInstant.player.getName();
+            this.dataFb.photoURL = this.FBInstant.player.getPhoto();
 
             // this.preloadRewardAd()
             // this.PreloadInterstitial()
