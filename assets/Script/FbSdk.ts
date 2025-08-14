@@ -419,6 +419,34 @@ export class FbSdk extends Component {
         }
 
     }
+
+    public submitScore(leaderboardName: string, score: number) {
+        if (this.FBInstant == null) return;
+
+        this.FBInstant.getLeaderboardAsync(leaderboardName)
+            .then(lb => lb.setScoreAsync(score))
+            .then(entry => {
+                console.log(`Score submitted: ${entry.getScore()}`);
+            })
+            .catch(err => console.error("Error submitting score:", err));
+    }
+
+    public async getTopPlayers(leaderboardName: string, count: number): Promise<any[] | null> {
+        if (this.FBInstant == null) {
+            console.warn("FBInstant is not available.");
+            return null;
+        }
+
+        try {
+            const lb = await this.FBInstant.getLeaderboardAsync(leaderboardName);
+            const entries = await lb.getEntriesAsync(count, 0);
+            return entries; // Trả về mảng dữ liệu
+        } catch (err) {
+            console.error("Error getting leaderboard:", err);
+            return null; // Trả về null nếu có lỗi
+        }
+    }
+
 }
 
 
