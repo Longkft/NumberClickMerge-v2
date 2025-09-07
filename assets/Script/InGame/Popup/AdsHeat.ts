@@ -8,6 +8,7 @@ import { PopupManager } from '../../Manager/PopupManager';
 import { MoneyController } from '../head/Money/MoneyController';
 import { PopupNoAds } from './PopupNoAds';
 import { FXTween } from '../../FX/FXTween';
+import { FbSdk } from '../../FbSdk';
 const { ccclass, property } = _decorator;
 
 @ccclass('AdsHeat')
@@ -49,19 +50,26 @@ export class AdsHeat extends Component {
 
     BtnAds() {
         this.Ads(() => {
-            PopupNoAds.getInstance().show();
-            FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
 
             this.Hide();
-
-            // Utils.getInstance().ResetHeart(5); // reset lại heart là 5
+            Utils.getInstance().ResetHeart(5); // reset lại heart là 5
             director.emit(EventGame.UPDATE_HEARt_UI);
         });
     }
 
     Ads(call: CallableFunction) {
         if (typeof call === 'function') {
-            call();
+            FbSdk.getInstance().showRewardAd((isAds) => {
+                if (isAds == true) {
+                    call();
+                }
+                else {
+                    PopupNoAds.getInstance().show();
+                    FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
+                    this.Hide();
+                    return;
+                }
+            })
         }
     }
 

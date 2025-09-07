@@ -9,6 +9,7 @@ import { PrefabManager } from '../../Manager/PrefabManager';
 import { PopupManager } from '../../Manager/PopupManager';
 import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
+import { FbSdk } from '../../FbSdk';
 const { ccclass, property } = _decorator;
 
 @ccclass('ClaimGold')
@@ -70,22 +71,22 @@ export class ClaimGold extends AutoComponent {
     }
 
     async Hide() {
-        // this.ads(async () => {
-        director.emit(EventGame.UPDATE_COIN_UI, this.gold);
+        this.ads(async () => {
+            director.emit(EventGame.UPDATE_COIN_UI, this.gold);
 
-        Utils.getInstance().setCamLayer(MoneyController.getInstance().node, Layers.Enum.DEFAULT);
+            Utils.getInstance().setCamLayer(MoneyController.getInstance().node, Layers.Enum.DEFAULT);
 
-        await this.HideFx();
+            await this.HideFx();
 
-        // GridManager.getInstance().CheckUpDateMinCurrent();
-        InGameLogicManager.getInstance().UpdateAllFrames();
+            // GridManager.getInstance().CheckUpDateMinCurrent();
+            InGameLogicManager.getInstance().UpdateAllFrames();
 
-        this.node.children.forEach(element => {
-            element.active = false;
-        });
+            this.node.children.forEach(element => {
+                element.active = false;
+            });
 
-        log('GridManager.getInstance(): ', GridManager.getInstance().numberMin);
-        // })
+            log('GridManager.getInstance(): ', GridManager.getInstance().numberMin);
+        })
     }
 
     async ShowFx() {
@@ -102,9 +103,12 @@ export class ClaimGold extends AutoComponent {
 
     ads(call: CallableFunction) {
         if (typeof call === 'function') {
-            call();
+            FbSdk.getInstance().showInterstitial(call, call)
+            // call();
         }
     }
+
+
 }
 
 

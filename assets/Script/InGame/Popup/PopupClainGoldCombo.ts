@@ -8,6 +8,7 @@ import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
 import { InGameUIManager } from '../InGameUIManager';
 import { FXTween } from '../../FX/FXTween';
+import { FbSdk } from '../../FbSdk';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupClainGoldCombo')
@@ -88,7 +89,8 @@ export class PopupClainGoldCombo extends AutoComponent {
 
     ads(call: CallableFunction) {
         if (typeof call === 'function') {
-            call();
+            FbSdk.getInstance().showInterstitial(call, call)
+
         }
     }
 }

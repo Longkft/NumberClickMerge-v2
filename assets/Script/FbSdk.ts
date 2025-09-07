@@ -23,7 +23,7 @@ export class FbSdk extends Component {
             this.ins = new FbSdk();
         return this.ins;
     }
-
+    preloadedInterstitial = null;
 
     public async loginGame() {
 
@@ -54,21 +54,19 @@ export class FbSdk extends Component {
             // })
 
 
-            // this.fbLanguage = this.FBInstant.getLocale().toString().split("_")[0];
+            this.fbLanguage = this.FBInstant.getLocale().toString().split("_")[0];
 
             this.dataFb.fbId = this.FBInstant.player.getID();
             this.dataFb.sender = this.FBInstant.player.getName();
             this.dataFb.photoURL = this.FBInstant.player.getPhoto();
 
-            // this.preloadRewardAd()
-            // this.PreloadInterstitial()
+            this.preloadRewardAd()
+            this.preloadInterstitial()
             // this.sendFirstNotification('chibidoll', false)
             // this.onSendUserID()
             // this.scheduleOnce(() => {
             //     FbSdk.ins.SubscribeBot()
             // }, 3)
-
-
         }
     }
 
@@ -215,7 +213,7 @@ export class FbSdk extends Component {
     }
 
     private preloadRewardedVideo = null;
-    reward_id = "622862352994499_653544436592957"
+    reward_id = "24801524879439641_24802444632680999"
     public preloadRewardAd() {
         console.log('Preload reward ads');
         if (this.FBInstant == null) {
@@ -240,8 +238,6 @@ export class FbSdk extends Component {
 
     public AD_NOT_COMPLETED: string = "not completed";
     public showRewardAd(callback = null) {
-        console.log('Show item ad');
-
         const rewardAd = () => {
             //video ad reward
             if (this.preloadRewardedVideo == null) {
@@ -315,50 +311,49 @@ export class FbSdk extends Component {
         });
     }
     interAdsInstance = null
-    public interstitial_ads_id: string = "622862352994499_660870785860322"
+
+    public isLoadedADInterstitial = false;
+    public interstitial_ads_id: string = "24801524879439641_24802442726014523"
     //FIRST ADS ========================================
-    public PreloadInterstitial() {
-        console.log('Preload inter ad');
-        if (this.FBInstant == null) {
-            return;
-        }
-        if (this.interAdsInstance != null) {
-            return;
-        }
-        let self = this;
+    private preloadInterstitial() {
         this.FBInstant.getInterstitialAdAsync(
-            self.interstitial_ads_id
-        ).then((interstitial) => {
+            '24801524879439641_24802442726014523' // Your Ad Placement Id
+        ).then(function (interstitial) {
             // Load the Ad asynchronously
-            //self.attemp = 0;
-            self.interAdsInstance = interstitial;
-            return self.interAdsInstance.loadAsync();
-
-        }).then(() => {
-            console.log('Interstitial preloaded')
-        }).catch((err) => {
-            console.log('Ads', err);
-            self.interAdsInstance = null;
-
+            this.preloadedInterstitial = interstitial;
+            return this.preloadedInterstitial.loadAsync();
+        }).then(function () {
+            console.log('Interstitial preloaded');
+        }).catch(function (err) {
+            console.error('Interstitial failed to preload: ' + err.message);
         });
     }
-
-    showInterstitialAds() {
-        let self = this
-        if (this.interAdsInstance != null) {
-            console.log('inter', 'ad x');
-            this.interAdsInstance.showAsync()
-                .then(() => {
-                    self.interAdsInstance = null
-                    self.PreloadInterstitial();
-
-                })
-                .catch((e) => {
-                    //ad error
-                    console.log(e)
-                });
-        }
+    public isLoadedADLeaderboard = false;
+    public showInterstitial(callback = null, callbackErr = null) {
+        if (this.FBInstant != null) {
+            if (this.preloadedInterstitial == null) {
+                this.preloadInterstitial();
+                if (callbackErr != null)
+                    callbackErr();
+            } else
+                this.preloadedInterstitial.showAsync()
+                    .then(() => {
+                        console.log('Interstitial ad finished successfully');
+                        this.preloadInterstitial();
+                        if (callback != null)
+                            callback()
+                    })
+                    .catch((e) => {
+                        this.preloadInterstitial();
+                        if (callbackErr != null)
+                            callbackErr();
+                        console.error(e.message);
+                    });
+        } else
+            if (callbackErr != null)
+                callbackErr();
     }
+
 
     public CreateShortcutGame() {
         if (this.FBInstant != null) {

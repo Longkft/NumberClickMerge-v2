@@ -7,6 +7,7 @@ import { EventGame } from '../../Enum/EEvent';
 import { InGameUIManager } from '../InGameUIManager';
 import { FXTween } from '../../FX/FXTween';
 import { PopupNoAds } from './PopupNoAds';
+import { FbSdk } from '../../FbSdk';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupAdsGold')
@@ -35,16 +36,16 @@ export class PopupAdsGold extends Component {
     async Hide() {
         this.ads(async () => {
 
-            if (!this.isNoAds) {
+            // if (!this.isNoAds) {
 
-                this.hidePopup();
+            //     this.hidePopup();
 
-                PopupNoAds.getInstance().show();
+            //     PopupNoAds.getInstance().show();
 
-                FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
+            //     FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
 
-                return;
-            }
+            //     return;
+            // }
 
             this.gold = 1 * 100;
             director.emit(EventGame.UPDATE_COIN_UI, this.gold);
@@ -61,7 +62,18 @@ export class PopupAdsGold extends Component {
 
     ads(call: CallableFunction) {
         if (typeof call === 'function') {
-            call();
+            FbSdk.getInstance().showRewardAd((isAds) => {
+                if (isAds == true) {
+                    call();
+                }
+                else {
+                    this.hidePopup();
+                    PopupNoAds.getInstance().show();
+                    FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
+                    return;
+                }
+            })
+
         }
     }
 

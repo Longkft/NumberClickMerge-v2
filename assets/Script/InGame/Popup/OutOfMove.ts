@@ -9,6 +9,7 @@ import { PopupManager } from '../../Manager/PopupManager';
 import { MoneyController } from '../head/Money/MoneyController';
 import { FXTween } from '../../FX/FXTween';
 import { PopupNoAds } from './PopupNoAds';
+import { FbSdk } from '../../FbSdk';
 const { ccclass, property } = _decorator;
 
 @ccclass('OutOfMove')
@@ -61,17 +62,6 @@ export class OutOfMove extends Component {
     isNoAds: boolean = false;
     BtnAds() {
         this.Ads(() => {
-            if (!this.isNoAds) {
-
-                this.Hide();
-
-                PopupNoAds.getInstance().show();
-
-                FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
-
-                return;
-            }
-
             this.Hide();
 
             Utils.getInstance().UpdateHeart(5); // reset lại heart là 5
@@ -82,6 +72,18 @@ export class OutOfMove extends Component {
     Ads(call: CallableFunction) {
         if (typeof call === 'function') {
             call();
+
+            FbSdk.getInstance().showRewardAd((isAds) => {
+                if (isAds == true) {
+                    call();
+                }
+                else {
+                    this.Hide();
+                    PopupNoAds.getInstance().show();
+                    FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
+                    return;
+                }
+            })
         }
     }
 
