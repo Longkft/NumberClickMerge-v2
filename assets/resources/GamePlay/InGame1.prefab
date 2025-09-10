@@ -32,25 +32,22 @@
       },
       {
         "__id__": 650
-      },
-      {
-        "__id__": 653
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 657
+        "__id__": 654
       },
       {
-        "__id__": 659
+        "__id__": 656
       },
       {
-        "__id__": 661
+        "__id__": 658
       }
     ],
     "_prefab": {
-      "__id__": 663
+      "__id__": 660
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -14690,43 +14687,6 @@
   },
   {
     "__type__": "cc.Node",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 1
-    },
-    "_prefab": {
-      "__id__": 651
-    },
-    "__editorExtras__": {}
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 650
-    },
-    "asset": {
-      "__uuid__": "d8b16108-ad56-4310-80f4-73518c339f4c",
-      "__expectedType__": "cc.Prefab"
-    },
-    "fileId": "c5eYsEedlN9K8YYdp59sC3",
-    "instance": {
-      "__id__": 652
-    },
-    "targetOverrides": []
-  },
-  {
-    "__type__": "cc.PrefabInstance",
-    "fileId": "29J7BZbx9GgpS04mgdQJbk",
-    "prefabRootNode": {
-      "__id__": 1
-    },
-    "mountedChildren": [],
-    "mountedComponents": [],
-    "propertyOverrides": [],
-    "removedComponents": []
-  },
-  {
-    "__type__": "cc.Node",
     "_name": "ToolManager",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -14737,11 +14697,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 654
+        "__id__": 651
       }
     ],
     "_prefab": {
-      "__id__": 656
+      "__id__": 653
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -14778,11 +14738,11 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 653
+      "__id__": 650
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 655
+      "__id__": 652
     },
     "_id": ""
   },
@@ -14813,7 +14773,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 658
+      "__id__": 655
     },
     "_contentSize": {
       "__type__": "cc.Size",
@@ -14841,7 +14801,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 660
+      "__id__": 657
     },
     "_id": ""
   },
@@ -14859,7 +14819,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 662
+      "__id__": 659
     },
     "_id": ""
   },
@@ -14879,9 +14839,6 @@
     "instance": null,
     "targetOverrides": null,
     "nestedPrefabInstanceRoots": [
-      {
-        "__id__": 650
-      },
       {
         "__id__": 34
       },

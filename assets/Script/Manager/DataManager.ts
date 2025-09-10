@@ -56,12 +56,12 @@ export class DataManager extends BaseSingleton<DataManager> {
     // #region language
     public async GetLanguage() {
 
-        const saved = await this.getLocale("language")
+        const saved = await this.getLocaleShared("language")
         return saved ? saved : sys.language;
     }
 
     public async SetLanguage(value: string) {
-        await this.saveLocale("language", value)
+        await this.saveLocaleShared("language", value)
     }
 
     // #region HighScore
@@ -92,13 +92,13 @@ export class DataManager extends BaseSingleton<DataManager> {
 
     // #region gold
     public async GetGold() {
-        const saved = await this.getLocale("Gold")
+        const saved = await this.getLocaleShared("Gold")
         return saved == null ? 0 : saved
 
     }
 
     public async SetGold(value: number) {
-        await this.saveLocale("Gold", value)
+        await this.saveLocaleShared("Gold", value)
     }
 
     // #region first

@@ -58,7 +58,7 @@ export class PopupClainGoldCombo extends AutoComponent {
     }
 
     isNoAds: boolean = false;
-    async Hide() {
+    async Hide() { // claim
         this.ads(async () => {
 
             // if (!this.isNoAds) {

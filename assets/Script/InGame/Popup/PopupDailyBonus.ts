@@ -4,14 +4,11 @@ import { DataManager } from '../../Manager/DataManager';
 import { EventGame } from '../../Enum/EEvent';
 import { PrefabManager } from '../../Manager/PrefabManager';
 import { DailyItem } from '../Daily/DailyItem';
+import { Utils } from '../../Utils/Utils';
+import { MoneyController } from '../head/Money/MoneyController';
+import { DailyManager } from '../../Manager/DailyManager';
 
 const { ccclass, property } = _decorator;
-
-// Định nghĩa kiểu dữ liệu để dễ quản lý
-interface IDailyBonusData {
-    lastClaimTimestamp: number;
-    currentDayIndex: number;
-}
 
 @ccclass('PopupDailyBonus')
 export class PopupDailyBonus extends Component {
@@ -40,7 +37,7 @@ export class PopupDailyBonus extends Component {
         { day: '7', gold: 300 }
     ];
 
-    private _dailyData: IDailyBonusData = null;
+    public _dailyData: any = null;
     private _canClaim: boolean = false;
     private _dayItems: DailyItem[] = []; // Mảng lưu các component DailyItem
 
@@ -50,7 +47,7 @@ export class PopupDailyBonus extends Component {
         this.day7.removeAllChildren();
         this._dayItems = [];
 
-        // 1. Tạo các item UI (chỉ để hiển thị)
+        // 1. Tạo các item UI
         this.AddDailyItem();
 
         // 2. Kiểm tra logic, xác định xem hôm nay có được nhận thưởng không
@@ -62,7 +59,9 @@ export class PopupDailyBonus extends Component {
     }
 
     async initializeAndCheckBonus() {
-        this._dailyData = await DataManager.getInstance().getDailyBonusData();
+        this._dailyData = DailyManager.getInstance()._dailyData;
+
+        log('this._dailyData: ', this._dailyData);
 
         const now = Date.now();
         const lastClaimTime = this._dailyData.lastClaimTimestamp;
@@ -71,7 +70,7 @@ export class PopupDailyBonus extends Component {
             this._canClaim = true;
             this._dailyData.currentDayIndex = 0;
         } else { // Đã từng chơi
-            if (!this.isSameDay(lastClaimTime, now)) { // Nếu đã qua ngày mới
+            if (!Utils.getInstance().isSameDay(lastClaimTime, now)) { // Nếu đã qua ngày mới
                 this._canClaim = true;
                 this._dailyData.currentDayIndex++;
                 if (this._dailyData.currentDayIndex >= this.dataDaily.length) {
@@ -92,18 +91,16 @@ export class PopupDailyBonus extends Component {
         const rewardData = this.dataDaily[this._dailyData.currentDayIndex];
         log(`Nhận thưởng ngày ${this._dailyData.currentDayIndex + 1}: ${rewardData.gold} vàng`);
 
-        // 1. Trao thưởng
+        // Trao thưởng
         director.emit(EventGame.UPDATE_COIN_UI, rewardData.gold);
 
-        // 2. Cập nhật và lưu dữ liệu
+        // Cập nhật và lưu dữ liệu
         this._dailyData.lastClaimTimestamp = Date.now();
-        await DataManager.getInstance().setDailyBonusData(this._dailyData);
 
-        // 3. Cập nhật lại trạng thái và giao diện ngay lập tức
-        this._canClaim = false;
-        this.updateUI(); // Hàm này sẽ tự động ẩn item vừa nhận và vô hiệu hóa nút "Nhận"
+        DailyManager.getInstance()._dailyData = this._dailyData;
 
-        // 4. (Tùy chọn) Tự động đóng popup
+        this._canClaim = false; // Cập nhật lại trạng thái và giao diện ngay lập tức
+        this.updateUI();
         this.scheduleOnce(() => this.Hide(), 0.5);
     }
 
@@ -146,13 +143,5 @@ export class PopupDailyBonus extends Component {
 
     BtnClose() {
         this.Hide();
-    }
-
-    private isSameDay(ts1: number, ts2: number): boolean {
-        const date1 = new Date(ts1);
-        const date2 = new Date(ts2);
-        return date1.getFullYear() === date2.getFullYear() &&
-            date1.getMonth() === date2.getMonth() &&
-            date1.getDate() === date2.getDate();
     }
 }
