@@ -2,6 +2,7 @@ import { _decorator, Component, instantiate, Node, Prefab } from 'cc';
 import { FXShadow } from '../../FX/FXShadow';
 import { CellPopupMax, CellPopupState } from '../Cell/CellPopupMax';
 import { GridManager } from '../GridManager';
+import { PopupManager } from '../../Manager/PopupManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopUpGoal')

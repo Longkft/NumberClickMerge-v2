@@ -13,6 +13,12 @@ export class PrefabManager extends BaseSingleton<PrefabManager> {
     @property({ type: Prefab, group: { name: "INGAME" } })
     cameraItem: Prefab = null
 
+    @property({ type: Prefab, group: { name: "DAILY" } })
+    itemDaily: Prefab = null
+
+    @property({ type: Prefab, group: { name: "DAILY" } })
+    itemDaily7: Prefab = null
+
     @property({ type: Prefab, group: { name: "POPUP" } })
     popupUnlockMax: Prefab = null
 
@@ -51,6 +57,9 @@ export class PrefabManager extends BaseSingleton<PrefabManager> {
 
     @property({ type: Prefab, group: { name: "POPUP" } })
     popupHintTool: Prefab = null
+
+    @property({ type: Prefab, group: { name: "POPUP" } })
+    popupDailyBonus: Prefab = null
 
 }
 

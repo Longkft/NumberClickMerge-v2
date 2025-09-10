@@ -68,5 +68,8 @@
     "tttool1": "Use a hammer to break the plus sign",
     "tttool2": "You can swap the positions of 2 blocks and equivalent block pairs",
     "tttool3": "Select block to be deleted",
-    "tttool4": "Upgrade all blocks with selected value to the current largest number"
+    "tttool4": "Upgrade all blocks with selected value to the current largest number",
+    "DailyBonusTT": "Daily Bonus",
+    "Receive": "Receive",
+    "DailyBonusCT": "Missing a day will reset the process"
 }

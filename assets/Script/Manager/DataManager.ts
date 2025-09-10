@@ -66,7 +66,7 @@ export class DataManager extends BaseSingleton<DataManager> {
 
     // #region HighScore
     public async GethighScoreMenu(gameMode: GameMode) {
-        const saved = await this.getLocaleMenu(`highScore` + `${Config.keyGame}` + `${gameMode}`)
+        const saved = await this.getLocaleShared(`highScore` + `${Config.keyGame}` + `${gameMode}`)
         return (saved == null || saved == undefined) ? null : JSON.parse(saved);
     }
 
@@ -179,6 +179,21 @@ export class DataManager extends BaseSingleton<DataManager> {
         await this.saveLocale("TotalExp", value);
     }
 
+    // #region Daily Bonus
+    public async getDailyBonusData(): Promise<{ lastClaimTimestamp: number, currentDayIndex: number }> {
+        const saved = await this.getLocaleShared("DailyBonusData");
+        // Nếu không có dữ liệu, trả về giá trị mặc định cho lần đầu tiên
+        if (!saved) {
+            return { lastClaimTimestamp: 0, currentDayIndex: 0 };
+        }
+        return saved;
+    }
+
+    public async setDailyBonusData(data: { lastClaimTimestamp: number, currentDayIndex: number }) {
+        await this.saveLocaleShared("DailyBonusData", data);
+    }
+    // #endregion
+
     public async saveLocale(key, value) {
         await localStorage.setItem(key + `${Config.keyGame}` + `${GridManager.getInstance().GameMode}`, JSON.stringify(value));
     }
@@ -205,13 +220,7 @@ export class DataManager extends BaseSingleton<DataManager> {
         await localStorage.removeItem(key + `${Config.keyGame}` + `${GridManager.getInstance().GameMode}`);
     }
 
-    public async getLocaleMenu(key) {
-
-        // let saved = await localStorage.getItem(key)
-        // console.log(key)
-        // console.log(JSON.parse(saved))
-        // return (saved == null || saved == undefined) ? null : JSON.parse(saved);
-
+    public async getLocaleShared(key) {
         try {
             let saved = await localStorage.getItem(key)
             console.log(key)
@@ -221,6 +230,10 @@ export class DataManager extends BaseSingleton<DataManager> {
             console.error(`Failed to parse key "${key}" from localStorage:`, e);
             return null;
         }
+    }
+
+    public async saveLocaleShared(key, value) {
+        await localStorage.setItem(key, JSON.stringify(value));
     }
 }
 

@@ -14,6 +14,7 @@ import { PopUpGoal } from '../InGame/Popup/PopUpGoal';
 import { TutorialManager } from '../InGame/Tools/TutorialManager';
 import { PopupLevelUp } from '../InGame/Popup/PopupLevelUp';
 import { HintTool } from '../InGame/Popup/HintTool';
+import { PopupDailyBonus } from '../InGame/Popup/PopupDailyBonus';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupManager')
@@ -34,6 +35,7 @@ export class PopupManager extends BaseSingleton<PopupManager> {
     private _popupTutorial: TutorialManager = null
     private _popupLevelUp: PopupLevelUp = null
     private _popupHintTool: HintTool = null
+    private _popupDailyBonus: PopupDailyBonus = null
 
     get popupUnlockMax() {
         if (this._popupUnlockMax == null) {
@@ -161,6 +163,14 @@ export class PopupManager extends BaseSingleton<PopupManager> {
             this.node.addChild(this._popupHintTool.node)
         }
         return this._popupHintTool
+    }
+
+    get PopupDailyBonus() {
+        if (this._popupDailyBonus == null) {
+            this._popupDailyBonus = instantiate(PrefabManager.getInstance().popupDailyBonus).getComponent(PopupDailyBonus);
+            this.node.addChild(this._popupDailyBonus.node)
+        }
+        return this._popupDailyBonus
     }
 }
 
