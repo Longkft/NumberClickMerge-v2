@@ -7,7 +7,7 @@ import { EventGame } from '../../Enum/EEvent';
 import { InGameUIManager } from '../InGameUIManager';
 import { FXTween } from '../../FX/FXTween';
 import { PopupNoAds } from './PopupNoAds';
-import { FbSdk } from '../../FbSdk';
+// import { FbSdk } from '../../FbSdk';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupAdsGold')

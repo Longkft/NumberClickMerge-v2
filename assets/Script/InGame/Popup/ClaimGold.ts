@@ -9,7 +9,7 @@ import { PrefabManager } from '../../Manager/PrefabManager';
 import { PopupManager } from '../../Manager/PopupManager';
 import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
-import { FbSdk } from '../../FbSdk';
+// import { FbSdk } from '../../FbSdk';
 const { ccclass, property } = _decorator;
 
 @ccclass('ClaimGold')
@@ -105,8 +105,8 @@ export class ClaimGold extends AutoComponent {
 
     ads(call: CallableFunction) {
         if (typeof call === 'function') {
-            FbSdk.getInstance().showInterstitial(call, call)
-            // call();
+            // FbSdk.getInstance().showInterstitial(call, call)
+            call();
         }
     }
 

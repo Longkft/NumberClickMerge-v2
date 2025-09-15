@@ -1,5 +1,5 @@
 import { _decorator, Component, director, Label, Node, Sprite, tween } from 'cc';
-import { FbSdk } from '../FbSdk';
+// import { FbSdk } from '../FbSdk';
 const { ccclass, property } = _decorator;
 
 @ccclass('LoadingManager')
@@ -15,12 +15,12 @@ export class LoadingManager extends Component {
         this.FXLblLoading()
         this.FXProgressLoading()
         this.LoadScene()
-      
+
 
     }
 
     protected start(): void {
-        FbSdk.getInstance().loginGame()
+        // FbSdk.getInstance().loginGame()
     }
 
     LoadScene() {

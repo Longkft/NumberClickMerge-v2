@@ -6,7 +6,7 @@ import { HighScoreMenu } from '../InGame/head/HighScoreMenu';
 import { ScoreController } from '../InGame/head/score/ScoreController';
 import { InGameLogicManager } from '../InGame/InGameLogicManager';
 import { EventGame } from '../Enum/EEvent';
-import { FbSdk } from '../FbSdk';
+// import { FbSdk } from '../FbSdk';
 
 
 const { ccclass, property } = _decorator;
@@ -44,7 +44,7 @@ export class HomeManager extends BaseSingleton<HomeManager> {
     protected onLoad(): void {
 
         super.onLoad();
-        FbSdk.getInstance().loginGame()
+        // FbSdk.getInstance().loginGame()
         // localStorage.clear()
         HomeManager.instance = this;
         DataManager.getInstance()._scenePlay = false; // chưa có màn playGame

@@ -9,7 +9,7 @@ import { PopupManager } from '../../Manager/PopupManager';
 import { MoneyController } from '../head/Money/MoneyController';
 import { FXTween } from '../../FX/FXTween';
 import { PopupNoAds } from './PopupNoAds';
-import { FbSdk } from '../../FbSdk';
+// import { FbSdk } from '../../FbSdk';
 const { ccclass, property } = _decorator;
 
 @ccclass('OutOfMove')
