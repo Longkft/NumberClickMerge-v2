@@ -1,5 +1,6 @@
 import { _decorator, Component, Node } from 'cc';
 import { BaseSingleton } from '../../Base/BaseSingleton';
+import { Utils } from '../../Utils/Utils';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupNoAds')

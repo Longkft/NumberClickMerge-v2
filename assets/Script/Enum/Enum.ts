@@ -8,3 +8,11 @@ export enum GameMode {
     CLASSIC,
     HARD
 }
+
+export enum GameState {
+    MainMenu,
+    Gameplay,
+    Pause,
+    Victory,
+    Defeat
+}

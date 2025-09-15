@@ -10,6 +10,8 @@ import { PopupManager } from '../../../Manager/PopupManager';
 import { GridManager } from '../../GridManager';
 import { HomeManager } from '../../../Manager/HomeManager';
 import { LocalizedLabel } from '../../../i18n/LocalizedLabel';
+import { GameManager } from '../../../Manager/GameManager';
+import { GameState } from '../../../Enum/Enum';
 const { ccclass, property } = _decorator;
 
 @ccclass('SettingScene')
@@ -251,6 +253,9 @@ export class SettingScene extends BaseTouch {
         this.box.active = false;
 
         this.shadow.HideFXShadow();
+
+        GameManager.getInstance()._currentState = GameState.MainMenu; // cài đặt game state
+        EventBus.emit(EventGame.UPDATE_ICON_SETTING);
     }
 
     BtnRestart() {

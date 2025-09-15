@@ -41,6 +41,8 @@ export class PopupClainGoldCombo extends AutoComponent {
     }
 
     async Show(gold: number, combo: number, call: CallableFunction) {
+        this.node.setSiblingIndex(Utils.getInstance().GetIndexMaxPopup());
+
         const box = this.node.getChildByName('box');
 
         Utils.getInstance().setCamLayer(MoneyController.getInstance().node, 1 << Utils.getInstance().layerMaxIndex);

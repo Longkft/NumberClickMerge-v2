@@ -22,6 +22,8 @@ export class PopupAdsGold extends Component {
     gold: number;
 
     async Show(gold: number = 100) {
+        this.node.setSiblingIndex(Utils.getInstance().GetIndexMaxPopup());
+
         const box = this.node.getChildByName('box');
 
         Utils.getInstance().setCamLayer(MoneyController.getInstance().node, 1 << Utils.getInstance().layerMaxIndex);
@@ -62,17 +64,17 @@ export class PopupAdsGold extends Component {
 
     ads(call: CallableFunction) {
         if (typeof call === 'function') {
-            FbSdk.getInstance().showRewardAd((isAds) => {
-                if (isAds == true) {
-                    call();
-                }
-                else {
-                    this.hidePopup();
-                    PopupNoAds.getInstance().show();
-                    FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
-                    return;
-                }
-            })
+            // FbSdk.getInstance().showRewardAd((isAds) => {
+            //     if (isAds == true) {
+            //         call();
+            //     }
+            //     else {
+            this.hidePopup();
+            PopupNoAds.getInstance().show();
+            FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
+            return;
+            //     }
+            // })
 
         }
     }

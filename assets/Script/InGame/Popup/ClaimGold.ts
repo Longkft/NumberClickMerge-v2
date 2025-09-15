@@ -48,6 +48,8 @@ export class ClaimGold extends AutoComponent {
     }
 
     async Show(gold: number) {
+        this.node.setSiblingIndex(Utils.getInstance().GetIndexMaxPopup());
+
         this.node.children.forEach(element => {
             element.active = false;
         });

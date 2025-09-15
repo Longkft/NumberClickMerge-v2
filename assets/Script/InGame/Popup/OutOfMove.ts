@@ -28,6 +28,8 @@ export class OutOfMove extends Component {
     btnAds: Node = null;
 
     async Show() {
+        this.node.setSiblingIndex(Utils.getInstance().GetIndexMaxPopup());
+
         let gold = MoneyController.getInstance().GoldCurrent;
         if (gold < 200) {
             this.btnGold.active = false;
@@ -71,19 +73,19 @@ export class OutOfMove extends Component {
 
     Ads(call: CallableFunction) {
         if (typeof call === 'function') {
-            call();
+            // call();
 
-            FbSdk.getInstance().showRewardAd((isAds) => {
-                if (isAds == true) {
-                    call();
-                }
-                else {
-                    this.Hide();
-                    PopupNoAds.getInstance().show();
-                    FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
-                    return;
-                }
-            })
+            // FbSdk.getInstance().showRewardAd((isAds) => {
+            //     if (isAds == true) {
+            //         call();
+            //     }
+            //     else {
+            this.Hide();
+            PopupNoAds.getInstance().show();
+            FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
+            return;
+            //     }
+            // })
         }
     }
 

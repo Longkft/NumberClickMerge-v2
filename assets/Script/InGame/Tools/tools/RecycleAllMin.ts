@@ -63,7 +63,7 @@ export class RecycleAllMin implements IToolStrategy {
         await inGameLogic.triggerFillAndMatchCheck();
     }
 
-
+    
     // --- CÁC HÀM PHỤ (Không thay đổi) ---
 
     private async clearCellsWithValue(value: number, inGameLogic: InGameLogicManager): Promise<number> {

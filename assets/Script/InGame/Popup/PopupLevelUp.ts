@@ -5,6 +5,7 @@ import { ToolManager } from '../../Manager/ToolManager';
 import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
 import { PopupManager } from '../../Manager/PopupManager';
+import { Utils } from '../../Utils/Utils';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupLevelUp')
@@ -20,6 +21,8 @@ export class PopupLevelUp extends Component {
     labelLv: Label = null;
 
     async show(lvUp: number) {
+        this.node.setSiblingIndex(Utils.getInstance().GetIndexMaxPopup());
+
         await this.shadow.ShowFxShadow();
         await this.shadow.ShowFxBox(this.box);
 

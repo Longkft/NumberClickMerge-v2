@@ -6,6 +6,7 @@ import { CellPopupMax, CellPopupState } from '../Cell/CellPopupMax';
 import { PopupManager } from '../../Manager/PopupManager';
 import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
+import { Utils } from '../../Utils/Utils';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupUnlockMax')
@@ -31,6 +32,8 @@ export class PopupUnlockMax extends Component {
 
 
     show() {
+        this.node.setSiblingIndex(Utils.getInstance().GetIndexMaxPopup());
+
         this.pageView.removeAllPages()
         this.pageView.content.getComponent(Layout).updateLayout()
         this.init()

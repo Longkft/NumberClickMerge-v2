@@ -4,6 +4,7 @@ import { CellPopupMin } from '../Cell/CellPopupMin';
 import { CellPopupState } from '../Cell/CellPopupMax';
 import { GridManager } from '../GridManager';
 import { PopupManager } from '../../Manager/PopupManager';
+import { Utils } from '../../Utils/Utils';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupUnlockMin')
@@ -21,6 +22,8 @@ export class PopupUnlockMin extends Component {
     }
 
     show() {
+        this.node.setSiblingIndex(Utils.getInstance().GetIndexMaxPopup());
+
         this.pageView.removeAllPages()
         this.pageView.content.getComponent(Layout).updateLayout()
         this.init()

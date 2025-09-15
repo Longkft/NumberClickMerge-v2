@@ -3,6 +3,7 @@ import { FXShadow } from '../../FX/FXShadow';
 import { CellPopupMax, CellPopupState } from '../Cell/CellPopupMax';
 import { GridManager } from '../GridManager';
 import { PopupManager } from '../../Manager/PopupManager';
+import { Utils } from '../../Utils/Utils';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopUpGoal')
@@ -21,6 +22,8 @@ export class PopUpGoal extends Component {
     cellMaxPrefab: Prefab = null;
 
     async Show() {
+        this.node.setSiblingIndex(Utils.getInstance().GetIndexMaxPopup());
+
         await this.shadow.ShowFxShadow();
 
         this.init();

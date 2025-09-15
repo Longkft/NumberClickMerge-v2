@@ -29,6 +29,8 @@ export class HintTool extends AutoComponent {
     }
 
     async Show() {
+        this.node.setSiblingIndex(Utils.getInstance().GetIndexMaxPopup());
+
         await this.shadow.ShowFxShadow();
 
         this.titleHint.active = true;

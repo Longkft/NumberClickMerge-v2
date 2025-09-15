@@ -42,6 +42,8 @@ export class PopupDailyBonus extends Component {
     private _dayItems: DailyItem[] = []; // Mảng lưu các component DailyItem
 
     async Show() {
+        this.node.setSiblingIndex(Utils.getInstance().GetIndexMaxPopup());
+
         // Dọn dẹp UI cũ
         this.day16.removeAllChildren();
         this.day7.removeAllChildren();

@@ -22,6 +22,8 @@ export class AdsHeat extends Component {
     isCheckLose: boolean = false;
 
     async Show() {
+        this.node.setSiblingIndex(Utils.getInstance().GetIndexMaxPopup()); // hiển thị show popup lên đầu tiên (index max trong chuỗi con cùng cha)
+
         await this.shadow.ShowFxShadow();
 
         await this.shadow.ShowFxBox(this.box);
@@ -59,17 +61,17 @@ export class AdsHeat extends Component {
 
     Ads(call: CallableFunction) {
         if (typeof call === 'function') {
-            FbSdk.getInstance().showRewardAd((isAds) => {
-                if (isAds == true) {
-                    call();
-                }
-                else {
-                    PopupNoAds.getInstance().show();
-                    FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
-                    this.Hide();
-                    return;
-                }
-            })
+            // FbSdk.getInstance().showRewardAd((isAds) => {
+            //     if (isAds == true) {
+            //         call();
+            //     }
+            //     else {
+            PopupNoAds.getInstance().show();
+            FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
+            this.Hide();
+            return;
+            //     }
+            // })
         }
     }
 
