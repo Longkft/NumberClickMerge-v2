@@ -265,7 +265,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 373.37591552734375,
+      "width": 650,
       "height": 80.64
     },
     "_anchorPoint": {
@@ -304,11 +304,11 @@
     "_string": "Daily Bonus",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 64,
+    "_actualFontSize": 65,
     "_fontSize": 64,
     "_fontFamily": "Arial",
     "_lineHeight": 64,
-    "_overflow": 0,
+    "_overflow": 2,
     "_enableWrapText": true,
     "_font": {
       "__uuid__": "b414b1a6-ddba-42a7-a4d6-1e0770b61834",
@@ -571,10 +571,10 @@
       "b": 255,
       "a": 255
     },
-    "_string": "Missing a day will reset the process",
+    "_string": "Continue receiving gifts the next day",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 42,
+    "_actualFontSize": 40,
     "_fontSize": 50,
     "_fontFamily": "Arial",
     "_lineHeight": 58,
@@ -632,7 +632,7 @@
     "__prefab": {
       "__id__": 23
     },
-    "key": "addHeat",
+    "key": "DailyBonusCT",
     "_id": ""
   },
   {
