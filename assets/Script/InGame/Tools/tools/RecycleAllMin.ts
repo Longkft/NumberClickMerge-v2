@@ -1,4 +1,4 @@
-import { director } from "cc";
+import { director, log } from "cc";
 import { EventGame } from "../../../Enum/EEvent";
 import { GameManager } from "../../../Manager/GameManager";
 import { ToolManager, ToolType } from "../../../Manager/ToolManager";
@@ -14,9 +14,9 @@ export class RecycleAllMin implements IToolStrategy {
         // Tool này không cần người dùng click, nên sẽ tự thực thi ngay khi kích hoạt
         const toolState = ToolManager.getInstance().getToolState(ToolType.REMOVE_MIN);
         if (toolState && toolState.isUpgraded) {
-            console.log("UPGRADED: Select a cell to clear all cells with the same value.");
+            // log("UPGRADED: Select a cell to clear all cells with the same value.");
         } else {
-            console.log("NORMAL: Click anywhere to clear all cells with the lowest value.");
+            // console.log("NORMAL: Click anywhere to clear all cells with the lowest value.");
             this.execute(0, 0, toolState);
         }
     }
@@ -28,11 +28,9 @@ export class RecycleAllMin implements IToolStrategy {
         // await logicManager.removeAllMinCellsTools();
 
         if (toolState && toolState.isUpgraded) {
-            console.log("Executing UPGRADED Recycle (Clear by selected value)!");
             // Với tool nâng cấp, chúng ta cần row và col
             await this.executeUpgraded(row, col);
         } else {
-            console.log("Executing normal Recycle (Clear lowest value).");
             // Với tool thường, không cần row và col
             await this.executeNormal();
         }
@@ -63,7 +61,7 @@ export class RecycleAllMin implements IToolStrategy {
         await inGameLogic.triggerFillAndMatchCheck();
     }
 
-    
+
     // --- CÁC HÀM PHỤ (Không thay đổi) ---
 
     private async clearCellsWithValue(value: number, inGameLogic: InGameLogicManager): Promise<number> {
@@ -109,7 +107,7 @@ export class RecycleAllMin implements IToolStrategy {
     }
 
     deactivate(): void {
-        console.log("RemoveMin Tool Deactivated");
+        
     }
 
 }

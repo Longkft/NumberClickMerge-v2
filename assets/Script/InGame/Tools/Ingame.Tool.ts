@@ -140,8 +140,6 @@ export class Ingame_Tool extends Component {
         // 1. Gọi hàm getToolState() với type của chính tool này
         const toolState: ToolProgress | null = ToolManager.getInstance().getToolState(this.type);
 
-        log('toolState: ', toolState)
-
         // 2. Kiểm tra kết quả trả về
         if (toolState && toolState.isUpgraded) {
             return true;

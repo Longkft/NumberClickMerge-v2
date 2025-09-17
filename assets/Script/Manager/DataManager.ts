@@ -12,16 +12,6 @@ export class DataManager extends BaseSingleton<DataManager> {
 
     _scenePlay: boolean = false;
 
-    // #region FirstGame
-    // public get FirstGame(): boolean {
-    //     const saved = localStorage.getItem("firstGame");
-    //     return saved !== null && saved === 'false' ? false : true;
-    // }
-
-    // public set FirstGame(value: boolean) {
-    //     localStorage.setItem("firstGame", value.toString());
-    // }
-
     // #region My Heart
     public async GetMyHeart() {
         const saved = await this.getLocale("myHeart");
@@ -32,26 +22,6 @@ export class DataManager extends BaseSingleton<DataManager> {
         if (value > 5) return;
         this.saveLocale("myHeart", value)
     }
-
-    // // #region NumberMax
-    // public async GetNumberMax() {
-    //     const saved = await this.getLocale("numberMax");
-    //     return saved !== null ? parseInt(saved) : 8;
-    // }
-
-    // public set NumberMax(value: number) {
-    //     localStorage.setItem("numberMax", value.toString());
-    // }
-
-    // // #region numberMin
-    // public get NumberMin(): number {
-    //     const saved = localStorage.getItem("numberMin");
-    //     return saved !== null ? parseInt(saved) : 1;
-    // }
-
-    // public set NumberMin(value: number) {
-    //     localStorage.setItem("numberMin", value.toString());
-    // }
 
     // #region language
     public async GetLanguage() {
@@ -151,8 +121,6 @@ export class DataManager extends BaseSingleton<DataManager> {
     public async GetToolProgress(): Promise<Record<string, ToolProgress>> {
         const saved = await this.getLocale("ToolProgress");
 
-        log('save: ', saved)
-
         if (saved && Object.keys(saved).length === 0 || !saved) {
             return {
                 [ToolType.HAMMER]: { points: 0, isUpgraded: false },
@@ -206,12 +174,9 @@ export class DataManager extends BaseSingleton<DataManager> {
         // return (saved == null || saved == undefined) ? null : JSON.parse(saved);
 
         try {
-            let saved = await localStorage.getItem(key + `${Config.keyGame}` + `${GridManager.getInstance().GameMode}`)
-            console.log(key)
-            // console.log(JSON.parse(saved))
+            let saved = await localStorage.getItem(key + `${Config.keyGame}` + `${GridManager.getInstance().GameMode}`);
             return (saved == null || saved == undefined) ? null : JSON.parse(saved);
         } catch (e) {
-            console.error(`Failed to parse key "${key}" from localStorage:`, e);
             return null;
         }
     }
@@ -222,12 +187,9 @@ export class DataManager extends BaseSingleton<DataManager> {
 
     public async getLocaleShared(key) {
         try {
-            let saved = await localStorage.getItem(key)
-            console.log(key)
-            // console.log(JSON.parse(saved))
+            let saved = await localStorage.getItem(key);
             return (saved == null || saved == undefined) ? null : JSON.parse(saved);
         } catch (e) {
-            console.error(`Failed to parse key "${key}" from localStorage:`, e);
             return null;
         }
     }

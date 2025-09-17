@@ -17,7 +17,6 @@ export class Swap implements IToolStrategy {
     }
 
     activate(): void {
-        console.log("Swap Tool Activated");
         this.firstSwapCell = null;
     }
 
@@ -43,7 +42,6 @@ export class Swap implements IToolStrategy {
             const isAdjacent = Math.abs(this.firstSwapCell.row - secondSwapCell.row) + Math.abs(this.firstSwapCell.col - secondSwapCell.col) === 1;
 
             if (!isAdjacent) {
-                console.warn("Invalid swap: Cells are not adjacent.");
                 // Báo hiệu cho người dùng biết lựa chọn không hợp lệ (ví dụ: rung nhẹ ô thứ 2)
                 const secondCellUI = this.logicManager.cells[secondSwapCell.row]?.[secondSwapCell.col]?.cellUI;
                 if (secondCellUI) {
@@ -61,10 +59,8 @@ export class Swap implements IToolStrategy {
             // this.logicManager.triggerPostActionCheck();
 
             if (toolState && toolState.isUpgraded) {
-                console.log("Executing UPGRADED Swap (All matching patterns)!");
                 await this.executeUpgraded(this.firstSwapCell, secondSwapCell);
             } else {
-                console.log("Executing normal Swap (One pair).");
                 await this.executeNormal(this.firstSwapCell, secondSwapCell);
             }
 
@@ -111,8 +107,6 @@ export class Swap implements IToolStrategy {
             }
         }
 
-        console.log(`Found ${pairsToSwap.length} matching pairs to swap.`);
-
         // 3. Thực hiện hoán đổi hàng loạt
         const swapPromises = pairsToSwap.map(pair => inGameLogic.swapCells(pair.cellA, pair.cellB));
         await Promise.all(swapPromises);
@@ -122,7 +116,6 @@ export class Swap implements IToolStrategy {
     }
 
     deactivate(): void {
-        console.log("Swap Tool Deactivated");
         // Dọn dẹp nếu tool bị hủy giữa chừng
         if (this.firstSwapCell) {
             this.logicManager.cells[this.firstSwapCell.row]?.[this.firstSwapCell.col]?.cellUI.StopAnimationShake();

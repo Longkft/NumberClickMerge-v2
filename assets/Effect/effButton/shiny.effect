@@ -1,0 +1,78 @@
+
+CCEffect %{
+techniques:
+  - passes:
+      - vert: sprite-vs:vert
+        frag: sprite-fs:frag
+        depthStencilState:
+          depthTest: false
+          depthWrite: false
+        blendState:
+          targets:
+            - blend: true
+              blendSrc: src_alpha
+              blendDst: one_minus_src_alpha
+              blendDstAlpha: one_minus_src_alpha
+        rasterizerState:
+          cullMode: none
+        properties:
+          shineColor: { value: [1.0, 1.0, 1.0, 0.5] }
+          shinePosition: { value: 0.0 }
+          shineWidth: { value: 0.25 }
+          shineAngle: { value: 15.0 }
+
+}%
+        
+CCProgram sprite-vs %{
+precision highp float;
+#include <builtin/uniforms/cc-global>
+in vec3 a_position;
+in vec2 a_texCoord;
+in vec4 a_color;
+out vec4 color;
+out vec2 uv0;
+
+vec4 vert() {
+  vec4 pos = vec4(a_position, 1);
+  pos = cc_matViewProj * pos;
+  uv0 = a_texCoord;
+  color = a_color;
+  return pos;
+}
+}%
+
+CCProgram sprite-fs %{
+precision highp float;
+#include <builtin/internal/embedded-alpha>
+// #include <BoxTransition>         
+
+in vec4 color;
+in vec2 uv0;
+#pragma builtin(local)
+layout(set = 2, binding = 12)uniform sampler2D cc_spriteTexture;
+uniform sampler2D subTexture;
+
+layout(set = 0, binding = 0)uniform ShineUBO {
+  vec4 shineColor;
+  float shinePosition;
+  float shineWidth;
+  float shineAngle;
+};
+
+vec4 frag() {
+  vec4 baseColor = texture(cc_spriteTexture, uv0);
+  if (baseColor.a > 0.1) {
+    float rad = radians(shineAngle);
+    float slope = tan(rad);
+    
+    float distanceFromCenter = abs(uv0.x + slope * uv0.y - shinePosition);
+    float shineEffect = 1.0 - smoothstep(0.0, shineWidth, distanceFromCenter);
+    
+    vec4 reducedShineColor = shineColor * 0.6;
+    vec4 finalColor = baseColor + reducedShineColor * shineEffect;
+    return finalColor;
+  } else {
+    return baseColor;
+  }
+}
+ }%

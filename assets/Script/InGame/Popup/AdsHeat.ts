@@ -81,7 +81,6 @@ export class AdsHeat extends Component {
         if (!this.isCheckLose) {
 
         } else {
-            log('lose');
             PopupManager.getInstance().Lose.ShowFXLose();
         }
     }

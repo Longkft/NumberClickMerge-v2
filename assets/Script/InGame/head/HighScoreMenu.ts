@@ -21,7 +21,7 @@ export class HighScoreMenu extends Component {
 
     async updateHighScore() {
         this.highScore = await DataManager.getInstance().GethighScoreMenu(this.gameMode);
-        console.log("HighScoreMenu onLoad", this.highScore, this.gameMode);
+        
         this.setValue();
     }
 

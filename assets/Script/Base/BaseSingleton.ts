@@ -14,7 +14,7 @@ export class BaseSingleton<T> extends Component {
             if (nodes && nodes.length > 0) {
                 instance = nodes[0] as T;
                 if (nodes.length > 1) {
-                    console.error(`[Singleton] More than one instance of ${this.name} found!`);
+                    // console.error(`[Singleton] More than one instance of ${this.name} found!`);
                 }
             } else {
                 // Create a new node if none is found

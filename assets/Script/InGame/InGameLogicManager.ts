@@ -1,4 +1,4 @@
-import { _decorator, Component, director, error, game, log, Node, tween } from 'cc';
+import { _decorator, Component, director, error, game, log, Node, tween, warn } from 'cc';
 import { CellCollection } from './Cell/CellCollection';
 import { GameManager } from '../Manager/GameManager';
 import { PoolObjectManager } from '../Manager/PoolObjectManager';
@@ -116,7 +116,6 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
     ClickCheckToMove(rootRow: number, rootCol: number, matched: { row: number, col: number }[]) {
         if (this.isProcessing) {
-            log("Đang xử lý, không cho click.");
             return;
         }
 
@@ -466,7 +465,6 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
                 }
             } else {
                 // Nếu ô click không tạo ra nhóm nào, có thể xử lý ở đây
-                console.error("Ô được click không tạo ra nhóm phù hợp.");
                 this.isProcessing = false;
                 // Thêm logic hiển thị popup hết tim nếu cần
                 if (this.currentHeart <= 0) {
@@ -480,7 +478,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         // Nếu không có nhóm nào (sau khi đã thử với clickedRoot nếu có), kết thúc
         if (matchGroups.length === 0) {
             this.isProcessing = false; // cho phép click lại
-            console.log("Không còn ô nào match.");
+
 
             if (this.isUpLevel) {
                 PopupManager.getInstance().ShowPopupUnlockMax();
@@ -572,8 +570,6 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
                 // 4. Hạ cờ xuống để các ô combo sau không bị ảnh hưởng
                 this.justClicked = false;
-
-                console.log(`Ô mới tại [${data.root.row},${data.root.col}] đã kế thừa clickEffect.`);
             }
 
             if (GridManager.getInstance().CheckUpdateMaxCurrent(newValue)) {
@@ -632,7 +628,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         }
 
         if (cellsToRemove.length === 0) {
-            console.warn("[removeAllMinCells] Không có ô min nào để xoá.");
+            warn("[removeAllMinCells] Không có ô min nào để xoá.");
             return;
         }
 
@@ -900,12 +896,6 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         // KIỂM TRA CHẾ ĐỘ CHƠI HIỆN TẠI
         const currentMode = GridManager.getInstance().GameMode;
 
-        // if (currentMode === GameMode.HARD) {
-        //     console.log("Saving game state for HARD mode...");
-        //     DataManager.getInstance().SaveGameStateHard(gameStateData);
-        // } else {
-        //     console.log("Saving game state for CLASSIC mode...");
-        // }
         DataManager.getInstance().SaveGameState(gameStateData);
 
         // Các lệnh save khác không liên quan đến chế độ chơi
@@ -927,17 +917,10 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         const currentMode = GridManager.getInstance().GameMode;
         let savedData = null;
 
-        // if (currentMode === GameMode.HARD) {
-        //     console.log("Loading game state for HARD mode...");
-        //     savedData = await DataManager.getInstance().LoadGameStateHard();
-        // } else {
-        //     console.log("Loading game state for CLASSIC mode...");
-        // }
         savedData = await DataManager.getInstance().LoadGameState();
 
         // Phần xử lý dữ liệu sau khi load vẫn giữ nguyên
         if (savedData) {
-            console.log("Found saved data, applying state...");
             GridManager.getInstance().grid = savedData.grid.map(row =>
                 row.map(c => new CellModel({ value: c.value, color: c.color, row: c.row, col: c.col }))
             );
@@ -946,7 +929,6 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             director.emit(EventGame.UPDATE_HEARt_UI);
             director.emit(EventGame.UPGRADE_SCORE, 0);
         } else {
-            console.log("No saved data found, starting new grid...");
             GridManager.getInstance().initNewGrid();
         }
 
@@ -996,7 +978,6 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         if (hintCellPos) {
             const cellToShowHint = this.cells[hintCellPos.row]?.[hintCellPos.col];
             if (cellToShowHint) {
-                console.log(`Hiển thị gợi ý tại ô [${hintCellPos.row}, ${hintCellPos.col}]`);
                 cellToShowHint.cellUI.PlayAnimationShakeLoop();
 
                 this.scheduleOnce(() => {
@@ -1006,7 +987,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
                 }, 1);
             }
         } else {
-            console.log("Không tìm thấy nước đi nào!");
+            error("Không tìm thấy nước đi nào!");
         }
     }
 }

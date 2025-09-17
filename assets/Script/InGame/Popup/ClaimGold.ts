@@ -86,8 +86,6 @@ export class ClaimGold extends AutoComponent {
             this.node.children.forEach(element => {
                 element.active = false;
             });
-
-            log('GridManager.getInstance(): ', GridManager.getInstance().numberMin);
         })
     }
 

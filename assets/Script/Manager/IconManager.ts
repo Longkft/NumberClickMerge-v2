@@ -20,18 +20,14 @@ export class IconManager extends BaseSingleton<IconManager> {
         resources.load("Texture/iconSettingHome/spriteFrame", SpriteFrame, (err, sf) => {
             if (!err) {
                 this._iconMap.set(GameState.MainMenu, sf);
-                log(this._iconMap);
             }
         });
 
         resources.load("Texture/iconSettingGame/spriteFrame", SpriteFrame, (err, sf) => {
             if (!err) {
                 this._iconMap.set(GameState.Gameplay, sf);
-                log(this._iconMap);
             }
         });
-
-        log(this._iconMap);
     }
 
     public setState(state: GameState) {

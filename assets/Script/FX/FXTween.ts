@@ -50,7 +50,6 @@ export class FXTween extends BaseSingleton<FXTween> {
 
         await Promise.all([tweenScale, tweenOpacity, tweenPosition])
             .then(async () => {
-                console.log('All Tweens Completed');
                 Tween.stopAllByTarget(node);
 
                 let uiOpa = node.getComponent(UIOpacity);

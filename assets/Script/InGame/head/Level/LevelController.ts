@@ -57,7 +57,6 @@ export class LevelController extends BaseSingleton<LevelController> {
         // ToolManager.getInstance().chooseTool = ToolType.NONE;
 
         if (newLevelInfo.level > oldLevelInfo.level) {
-            log('newLevelInfo.level: ', newLevelInfo.level)
             if (newLevelInfo.level % ratioLevel == 0) {
                 ToolManager.getInstance().triggerRandomToolUpgrade();
             }

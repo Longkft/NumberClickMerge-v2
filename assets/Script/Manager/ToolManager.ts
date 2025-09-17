@@ -100,7 +100,6 @@ export class ToolManager extends BaseSingleton<ToolManager> {
     }
 
     async SetToolState() {
-        log(this.toolProgress)
         await DataManager.getInstance().SetToolProgress(this.toolProgress);
     }
 

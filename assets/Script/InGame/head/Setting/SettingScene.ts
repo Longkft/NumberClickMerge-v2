@@ -208,7 +208,6 @@ export class SettingScene extends BaseTouch {
         const btn = parentNode.getChildByName('btn')?.getComponent(Sprite);
 
         if (!btn) {
-            console.warn('Không tìm thấy btn hoặc label');
             return;
         }
 

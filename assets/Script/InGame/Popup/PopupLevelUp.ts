@@ -37,10 +37,7 @@ export class PopupLevelUp extends Component {
     async BtnContinute() {
         await this.Hide();
 
-        log('ToolManager.getInstance().isShowHint ______ BtnContinute: ', ToolManager.getInstance().isShowHint)
-
         if (ToolManager.getInstance().isShowHint) {
-            log(11111)
             ToolManager.getInstance().isShowHint = false;
             PopupManager.getInstance().PopupHintTool.Show();
 

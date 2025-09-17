@@ -26,7 +26,6 @@ export class HeartUi extends Component {
     }
 
     UnRegisterEvent() {
-        console.log("UnRegisterEvent HeartUi");
         director.off(EventGame.UPDATE_HEARt_UI, this.UpdateUiheart);
     }
 
@@ -42,7 +41,7 @@ export class HeartUi extends Component {
 
             ActiveHeartNode.active = true;
         }
-        console.log("UpdateUiheart", this, this.listHeart);
+        
         for (let j = myHeart; j < this.listHeart.length; j++) {
             let heartNode = this.listHeart[j];
             let ActiveHeartNode = heartNode.getChildByName('heatActive');

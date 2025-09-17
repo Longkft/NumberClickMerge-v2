@@ -66,7 +66,7 @@ export class GridManager extends BaseSingleton<GridManager> {
             }
         }
 
-        console.table(this.grid.map(r => r.map(c => c.value)));
+        // console.table(this.grid.map(r => r.map(c => c.value)));
     }
 
     private isMatched(i: number, j: number): boolean {
@@ -225,7 +225,7 @@ export class GridManager extends BaseSingleton<GridManager> {
 
         this.FillNewValue(rows, cols);
 
-        console.table(this.grid.map(r => r.map(c => c.value)));
+        // console.table(this.grid.map(r => r.map(c => c.value)));
     }
 
     SwapValue(rows: number, cols: number) {
@@ -290,9 +290,6 @@ export class GridManager extends BaseSingleton<GridManager> {
         PopupManager.getInstance().ShowPopupUnlockMin();
 
         return true;
-
-        log('numberMin: ', this.numberMin)
-        log('numberMax: ', this.numberMax)
     }
 
     public ResetGridState(): void {

@@ -9,7 +9,7 @@ import { IToolStrategy } from "./IToolStrategy";
 
 export class UpgradeOne implements IToolStrategy {
     activate(): void {
-        console.log("Upgrade Tool Activated");
+
     }
 
     async execute(row: number, col: number, toolState: ToolProgress | null): Promise<void> {
@@ -27,17 +27,9 @@ export class UpgradeOne implements IToolStrategy {
         if (cell.cellData.value >= maxUpgradeVal) {
             cell.cellUI.PlayAnimationShake();
         } else {
-            // logicManager.IsProcessing = true;
-            // logicManager.upgradeCellAt(row, col, maxUpgradeVal);
-            // logicManager.triggerPostActionCheck();
-            // EventBus.emit(EventGame.TOOL_FINISHED, ToolType.UPGRADE);
-            // ToolManager.getInstance().deactivateCurrentTool();
-
             if (toolState && toolState.isUpgraded) {
-                console.log("Executing UPGRADED Upgrade (All matching cells)!");
                 this.executeUpgraded(row, col, logicManager, gridManager, maxUpgradeVal);
             } else {
-                console.log("Executing normal Upgrade (One cell).");
                 this.executeNormal(row, col, logicManager, maxUpgradeVal);
             }
 
@@ -86,7 +78,7 @@ export class UpgradeOne implements IToolStrategy {
     }
 
     deactivate(): void {
-        console.log("Upgrade Tool Deactivated");
+
     }
 
 }

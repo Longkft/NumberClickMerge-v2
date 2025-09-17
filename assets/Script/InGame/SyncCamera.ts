@@ -24,7 +24,6 @@ export class SyncCamera extends Component {
 
     onLoad() {
         if (!this.mainCamera || !this.secondaryCamera) {
-            console.error('Vui lòng gán cả hai camera vào script SyncCamera!');
             this.enabled = false;
             return;
         }

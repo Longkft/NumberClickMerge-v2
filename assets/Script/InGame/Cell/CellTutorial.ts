@@ -86,7 +86,6 @@ export class CellTutorial extends BaseTouch {
                     count++;
                     node.destroy();
                     if (count == 2) {
-                        log(1)
                         this.data++;
                         this.SetUp(this.data)
                         this.UpdateUICell(this.stage);

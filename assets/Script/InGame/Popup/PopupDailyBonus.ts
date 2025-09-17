@@ -58,12 +58,12 @@ export class PopupDailyBonus extends Component {
         // 3. Hiển thị popup
         await this.shadow.ShowFxShadow();
         await this.shadow.ShowFxBox(this.box);
+
+        this._dayItems[this._dailyData.currentDayIndex].getComponent(DailyItem).ActiveFxButton(true);
     }
 
     async initializeAndCheckBonus() {
         this._dailyData = DailyManager.getInstance()._dailyData;
-
-        log('this._dailyData: ', this._dailyData);
 
         const now = Date.now();
         const lastClaimTime = this._dailyData.lastClaimTimestamp;
@@ -91,7 +91,6 @@ export class PopupDailyBonus extends Component {
         if (!this._canClaim) return; // Bảo vệ, không cho bấm khi không được phép
 
         const rewardData = this.dataDaily[this._dailyData.currentDayIndex];
-        log(`Nhận thưởng ngày ${this._dailyData.currentDayIndex + 1}: ${rewardData.gold} vàng`);
 
         // Trao thưởng
         director.emit(EventGame.UPDATE_COIN_UI, rewardData.gold);
@@ -126,14 +125,20 @@ export class PopupDailyBonus extends Component {
 
             if (i < this.dataDaily.length - 1) {
                 dailyNode = instantiate(PrefabManager.getInstance().itemDaily);
+
                 this.day16.addChild(dailyNode);
             } else {
                 dailyNode = instantiate(PrefabManager.getInstance().itemDaily7);
+
                 this.day7.addChild(dailyNode);
             }
 
             const dailyItemComp = dailyNode.getComponent(DailyItem);
             dailyItemComp.setUp(data.day, data.gold);
+
+            // Tắt hết eff button
+            dailyItemComp.ActiveFxButton(false);
+
             this._dayItems.push(dailyItemComp);
         }
     }

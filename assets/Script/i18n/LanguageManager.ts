@@ -28,7 +28,6 @@ export class LanguageManager extends BaseSingleton<LanguageManager> {
         return new Promise((resolve, reject) => {
             resources.load(`i18n/${lang}`, JsonAsset, (err, asset) => {
                 if (err) {
-                    console.error(`[i18n] Load failed: ${lang}`, err);
                     reject(err);
                     return;
                 }

@@ -57,8 +57,6 @@ export class HomeManager extends BaseSingleton<HomeManager> {
     PreLoadPrefabGamePlay() {
         Utils.PreloadAsset(`GamePlay/InGame`, Prefab, (Prefab) => {
             this.gamePlayPrefab = Prefab;
-
-            log(Prefab)
         });
     }
 

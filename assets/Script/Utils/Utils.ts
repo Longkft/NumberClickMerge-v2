@@ -1,4 +1,4 @@
-import { _decorator, Asset, Component, log, Node, resources, Layers } from 'cc';
+import { _decorator, Asset, Component, log, Node, resources, Layers, error } from 'cc';
 import { BaseSingleton } from '../Base/BaseSingleton';
 import { DataManager } from '../Manager/DataManager';
 import { InGameLogicManager } from '../InGame/InGameLogicManager';
@@ -24,7 +24,7 @@ export class Utils extends BaseSingleton<Utils> {
     ) {
         resources.load(path, type, (err, asset) => {
             if (err) {
-                console.error(`Lỗi preload asset tại ${path}:`, err);
+                // error(`Lỗi preload asset tại ${path}:`, err);
                 return;
             }
 
@@ -43,7 +43,6 @@ export class Utils extends BaseSingleton<Utils> {
 
     UpdateHeart(subtraction: number) { // subtraction là hiệu (cộng hoặc trừ)
         let heart = InGameLogicManager.getInstance().currentHeart;
-        console.log(heart)
         let newHeart = heart + subtraction;
         if (newHeart < 0 || newHeart > 5) return;
         InGameLogicManager.getInstance().currentHeart = newHeart;

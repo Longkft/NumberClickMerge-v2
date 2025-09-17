@@ -11,31 +11,16 @@ import { IToolStrategy } from "./IToolStrategy";
 
 export class HammerTool implements IToolStrategy {
     activate(): void {
-        console.log("Hammer Tool Activated");
+        
     }
 
     async execute(row: number, col: number, toolState: ToolProgress | null): Promise<void> {
         const logicManager = InGameLogicManager.getInstance();
         logicManager.IsProcessing = true;
 
-        // const targetCell = logicManager.cells[row]?.[col];
-        // if (targetCell) {
-        //     targetCell.cellUI.PlayAnimationShakeLoop();
-        //     await new Promise(r => setTimeout(r, 1000));
-        //     targetCell.cellUI.StopAnimationShake();
-
-        //     logicManager.removeCellAt(row, col);
-        //     await logicManager.triggerFillAndMatchCheck();
-        // } else {
-        //     // Nếu click ra ngoài hoặc ô không hợp lệ, không khóa game
-        //     logicManager.IsProcessing = false;
-        // }
-
         if (toolState && toolState.isUpgraded) {
-            console.log("Executing UPGRADED Hammer!");
             this.executeUpgraded(row, col, logicManager);
         } else {
-            console.log("Executing normal Hammer.");
             this.executeNormal(row, col, logicManager);
         }
 
@@ -44,7 +29,7 @@ export class HammerTool implements IToolStrategy {
     }
 
     deactivate(): void {
-        console.log("Hammer Tool Deactivated");
+
     }
 
     private async executeNormal(row: number, col: number, logicManager: InGameLogicManager) {
