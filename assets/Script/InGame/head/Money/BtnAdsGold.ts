@@ -11,6 +11,8 @@ export class BtnAdsGold extends BaseTouch {
 
         PopupManager.getInstance().PopupAdsGold.Show(gold);
         PopupManager.getInstance().PopupAdsGold.gold = gold;
+
+        this.UnRegisterButton();
     }
 }
 

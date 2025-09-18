@@ -116,6 +116,7 @@ export class PopupDailyBonus extends Component {
 
         // Kích hoạt hoặc vô hiệu hóa nút "Nhận" chung
         this.claimButton.interactable = this._canClaim;
+        this.claimButton.node.getChildByName('shadow').active = !this._canClaim;
     }
 
     AddDailyItem() {

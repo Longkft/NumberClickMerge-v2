@@ -1,10 +1,11 @@
-import { _decorator, Component, director, Layers, log, Node } from 'cc';
+import { _decorator, Button, Component, director, Layers, log, Node } from 'cc';
 import { MoneyUi } from './MoneyUi';
 import { EventBus } from '../../../Utils/EventBus';
 import { EventGame } from '../../../Enum/EEvent';
 import { DataManager } from '../../../Manager/DataManager';
 import { BaseSingleton } from '../../../Base/BaseSingleton';
 import { Utils } from '../../../Utils/Utils';
+import { BtnAdsGold } from './BtnAdsGold';
 const { ccclass, property } = _decorator;
 
 @ccclass('MoneyController')
@@ -16,6 +17,8 @@ export class MoneyController extends BaseSingleton<MoneyController> {
     @property({ type: Node })
     coinUi: Node = null;
 
+    @property({ type: Node })
+    btnAdsCoin: Node = null;
 
     GoldCurrent: number = 0
 
@@ -40,7 +43,7 @@ export class MoneyController extends BaseSingleton<MoneyController> {
     }
 
     UnRegisterEvent() {
-         director.off(EventGame.UPDATE_COIN_UI, this.UpdateUiCoin)
+        director.off(EventGame.UPDATE_COIN_UI, this.UpdateUiCoin)
     }
 
     UpdateUiCoin(gold: number) {
@@ -68,6 +71,10 @@ export class MoneyController extends BaseSingleton<MoneyController> {
 
     public SaveGold() {
         DataManager.getInstance().SetGold(this.GoldCurrent)
+    }
+
+    public RegisEventAddCoin() {
+        this.btnAdsCoin.getComponent(BtnAdsGold).RegisterButton();
     }
 }
 

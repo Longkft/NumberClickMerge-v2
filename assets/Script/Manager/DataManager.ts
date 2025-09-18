@@ -187,7 +187,7 @@ export class DataManager extends BaseSingleton<DataManager> {
 
     public async getLocaleShared(key) {
         try {
-            let saved = await localStorage.getItem(key);
+            let saved = await localStorage.getItem(key + `${Config.keyGame}`);
             return (saved == null || saved == undefined) ? null : JSON.parse(saved);
         } catch (e) {
             return null;
@@ -195,7 +195,7 @@ export class DataManager extends BaseSingleton<DataManager> {
     }
 
     public async saveLocaleShared(key, value) {
-        await localStorage.setItem(key, JSON.stringify(value));
+        await localStorage.setItem(key + `${Config.keyGame}`, JSON.stringify(value));
     }
 }
 

@@ -56,6 +56,8 @@ export class PopupAdsGold extends Component {
 
             this.hidePopup();
         });
+
+        MoneyController.getInstance().RegisEventAddCoin();
     }
 
     SetValueGoldUI(gold: number) {

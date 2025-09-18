@@ -69,7 +69,7 @@
     "tttool2": "You can swap the positions of 2 blocks and equivalent block pairs",
     "tttool3": "Select block to be deleted",
     "tttool4": "Upgrade all blocks with selected value to the current largest number",
-    "DailyBonusTT": "Daily Bonus",
+    "Daily Bonus": "Daily Bonus",
     "Receive": "Receive",
-    "DailyBonusCT": "Continue receiving gifts the next day"
+    "Continue receiving gifts the next day": "Continue receiving gifts the next day"
 }
