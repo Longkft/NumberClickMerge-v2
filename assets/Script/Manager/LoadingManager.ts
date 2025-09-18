@@ -1,5 +1,4 @@
 import { _decorator, Component, director, Label, Node, Sprite, tween } from 'cc';
-import { LanguageManager } from '../i18n/LanguageManager';
 // import { FbSdk } from '../FbSdk';
 const { ccclass, property } = _decorator;
 
@@ -15,8 +14,6 @@ export class LoadingManager extends Component {
     protected async onLoad() {
         this.FXLblLoading();
         this.FXProgressLoading();
-
-        await LanguageManager.getInstance().init();
 
         this.LoadScene();
     }
