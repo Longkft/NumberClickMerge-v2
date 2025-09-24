@@ -79,7 +79,8 @@ export class Cell {
 
 
         if (InGameLogicManager.getInstance().currentHeart <= 0) {
-            PopupManager.getInstance().OutOfMove.Show();
+            // PopupManager.getInstance().OutOfMove.Show();
+            PopupManager.getInstance().Lose.ShowFXLose();
             return;
         }
 
@@ -88,7 +89,8 @@ export class Cell {
         const matched = GridManager.getInstance().findConnectedCells(this.cellData.row, this.cellData.col);
         if (!matched || matched.length < 3) {
             if (InGameLogicManager.getInstance().currentHeart <= 0) {
-                PopupManager.getInstance().OutOfMove.Show();
+                // PopupManager.getInstance().OutOfMove.Show();
+                PopupManager.getInstance().Lose.ShowFXLose();
             }
             return;
         }

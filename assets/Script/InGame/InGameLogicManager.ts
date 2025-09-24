@@ -468,7 +468,8 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
                 this.isProcessing = false;
                 // Thêm logic hiển thị popup hết tim nếu cần
                 if (this.currentHeart <= 0) {
-                    PopupManager.getInstance().OutOfMove.Show();
+                    // PopupManager.getInstance().OutOfMove.Show();
+                    PopupManager.getInstance().Lose.ShowFXLose();
                 }
                 return;
             }

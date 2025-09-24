@@ -34,21 +34,43 @@ export class Ingame_Tool extends Component {
     @property({ type: Node })
     bgUpTool: Node = null;
 
+    @property({ type: Node })
+    red: Node = null;
+
     @property(CCInteger)
     coin: number = 0;
 
     protected start(): void {
         this.txtCoin.string = this.coin.toString();
-        this.node.on(Node.EventType.TOUCH_START, this.OnClick, this);
-        director.on(EventGame.TOOL_FINISHED, this.onToolFinished, this);
-        director.on(EventGame.TOOL_UPGRADEUITOOLUP, this.UpgradeUiToolUp, this);
+        this.RegisterEvent();
         this.UpgradeUiToolUp(this.type); // cập nhật ui tool up
     }
 
     protected onDestroy(): void {
+        this.DestroyEvent();
+    }
+
+    RegisterEvent() {
+        this.node.on(Node.EventType.TOUCH_START, this.OnClick, this);
+        director.on(EventGame.TOOL_FINISHED, this.onToolFinished, this);
+        director.on(EventGame.TOOL_UPGRADEUITOOLUP, this.UpgradeUiToolUp, this);
+    }
+
+    DestroyEvent() {
         this.node.off(Node.EventType.TOUCH_START, this.OnClick, this);
         director.off(EventGame.TOOL_FINISHED, this.onToolFinished);
         director.off(EventGame.TOOL_UPGRADEUITOOLUP, this.UpgradeUiToolUp);
+    }
+
+    protected lateUpdate(dt: number): void {
+        let coinGame = MoneyController.getInstance().GoldCurrent;
+        if (coinGame < this.coin) {
+            this.red.active = true;
+            this.DestroyEvent();
+        } else {
+            this.red.active = false;
+            this.RegisterEvent();
+        }
     }
 
     /**
