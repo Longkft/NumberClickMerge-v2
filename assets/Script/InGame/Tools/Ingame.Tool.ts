@@ -1,4 +1,4 @@
-import { _decorator, CCInteger, Component, director, Enum, Label, log, Node, Sprite, SpriteFrame } from 'cc';
+import { _decorator, CCInteger, Color, Component, director, Enum, Label, log, Node, Sprite, SpriteFrame } from 'cc';
 import { FXShadow } from '../../FX/FXShadow';
 import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
@@ -34,8 +34,8 @@ export class Ingame_Tool extends Component {
     @property({ type: Node })
     bgUpTool: Node = null;
 
-    @property({ type: Node })
-    red: Node = null;
+    @property({ type: Label })
+    red: Label = null;
 
     @property(CCInteger)
     coin: number = 0;
@@ -65,10 +65,10 @@ export class Ingame_Tool extends Component {
     protected lateUpdate(dt: number): void {
         let coinGame = MoneyController.getInstance().GoldCurrent;
         if (coinGame < this.coin) {
-            this.red.active = true;
+            this.red.color = Color.RED;
             this.DestroyEvent();
         } else {
-            this.red.active = false;
+            this.red.color = Color.WHITE;
             this.RegisterEvent();
         }
     }
