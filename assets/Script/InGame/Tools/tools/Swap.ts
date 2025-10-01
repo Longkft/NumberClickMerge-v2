@@ -32,13 +32,7 @@ export class Swap implements IToolStrategy {
             // Dừng hiệu ứng rung của ô đầu tiên
             this.logicManager.cells[this.firstSwapCell.row]?.[this.firstSwapCell.col]?.cellUI.StopAnimationShake();
 
-            // if (this.firstSwapCell.row === row && this.firstSwapCell.col === col) {
-            //     // Nếu click lại chính nó, hủy tool
-            //     ToolManager.getInstance().deactivateCurrentTool();
-            //     return;
-            // }
-
-            // === THÊM 1: KIỂM TRA TÍNH LIỀN KỀ ===
+            // KIỂM TRA TÍNH LIỀN KỀ ===
             const isAdjacent = Math.abs(this.firstSwapCell.row - secondSwapCell.row) + Math.abs(this.firstSwapCell.col - secondSwapCell.col) === 1;
 
             if (!isAdjacent) {
@@ -52,11 +46,6 @@ export class Swap implements IToolStrategy {
                 this.firstSwapCell = null;
                 return; // Kết thúc hàm execute, chờ người dùng chọn lại
             }
-
-            // === Nếu hợp lệ, tiếp tục thực hiện swap ===
-            // this.logicManager.IsProcessing = true;
-            // await this.logicManager.swapCells(this.firstSwapCell, secondSwapCell);
-            // this.logicManager.triggerPostActionCheck();
 
             if (toolState && toolState.isUpgraded) {
                 await this.executeUpgraded(this.firstSwapCell, secondSwapCell);
@@ -86,8 +75,8 @@ export class Swap implements IToolStrategy {
         // 1. Xác định "pattern": giá trị và hướng
         const valueA = grid[cellA.row][cellA.col].value;
         const valueB = grid[cellB.row][cellB.col].value;
-        const deltaRow = cellB.row - cellA.row; // Vd: 1 (dưới), -1 (trên), 0
-        const deltaCol = cellB.col - cellA.col; // Vd: 1 (phải), -1 (trái), 0
+        const deltaRow = cellB.row - cellA.row; // 1 (dưới), -1 (trên), 0
+        const deltaCol = cellB.col - cellA.col; // 1 (phải), -1 (trái), 0
 
         const pairsToSwap: { cellA: { row, col }, cellB: { row, col } }[] = [];
 
