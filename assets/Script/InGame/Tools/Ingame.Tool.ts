@@ -54,12 +54,14 @@ export class Ingame_Tool extends Component {
         this.node.on(Node.EventType.TOUCH_START, this.OnClick, this);
         director.on(EventGame.TOOL_FINISHED, this.onToolFinished, this);
         director.on(EventGame.TOOL_UPGRADEUITOOLUP, this.UpgradeUiToolUp, this);
+        director.on(EventGame.TOOL_DEACTIVATED, this.onToolDeactivated, this);
     }
 
     DestroyEvent() {
         this.node.off(Node.EventType.TOUCH_START, this.OnClick, this);
         director.off(EventGame.TOOL_FINISHED, this.onToolFinished);
         director.off(EventGame.TOOL_UPGRADEUITOOLUP, this.UpgradeUiToolUp);
+        director.off(EventGame.TOOL_DEACTIVATED, this.onToolDeactivated, this);
     }
 
     protected lateUpdate(dt: number): void {
@@ -77,10 +79,17 @@ export class Ingame_Tool extends Component {
      * Hàm xử lý click duy nhất cho tất cả các tool
      */
     private OnClick() {
+        // Nếu đang bấm tool khác rồi thì không cho bấm nữa
+        if (ToolManager.getInstance().isClick) {
+            return;
+        }
+
         if (!this.CheckCoinUseToolGame()) {
             PopupManager.getInstance().PopupAdsGold.Show();
             return;
         }
+
+        ToolManager.getInstance().isClick = true;
 
         InGameLogicManager.getInstance().consecutiveMerges = 0; // reset combo
 
@@ -89,20 +98,22 @@ export class Ingame_Tool extends Component {
         // Hiển thị hiệu ứng và BÁO CHO TOOLMANAGER
         this.ShowFxShadow();
 
+        director.emit(EventGame.UPDATE_COIN_UI, -this.coin);
+
         ToolManager.getInstance().activateTool(this.type);
     }
 
     /**
      * Được gọi khi tool thực thi xong
      */
-    private onToolFinished(finishedToolType: ToolType) {
+    private async onToolFinished(finishedToolType: ToolType) {
         // KIỂM TRA: nếu tool vừa hoàn thành không phải là tool này, thì bỏ qua
         if (this.type !== finishedToolType) {
             return;
         }
-        // Nếu đúng là tool này, thì mới thực hiện trừ tiền và ẩn hiệu ứng
-        director.emit(EventGame.UPDATE_COIN_UI, -this.coin);
-        this.HideFxShadow();
+
+        // Nếu đúng là tool này, thì mới ẩn hiệu ứng
+        await this.HideFxShadow();
     }
 
     private CheckCoinUseToolGame(): boolean {
@@ -135,6 +146,22 @@ export class Ingame_Tool extends Component {
         await shadowCpn.HideFxGuide(this.guide.parent);
         this.guide.active = true;
         await shadowCpn.HideFXShadow();
+
+        // ToolManager.getInstance().isClick = false;
+    }
+
+    private async onToolDeactivated() {
+        // Kiểm tra xem tool bị hủy có phải là tool này không
+        log(11111)
+        // Nếu đúng, GỌI HÀM HideFxShadow()
+        await this.awaitTime(0.5);
+        await this.HideFxShadow();
+    }
+
+    async awaitTime(time: number): Promise<void> {
+        return new Promise((resolve) => {
+            setTimeout(() => { resolve() }, time * 1000)
+        })
     }
 
     private updateProgressBarFromToolState(toolState: ToolProgress | null) {

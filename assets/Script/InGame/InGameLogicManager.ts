@@ -232,6 +232,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
     private ResetAfterTween(matched: { row: number, col: number }[]) {
         this.ResetGrid(matched);
         this.isProcessing = false;
+        ToolManager.getInstance().SetIsClick();
 
         this.currentHeart += 1;
         director.emit(EventGame.UPDATE_HEARt_UI);
@@ -466,6 +467,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             } else {
                 // Nếu ô click không tạo ra nhóm nào, có thể xử lý ở đây
                 this.isProcessing = false;
+                ToolManager.getInstance().SetIsClick();
                 // Thêm logic hiển thị popup hết tim nếu cần
                 if (this.currentHeart <= 0) {
                     // PopupManager.getInstance().OutOfMove.Show();
@@ -478,7 +480,8 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
         // Nếu không có nhóm nào (sau khi đã thử với clickedRoot nếu có), kết thúc
         if (matchGroups.length === 0) {
-            this.isProcessing = false; // cho phép click lại
+            // this.isProcessing = false;
+            // ToolManager.getInstance().SetIsClick(); // cho phép click lại
 
 
             if (this.isUpLevel) {
@@ -492,6 +495,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             }
 
             this.isProcessing = false;
+            ToolManager.getInstance().SetIsClick();
             return;
         }
 
@@ -702,6 +706,7 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         const cellB = this.cells[b.row]?.[b.col];
         if (!cellA || !cellB) {
             this.isProcessing = false;
+            ToolManager.getInstance().SetIsClick();
             return;
         }
 

@@ -1,4 +1,4 @@
-import { _decorator, log } from 'cc';
+import { _decorator, director, log } from 'cc';
 import { BaseSingleton } from '../Base/BaseSingleton';
 import { IToolStrategy } from '../InGame/Tools/tools/IToolStrategy';
 import { HammerTool } from '../InGame/Tools/tools/Hammer';
@@ -9,6 +9,7 @@ import { InGameLogicManager } from '../InGame/InGameLogicManager';
 import { ToolProgress } from '../InGame/Tools/ToolProgress';
 import { DataManager } from './DataManager';
 import { Config } from '../Config';
+import { EventGame } from '../Enum/EEvent';
 
 export enum ToolType {
     HAMMER,
@@ -32,7 +33,19 @@ export class ToolManager extends BaseSingleton<ToolManager> {
 
     isShowHint: boolean = false;
 
+    isClick: boolean = false;
+
     // numberPoint: number = 1;
+
+    private toolInUse: boolean = false;
+
+    public isToolInUse(): boolean {
+        return this.toolInUse;
+    }
+
+    public setToolInUse(value: boolean) {
+        this.toolInUse = value;
+    }
 
     protected async onLoad() {
         super.onLoad();
@@ -111,11 +124,11 @@ export class ToolManager extends BaseSingleton<ToolManager> {
         if (InGameLogicManager.getInstance().IsProcessing && type !== ToolType.NONE) {
             return;
         }
-        if (this.activeToolType === type) {
-            this.deactivateCurrentTool();
-            return;
-        }
-        this.deactivateCurrentTool();
+        // if (this.activeToolType === type) {
+        //     this.deactivateCurrentTool();
+        //     return;
+        // }
+        // this.deactivateCurrentTool();
         this.activeTool = this.toolMapping.get(type) || null;
         this.activeToolType = type;
         if (this.activeTool) {
@@ -128,6 +141,8 @@ export class ToolManager extends BaseSingleton<ToolManager> {
             this.activeTool.deactivate();
             this.activeTool = null;
             this.activeToolType = ToolType.NONE;
+
+            // director.emit(EventGame.TOOL_DEACTIVATED);
         }
     }
 
@@ -140,5 +155,11 @@ export class ToolManager extends BaseSingleton<ToolManager> {
             const toolState = this.getToolState(this.activeToolType);
             this.activeTool.execute(row, col, toolState);
         }
+    }
+
+    SetIsClick() {
+        this.scheduleOnce(() => {
+            this.isClick = false;
+        }, 0.3)
     }
 }

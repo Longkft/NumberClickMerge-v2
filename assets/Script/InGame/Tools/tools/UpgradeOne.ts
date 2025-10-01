@@ -20,6 +20,7 @@ export class UpgradeOne implements IToolStrategy {
 
         const cell = logicManager.cells[row]?.[col];
         if (!cell) {
+            director.emit(EventGame.TOOL_FINISHED, ToolType.UPGRADE);
             ToolManager.getInstance().deactivateCurrentTool();
             return;
         }

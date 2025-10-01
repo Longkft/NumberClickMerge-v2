@@ -32,11 +32,11 @@ export class Swap implements IToolStrategy {
             // Dừng hiệu ứng rung của ô đầu tiên
             this.logicManager.cells[this.firstSwapCell.row]?.[this.firstSwapCell.col]?.cellUI.StopAnimationShake();
 
-            if (this.firstSwapCell.row === row && this.firstSwapCell.col === col) {
-                // Nếu click lại chính nó, hủy tool
-                ToolManager.getInstance().deactivateCurrentTool();
-                return;
-            }
+            // if (this.firstSwapCell.row === row && this.firstSwapCell.col === col) {
+            //     // Nếu click lại chính nó, hủy tool
+            //     ToolManager.getInstance().deactivateCurrentTool();
+            //     return;
+            // }
 
             // === THÊM 1: KIỂM TRA TÍNH LIỀN KỀ ===
             const isAdjacent = Math.abs(this.firstSwapCell.row - secondSwapCell.row) + Math.abs(this.firstSwapCell.col - secondSwapCell.col) === 1;
@@ -65,9 +65,10 @@ export class Swap implements IToolStrategy {
             }
 
             // === THÊM 2: GỬI TÍN HIỆU ĐỂ TẮT POPUP/SHADOW ===
+            ToolManager.getInstance().deactivateCurrentTool();
+
             director.emit(EventGame.TOOL_FINISHED, ToolType.SWAP);
             // Tự động hủy tool sau khi thực thi xong
-            ToolManager.getInstance().deactivateCurrentTool();
             this.firstSwapCell = null;
         }
     }

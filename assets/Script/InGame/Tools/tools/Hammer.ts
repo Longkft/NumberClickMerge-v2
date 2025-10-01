@@ -11,7 +11,7 @@ import { IToolStrategy } from "./IToolStrategy";
 
 export class HammerTool implements IToolStrategy {
     activate(): void {
-        
+
     }
 
     async execute(row: number, col: number, toolState: ToolProgress | null): Promise<void> {

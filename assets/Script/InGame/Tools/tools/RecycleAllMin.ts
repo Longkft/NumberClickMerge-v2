@@ -107,7 +107,7 @@ export class RecycleAllMin implements IToolStrategy {
     }
 
     deactivate(): void {
-        
+
     }
 
 }

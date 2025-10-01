@@ -59,6 +59,7 @@ export class FXShadow extends AutoComponent {
 
     HideFxGuide(guide: Node): Promise<void> {
         return new Promise((resolve) => {
+            log(guide)
             const posLocal = guide.getPosition().clone();
             tween(guide)
                 .to(0.2, { position: new Vec3(-1080, posLocal.y, posLocal.z) })
