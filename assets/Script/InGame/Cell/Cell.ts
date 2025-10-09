@@ -62,15 +62,16 @@ export class Cell {
 
         AudioManager.getInstance().playSFX(SFXType.Spawn);
 
-        // 1. Ưu tiên kiểm tra tool
+        // 1. Ưu tiên kiểm tra tween chạy
+        if (InGameLogicManager.getInstance().IsProcessing) {
+            return;
+        }
+
+        // 2. Ưu tiên kiểm tra tool
         if (activeTool) {
             // Nếu có tool đang chạy, giao toàn bộ việc xử lý cho ToolManager
             toolManager.useActiveToolOnCell(this.cellData.row, this.cellData.col);
         } else {
-            // 2. Nếu không có tool, chạy logic game bình thường
-            if (InGameLogicManager.getInstance().IsProcessing) {
-                return;
-            }
             this.HandleNormalClick();
         }
     }

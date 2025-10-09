@@ -79,6 +79,10 @@ export class Ingame_Tool extends Component {
      * Hàm xử lý click duy nhất cho tất cả các tool
      */
     private OnClick() {
+        if (InGameLogicManager.getInstance().IsProcessing) {
+            return;
+        }
+
         // Nếu đang bấm tool khác rồi thì không cho bấm nữa
         if (ToolManager.getInstance().isClick) {
             return;
