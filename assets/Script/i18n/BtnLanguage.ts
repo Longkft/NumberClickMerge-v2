@@ -30,7 +30,7 @@ export class BtnLanguage extends BaseTouch {
         let display = '';
         switch (lang) {
             case 'en': display = 'English'; break;
-            case 'vi': display = 'Россия'; break;
+            case 'vi': display = 'VietNamese'; break;
             default: display = lang; break;
         }
         // this.label.string = `${display}`;

@@ -12,15 +12,14 @@ export class LanguageManager extends BaseSingleton<LanguageManager> {
     private _supportedLangs = ['en', 'vi'];
 
     public async init() {
-        // const savedLang = sys.localStorage.getItem('lang') || defaultLang;
-        let savedLang = await DataManager.getInstance().GetLanguage();
-        if (savedLang != 'vi') {
-            DataManager.getInstance().SetLanguage("en")
-        }
+        // let savedLang = await DataManager.getInstance().GetLanguage();
+        // if (savedLang != 'vi') {
+        // DataManager.getInstance().SetLanguage("en")
+        // }
 
-        savedLang = await DataManager.getInstance().GetLanguage();
+        // savedLang = await DataManager.getInstance().GetLanguage();
 
-        await this.loadLanguage(savedLang);
+        await this.loadLanguage(this._currentLang);
     }
 
     public async loadLanguage(lang: string): Promise<void> {
