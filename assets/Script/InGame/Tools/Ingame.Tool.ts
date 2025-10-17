@@ -158,7 +158,7 @@ export class Ingame_Tool extends Component {
         // Kiểm tra xem tool bị hủy có phải là tool này không
         log(11111)
         // Nếu đúng, GỌI HÀM HideFxShadow()
-        await this.awaitTime(0.5);
+        // await this.awaitTime(0.5);
         await this.HideFxShadow();
     }
 

@@ -79,7 +79,7 @@ export class SettingScene extends BaseTouch {
     }
     LoadBoxTools() {
         if (this.boxTools != null) return;
-        this.boxTools = find('Canvas').getChildByPath('GamePlay/InGame/IngameUIManager/shadow');
+        this.boxTools = find('Canvas').getChildByPath('GamePlay/InGame1/IngameUIManager/shadow');
     }
 
     LoadDataAudio() {
@@ -263,7 +263,7 @@ export class SettingScene extends BaseTouch {
         this.node.setScale(1, 1, 0)
         this.shadow.HideFXShadow();
 
-        // this.hideBoxTools();
+        this.hideBoxTools();
 
         PopupManager.getInstance().PopupGoal.Show();
 

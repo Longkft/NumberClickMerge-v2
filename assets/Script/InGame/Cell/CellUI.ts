@@ -72,8 +72,8 @@ export class CellUI extends Component {
 
         this._shakeState.play();
 
-        InGameLogicManager.getInstance().IsProcessing = true;
-        ToolManager.getInstance().isClick = true;
+        // InGameLogicManager.getInstance().IsProcessing = true;
+        // ToolManager.getInstance().isClick = true;
     }
 
     StopAnimationShake() {
@@ -90,8 +90,8 @@ export class CellUI extends Component {
 
         this._shakeState = null;
 
-        InGameLogicManager.getInstance().IsProcessing = false;
-        ToolManager.getInstance().isClick = false;
+        // InGameLogicManager.getInstance().IsProcessing = false;
+        // ToolManager.getInstance().isClick = false;
     }
 
     public ShowEff(active: boolean) {
