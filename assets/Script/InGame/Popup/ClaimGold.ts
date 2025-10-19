@@ -47,7 +47,7 @@ export class ClaimGold extends AutoComponent {
         // this.LoadEffGold();
     }
 
-    async Show(gold: number) {
+    Show(gold: number) {
         this.node.setSiblingIndex(Utils.getInstance().GetIndexMaxPopup());
 
         this.node.children.forEach(element => {
@@ -58,42 +58,46 @@ export class ClaimGold extends AutoComponent {
 
         this.SetValueGoldUI(gold);
 
-        await this.ShowFx();
+        let time = this.shadow.time;
+        this.ShowFx();
 
-
-        this.node.children.forEach(element => {
-            element.active = true;
-        });
-
-        this.coinIcon.setScale(0, 0, 0)
-        tween(this.coinIcon).to(0.5, { scale: new Vec3(1, 1, 1) }, { easing: "backOut" }).start()
         this.scheduleOnce(() => {
-            this.Hide();
-        }, 2);
+            this.node.children.forEach(element => {
+                element.active = true;
+            });
+
+            this.coinIcon.setScale(0, 0, 0)
+            tween(this.coinIcon).to(0.5, { scale: new Vec3(1, 1, 1) }, { easing: "backOut" }).start()
+            this.scheduleOnce(() => {
+                this.Hide();
+            }, 2);
+        }, time)
     }
 
-    async Hide() {
-        this.ads(async () => {
+    Hide() {
+        this.ads(() => {
             director.emit(EventGame.UPDATE_COIN_UI, this.gold);
 
             Utils.getInstance().setCamLayer(MoneyController.getInstance().node, Layers.Enum.DEFAULT);
 
-            await this.HideFx();
+            let time = this.shadow.time;
+            this.HideFx();
 
-            // GridManager.getInstance().CheckUpDateMinCurrent();
-            InGameLogicManager.getInstance().UpdateAllFrames();
+            this.scheduleOnce(() => {
+                InGameLogicManager.getInstance().UpdateAllFrames();
 
-            this.node.children.forEach(element => {
-                element.active = false;
-            });
+                this.node.children.forEach(element => {
+                    element.active = false;
+                });
+            }, time)
         })
     }
 
-    async ShowFx() {
-        await this.shadow.ShowFxShadow();
+    ShowFx() {
+        this.shadow.ShowFxShadow();
     }
 
-    async HideFx() {
+    HideFx() {
         this.shadow.HideFXShadow();
     }
 

@@ -41,7 +41,7 @@ export class PopupDailyBonus extends Component {
     private _canClaim: boolean = false;
     private _dayItems: DailyItem[] = []; // Mảng lưu các component DailyItem
 
-    async Show() {
+    Show() {
         this.node.setSiblingIndex(Utils.getInstance().GetIndexMaxPopup());
 
         // Dọn dẹp UI cũ
@@ -53,16 +53,19 @@ export class PopupDailyBonus extends Component {
         this.AddDailyItem();
 
         // 2. Kiểm tra logic, xác định xem hôm nay có được nhận thưởng không
-        await this.initializeAndCheckBonus();
+        this.initializeAndCheckBonus();
 
         // 3. Hiển thị popup
-        await this.shadow.ShowFxShadow();
-        await this.shadow.ShowFxBox(this.box);
+        let time = this.shadow.time;
+        this.shadow.ShowFxShadow();
+        this.scheduleOnce(() => {
+            this.shadow.ShowFxBox(this.box);
 
-        this._dayItems[this._dailyData.currentDayIndex].getComponent(DailyItem).ActiveFxButton(true);
+            this._dayItems[this._dailyData.currentDayIndex].getComponent(DailyItem).ActiveFxButton(true);
+        }, time)
     }
 
-    async initializeAndCheckBonus() {
+    initializeAndCheckBonus() {
         this._dailyData = DailyManager.getInstance()._dailyData;
 
         const now = Date.now();
@@ -87,7 +90,7 @@ export class PopupDailyBonus extends Component {
         this.updateUI();
     }
 
-    async onClaimButtonClicked() {
+    onClaimButtonClicked() {
         if (!this._canClaim) return; // Bảo vệ, không cho bấm khi không được phép
 
         const rewardData = this.dataDaily[this._dailyData.currentDayIndex];
@@ -144,9 +147,12 @@ export class PopupDailyBonus extends Component {
         }
     }
 
-    async Hide() {
-        await this.shadow.HideFxBox(this.box);
-        await this.shadow.HideFXShadow();
+    Hide() {
+        let time = this.shadow.time;
+        this.shadow.HideFxBox(this.box);
+        this.scheduleOnce(() => {
+            this.shadow.HideFXShadow();
+        }, time)
     }
 
     BtnClose() {

@@ -39,37 +39,46 @@ export class TutorialManager extends Component {
 
     countTutorial: number = 0;
 
-    async Show() {
+    Show() {
 
-        await this.shadow.ShowFxShadow();
-
-        await this.shadow.ShowFxBox(this.up);
-
-        this.SetUpDown(true);
-
+        let time = this.shadow.time;
+        this.shadow.ShowFxShadow();
         this.scheduleOnce(() => {
-            this.close.active = true;
-            let uiopaCloseNode = this.close.getComponent(UIOpacity);
-            tween(uiopaCloseNode).to(0.5, { opacity: 255 }).start();
-        }, 2);
+            this.shadow.ShowFxBox(this.up);
+
+            this.SetUpDown(true);
+
+            this.scheduleOnce(() => {
+                this.close.active = true;
+                let uiopaCloseNode = this.close.getComponent(UIOpacity);
+                tween(uiopaCloseNode).to(0.5, { opacity: 255 }).start();
+            }, 2);
+        }, time)
+
     }
 
-    async HideFxUp() {
+    HideFxUp() {
+        let time = this.shadow.time;
+        this.shadow.HideFxBox(this.up);
+        this.scheduleOnce(() => {
+            this.shadow.ShowFxBox(this.down);
 
-        await this.shadow.HideFxBox(this.up);
+            this.hand.active = false;
+        }, time)
 
-        await this.shadow.ShowFxBox(this.down);
-
-        this.hand.active = false;
     }
 
-    async HideFx() {
+    HideFx() {
+        let time = this.shadow.time;
+        this.shadow.HideFxBox(this.up);
+        this.scheduleOnce(() => {
+            this.shadow.HideFXShadow();
 
-        await this.shadow.HideFxBox(this.up);
+            this.scheduleOnce(() => {
+                PopupManager.getInstance().PopupGoal.Show();
+            }, time)
+        }, time)
 
-        await this.shadow.HideFXShadow();
-
-        PopupManager.getInstance().PopupGoal.Show();
     }
 
     SetUpDown(up: boolean) {

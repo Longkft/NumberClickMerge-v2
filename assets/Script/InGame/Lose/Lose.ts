@@ -41,27 +41,31 @@ export class Lose extends AutoComponent {
         this.HideFXLose();
     }
 
-    async ShowFXLose() {
+    ShowFXLose() {
         this.box.active = false;
 
-        await this.fxShadow.ShowFxShadow();
+        let time = this.fxShadow.time;
+        this.fxShadow.ShowFxShadow();
 
-        await this.fxShadow.ShowFxBox(this.box);
+        this.scheduleOnce(() => {
+            this.fxShadow.ShowFxBox(this.box);
 
-        this.GetScoreGamePlay();
+            this.GetScoreGamePlay();
+        }, time)
     }
 
-    async HideFXLose() {
-        await this.fxShadow.HideFxBox(this.box);
+    HideFXLose() {
+        let time = this.fxShadow.time;
+        this.fxShadow.HideFxBox(this.box);
 
-        await this.fxShadow.HideFXShadow();
+        this.scheduleOnce(() => {
+            this.fxShadow.HideFXShadow();
+        }, time)
     }
 
-    async GetScoreGamePlay() {
-        // let score = await DataManager.getInstance().GetCoreInPlayGame();
+    GetScoreGamePlay() {
         let score = ScoreController.getInstance().scoreCurrent;
         this.AnimationScoreChange(0, score, this.scoreGame);
-        // let maxScore = await DataManager.getInstance().GethighScore();
         let maxScore = ScoreController.getInstance().highScoreCurrent;
         this.AnimationScoreChange(0, maxScore, this.maxScoreGame);
     }

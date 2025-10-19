@@ -118,14 +118,14 @@ export class Ingame_Tool extends Component {
     /**
      * Được gọi khi tool thực thi xong
      */
-    private async onToolFinished(finishedToolType: ToolType) {
+    private onToolFinished(finishedToolType: ToolType) {
         // KIỂM TRA: nếu tool vừa hoàn thành không phải là tool này, thì bỏ qua
         if (this.type !== finishedToolType) {
             return;
         }
 
         // Nếu đúng là tool này, thì mới ẩn hiệu ứng
-        await this.HideFxShadow();
+        this.HideFxShadow();
     }
 
     private CheckCoinUseToolGame(): boolean {
@@ -133,16 +133,19 @@ export class Ingame_Tool extends Component {
         return coinData >= this.coin;
     }
 
-    private async ShowFxShadow() {
+    private ShowFxShadow() {
         const shadowCpn = this.shadow.getComponent(FXShadow);
 
         const isUpgrade = this.CheckIsToolUpgrade();
 
         this.ShowUITitleHint(isUpgrade);
 
-        await shadowCpn.ShowFxShadow();
-        await shadowCpn.ShowFxGuide(this.guide.parent);
-        this.guide.active = true;
+        let time = shadowCpn.time;
+        shadowCpn.ShowFxShadow();
+        this.scheduleOnce(() => {
+            shadowCpn.ShowFxGuide(this.guide.parent);
+            this.guide.active = true;
+        }, time)
     }
 
     ShowUITitleHint(isUpgrade: boolean) {
@@ -153,24 +156,23 @@ export class Ingame_Tool extends Component {
         titleUpgrade.active = isUpgrade;
     }
 
-    private async HideFxShadow() {
+    private HideFxShadow() {
         const shadowCpn = this.shadow.getComponent(FXShadow);
-        await shadowCpn.HideFxGuide(this.guide.parent);
-        this.guide.active = true;
-        await shadowCpn.HideFXShadow();
+        let time = shadowCpn.time;
+        shadowCpn.HideFxGuide(this.guide.parent);
+        this.scheduleOnce(() => {
+            this.guide.active = true;
+            shadowCpn.HideFXShadow();
+        }, time)
 
         // ToolManager.getInstance().isClick = false;
     }
 
-    private async onToolDeactivated() {
-        // Kiểm tra xem tool bị hủy có phải là tool này không
-        log(11111)
-        // Nếu đúng, GỌI HÀM HideFxShadow()
-        // await this.awaitTime(0.5);
-        await this.HideFxShadow();
+    private onToolDeactivated() {
+        this.HideFxShadow();
     }
 
-    async awaitTime(time: number): Promise<void> {
+    awaitTime(time: number): Promise<void> {
         return new Promise((resolve) => {
             setTimeout(() => { resolve() }, time * 1000)
         })

@@ -21,14 +21,17 @@ export class PopUpGoal extends Component {
     @property({ type: Prefab })
     cellMaxPrefab: Prefab = null;
 
-    async Show() {
+    Show() {
         this.node.setSiblingIndex(Utils.getInstance().GetIndexMaxPopup());
 
-        await this.shadow.ShowFxShadow();
+        let time = this.shadow.time;
+        this.shadow.ShowFxShadow();
 
-        this.init();
+        this.scheduleOnce(() => {
+            this.init();
 
-        await this.shadow.ShowFxBox(this.box);
+            this.shadow.ShowFxBox(this.box);
+        }, time)
     }
 
     init() {
@@ -43,10 +46,13 @@ export class PopUpGoal extends Component {
         cell.getComponent(CellPopupMax).setUp(value, state)
     }
 
-    async btnStart() {
-        await this.shadow.HideFxBox(this.box);
+    btnStart() {
+        let time = this.shadow.time;
+        this.shadow.HideFxBox(this.box);
 
-        await this.shadow.HideFXShadow();
+        this.scheduleOnce(() => {
+            this.shadow.HideFXShadow();
+        }, time)
     }
 }
 

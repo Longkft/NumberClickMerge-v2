@@ -27,7 +27,7 @@ export class OutOfMove extends Component {
     @property({ type: Node })
     btnAds: Node = null;
 
-    async Show() {
+    Show() {
         this.node.setSiblingIndex(Utils.getInstance().GetIndexMaxPopup());
 
         let gold = MoneyController.getInstance().GoldCurrent;
@@ -39,20 +39,25 @@ export class OutOfMove extends Component {
             this.btnAds.active = false;
         }
 
-        await this.shadow.ShowFxShadow();
+        let time = this.shadow.time;
+        this.shadow.ShowFxShadow();
 
-        await this.shadow.ShowFxBox(this.box);
+        this.scheduleOnce(() => {
+            this.shadow.ShowFxBox(this.box);
+        }, time)
     }
 
-    async Hide() {
-        await this.shadow.HideFxBox(this.box);
+    Hide() {
+        let time = this.shadow.time;
+        this.shadow.HideFxBox(this.box);
 
-        await this.shadow.HideFXShadow();
-
+        this.scheduleOnce(() => {
+            this.shadow.HideFXShadow();
+        }, time)
 
     }
 
-    async BtnUseGold() {
+    BtnUseGold() {
         this.Hide();
 
         Utils.getInstance().UpdateHeart(5); // reset lại heart là 5

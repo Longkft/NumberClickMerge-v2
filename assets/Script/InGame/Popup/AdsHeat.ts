@@ -21,20 +21,24 @@ export class AdsHeat extends Component {
 
     isCheckLose: boolean = false;
 
-    async Show() {
+    Show() {
         this.node.setSiblingIndex(Utils.getInstance().GetIndexMaxPopup()); // hiển thị show popup lên đầu tiên (index max trong chuỗi con cùng cha)
 
-        await this.shadow.ShowFxShadow();
+        let time = this.shadow.time;
+        this.shadow.ShowFxShadow();
 
-        await this.shadow.ShowFxBox(this.box);
+        this.scheduleOnce(() => {
+            this.shadow.ShowFxBox(this.box);
+        }, time)
     }
 
-    async Hide() {
-        await this.shadow.HideFxBox(this.box);
+    Hide() {
+        let time = this.shadow.time;
+        this.shadow.HideFxBox(this.box);
 
-        await this.shadow.HideFXShadow();
-
-
+        this.scheduleOnce(() => {
+            this.shadow.HideFXShadow();
+        }, time)
     }
 
     BtnUseGold() {

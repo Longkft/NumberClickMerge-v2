@@ -21,7 +21,7 @@ export class PopupAdsGold extends Component {
 
     gold: number;
 
-    async Show(gold: number = 100) {
+    Show(gold: number = 100) {
         this.node.setSiblingIndex(Utils.getInstance().GetIndexMaxPopup());
 
         const box = this.node.getChildByName('box');
@@ -30,13 +30,16 @@ export class PopupAdsGold extends Component {
 
         this.SetValueGoldUI(gold);
 
-        await this.shadow.ShowFxShadow();
-        await this.shadow.ShowFxBox(box);
+        let time = this.shadow.time;
+        this.shadow.ShowFxShadow();
+        this.scheduleOnce(() => {
+            this.shadow.ShowFxBox(box);
+        }, time)
     }
 
     isNoAds: boolean = false;
-    async Hide() {
-        this.ads(async () => {
+    Hide() {
+        this.ads(() => {
 
             // if (!this.isNoAds) {
 
@@ -71,9 +74,10 @@ export class PopupAdsGold extends Component {
             //         call();
             //     }
             //     else {
-            this.hidePopup();
-            PopupNoAds.getInstance().show();
-            FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
+            this.hidePopup(() => {
+                PopupNoAds.getInstance().show();
+                FXTween.getInstance().FxTween(PopupNoAds.getInstance().node);
+            });
             return;
             //     }
             // })
@@ -81,10 +85,18 @@ export class PopupAdsGold extends Component {
         }
     }
 
-    async hidePopup() {
+    hidePopup(call?: CallableFunction) {
         const box = this.node.getChildByName('box');
-        await this.shadow.HideFxBox(box);
-        await this.shadow.HideFXShadow();
+        let time = this.shadow.time;
+        this.shadow.HideFxBox(box);
+        this.scheduleOnce(() => {
+            this.shadow.HideFXShadow();
+            if (call) {
+                this.scheduleOnce(() => {
+                    call;
+                }, time)
+            }
+        }, time)
     }
 }
 

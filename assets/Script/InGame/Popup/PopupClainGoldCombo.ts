@@ -40,7 +40,7 @@ export class PopupClainGoldCombo extends AutoComponent {
         this.LoadCamera();
     }
 
-    async Show(gold: number, combo: number, call: CallableFunction) {
+    Show(gold: number, combo: number, call: CallableFunction) {
         this.node.setSiblingIndex(Utils.getInstance().GetIndexMaxPopup());
 
         const box = this.node.getChildByName('box');
@@ -49,19 +49,22 @@ export class PopupClainGoldCombo extends AutoComponent {
 
         this.SetValueGoldUI(gold, combo);
 
-        await this.shadow.ShowFxShadow();
-        await this.shadow.ShowFxBox(box);
+        let time = this.shadow.time;
+        this.shadow.ShowFxShadow();
+        this.scheduleOnce(() => {
+            this.shadow.ShowFxBox(box);
 
-        this.effNode.active = true;
+            this.effNode.active = true;
 
-        if (typeof call === 'function') {
-            call();
-        }
+            if (typeof call === 'function') {
+                call();
+            }
+        }, time);
     }
 
     isNoAds: boolean = false;
-    async Hide() { // claim
-        this.ads(async () => {
+    Hide() { // claim
+        this.ads(() => {
 
             // if (!this.isNoAds) {
 
@@ -79,8 +82,11 @@ export class PopupClainGoldCombo extends AutoComponent {
 
             Utils.getInstance().setCamLayer(MoneyController.getInstance().node, Layers.Enum.DEFAULT);
 
-            await this.shadow.HideFxBox(box);
-            await this.shadow.HideFXShadow();
+            let time = this.shadow.time;
+            this.shadow.HideFxBox(box);
+            this.scheduleOnce(() => {
+                this.shadow.HideFXShadow();
+            }, time)
         });
     }
 

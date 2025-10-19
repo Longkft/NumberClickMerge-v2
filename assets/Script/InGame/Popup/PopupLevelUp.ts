@@ -20,22 +20,28 @@ export class PopupLevelUp extends Component {
     @property({ type: Label })
     labelLv: Label = null;
 
-    async show(lvUp: number) {
+    show(lvUp: number) {
         this.node.setSiblingIndex(Utils.getInstance().GetIndexMaxPopup());
 
-        await this.shadow.ShowFxShadow();
-        await this.shadow.ShowFxBox(this.box);
+        let time = this.shadow.time;
+        this.shadow.ShowFxShadow();
+        this.scheduleOnce(() => {
+            this.shadow.ShowFxBox(this.box);
 
-        this.labelLv.string = lvUp.toString();
+            this.labelLv.string = lvUp.toString();
+        }, time)
     }
 
-    async Hide() {
-        await this.shadow.HideFxBox(this.box)
-        await this.shadow.HideFXShadow();
+    Hide() {
+        let time = this.shadow.time;
+        this.shadow.HideFxBox(this.box)
+        this.scheduleOnce(() => {
+            this.shadow.HideFXShadow();
+        }, time);
     }
 
     async BtnContinute() {
-        await this.Hide();
+        this.Hide();
 
         if (ToolManager.getInstance().isShowHint) {
             ToolManager.getInstance().isShowHint = false;

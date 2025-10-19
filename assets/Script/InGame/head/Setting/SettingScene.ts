@@ -148,21 +148,24 @@ export class SettingScene extends BaseTouch {
     }
 
     async Show() {
-        await this.shadow.ShowFxShadow();
-        this.node.setScale(1, 1, 1)
-        this.box.active = true;
+        let time = this.shadow.time;
+        this.shadow.ShowFxShadow();
 
-        if (DataManager.getInstance()._scenePlay == false) {
-            this.title.key = "setting"
-            this.listBtn.active = false
-        }
-        else {
-            this.title.key = "pause"
-            this.listBtn.active = true
-        }
+        this.scheduleOnce(() => {
+            this.node.setScale(1, 1, 1)
+            this.box.active = true;
 
-        this.title.updateText()
+            if (DataManager.getInstance()._scenePlay == false) {
+                this.title.key = "setting"
+                this.listBtn.active = false
+            }
+            else {
+                this.title.key = "pause"
+                this.listBtn.active = true
+            }
 
+            this.title.updateText();
+        }, time);
     }
 
     TouchStart(event: EventTouch) {
