@@ -6116,7 +6116,7 @@
       "__id__": 21
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 203
@@ -6170,7 +6170,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 130.4638671875,
+      "width": 134.5458984375,
       "height": 69.3
     },
     "_anchorPoint": {
@@ -6200,7 +6200,7 @@
       "b": 255,
       "a": 255
     },
-    "_string": "v1.11",
+    "_string": "v1.12",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 55,
@@ -6256,7 +6256,7 @@
     "_target": {
       "__id__": 21
     },
-    "_left": 44.99406640625,
+    "_left": 42.95305078125,
     "_right": 0,
     "_top": 0,
     "_bottom": 42.36099999999999,

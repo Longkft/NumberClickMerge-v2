@@ -19,7 +19,7 @@ export class LoadingManager extends Component {
     }
 
     protected start(): void {
-        sys.localStorage.clear()
+        // sys.localStorage.clear()
         // FbSdk.getInstance().loginGame()
     }
 

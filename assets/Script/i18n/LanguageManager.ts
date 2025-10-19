@@ -1,4 +1,4 @@
-import { _decorator, Component, JsonAsset, Node, resources, sys } from 'cc';
+import { _decorator, Component, JsonAsset, log, Node, resources, sys } from 'cc';
 import { BaseSingleton } from '../Base/BaseSingleton';
 import { DataManager } from '../Manager/DataManager';
 const { ccclass, property } = _decorator;
@@ -12,14 +12,17 @@ export class LanguageManager extends BaseSingleton<LanguageManager> {
     private _supportedLangs = ['en', 'vi'];
 
     public async init() {
-        // let savedLang = await DataManager.getInstance().GetLanguage();
-        // if (savedLang != 'vi') {
-        // DataManager.getInstance().SetLanguage("en")
-        // }
+        let savedLang = await DataManager.getInstance().GetLanguage();
+        log('savedLang: ', savedLang)
+        if (savedLang != 'vi') {
+            DataManager.getInstance().SetLanguage("vi")
+        }
 
-        // savedLang = await DataManager.getInstance().GetLanguage();
+        savedLang = await DataManager.getInstance().GetLanguage();
 
-        await this.loadLanguage(this._currentLang);
+        log('savedLang1: ', savedLang)
+
+        await this.loadLanguage(savedLang);
     }
 
     public async loadLanguage(lang: string): Promise<void> {
