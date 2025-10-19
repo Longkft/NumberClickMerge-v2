@@ -79,6 +79,11 @@ export class Ingame_Tool extends Component {
      * Hàm xử lý click duy nhất cho tất cả các tool
      */
     private OnClick() {
+        console.log(ToolManager.getInstance().isClick, InGameLogicManager.getInstance().IsProcessing)
+        if (InGameLogicManager.getInstance().isRunning) {
+            return;
+        }
+
         if (InGameLogicManager.getInstance().IsProcessing) {
             return;
         }
@@ -91,6 +96,9 @@ export class Ingame_Tool extends Component {
         if (!this.CheckCoinUseToolGame()) {
             PopupManager.getInstance().PopupAdsGold.Show();
             return;
+        }
+        if (this.type == ToolType.REMOVE_MIN) {
+            InGameLogicManager.getInstance().isRunning = true
         }
 
         ToolManager.getInstance().isClick = true;

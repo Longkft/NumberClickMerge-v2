@@ -158,8 +158,6 @@ export class ToolManager extends BaseSingleton<ToolManager> {
     }
 
     SetIsClick() {
-        this.scheduleOnce(() => {
-            this.isClick = false;
-        }, 0.3)
+        this.isClick = false;
     }
 }

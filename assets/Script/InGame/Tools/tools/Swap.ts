@@ -28,7 +28,7 @@ export class Swap implements IToolStrategy {
         } else {
             // ---- Lượt click thứ hai ----
             const secondSwapCell = { row, col };
-
+            InGameLogicManager.getInstance().isRunning == true
             // Dừng hiệu ứng rung của ô đầu tiên
             this.logicManager.cells[this.firstSwapCell.row]?.[this.firstSwapCell.col]?.cellUI.StopAnimationShake();
 

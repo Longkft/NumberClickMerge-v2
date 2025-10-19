@@ -63,7 +63,7 @@ export class DataManager extends BaseSingleton<DataManager> {
     // #region gold
     public async GetGold() {
         const saved = await this.getLocaleShared("Gold")
-        return saved == null ? 0 : saved
+        return saved == null ? 100000000000: saved
 
     }
 

@@ -13,6 +13,8 @@ export class UpgradeOne implements IToolStrategy {
     }
 
     async execute(row: number, col: number, toolState: ToolProgress | null): Promise<void> {
+        InGameLogicManager.getInstance().isRunning = true
+
         const logicManager = InGameLogicManager.getInstance();
         const gridManager = GridManager.getInstance();
         const maxUpgradeVal = gridManager.numberMax - 1; // Giả sử nâng cấp lên giá trị cao nhất có thể

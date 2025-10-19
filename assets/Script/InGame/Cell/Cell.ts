@@ -57,6 +57,7 @@ export class Cell {
     }
 
     onClick() {
+
         const toolManager = ToolManager.getInstance();
         const activeTool = toolManager.getActiveTool();
 
@@ -77,8 +78,9 @@ export class Cell {
     }
 
     HandleNormalClick() {
-
-
+        console.log(InGameLogicManager.getInstance().isRunning)
+        if (InGameLogicManager.getInstance().isRunning == true) return
+        InGameLogicManager.getInstance().isRunning = true
         if (InGameLogicManager.getInstance().currentHeart <= 0) {
             // PopupManager.getInstance().OutOfMove.Show();
             PopupManager.getInstance().Lose.ShowFXLose();
@@ -89,6 +91,7 @@ export class Cell {
 
         const matched = GridManager.getInstance().findConnectedCells(this.cellData.row, this.cellData.col);
         if (!matched || matched.length < 3) {
+            InGameLogicManager.getInstance().isRunning = false
             if (InGameLogicManager.getInstance().currentHeart <= 0) {
                 // PopupManager.getInstance().OutOfMove.Show();
                 PopupManager.getInstance().Lose.ShowFXLose();

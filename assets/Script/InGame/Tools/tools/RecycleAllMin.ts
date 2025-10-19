@@ -26,7 +26,7 @@ export class RecycleAllMin implements IToolStrategy {
         // logicManager.IsProcessing = true;
 
         // await logicManager.removeAllMinCellsTools();
-
+        InGameLogicManager.getInstance().isRunning = true
         if (toolState && toolState.isUpgraded) {
             // Với tool nâng cấp, chúng ta cần row và col
             await this.executeUpgraded(row, col);

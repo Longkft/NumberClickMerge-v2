@@ -33,6 +33,7 @@ export class HammerTool implements IToolStrategy {
     }
 
     private async executeNormal(row: number, col: number, logicManager: InGameLogicManager) {
+        InGameLogicManager.getInstance().isRunning = true
         const targetCell = logicManager.cells[row]?.[col];
         targetCell.cellUI.PlayAnimationShakeLoop();
         await new Promise(r => setTimeout(r, 1000));

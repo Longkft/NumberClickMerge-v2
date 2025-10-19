@@ -1,4 +1,4 @@
-import { _decorator, Component, director, Label, Node, Sprite, tween } from 'cc';
+import { _decorator, Component, director, Label, Node, Sprite, sys, tween } from 'cc';
 // import { FbSdk } from '../FbSdk';
 const { ccclass, property } = _decorator;
 
@@ -19,6 +19,7 @@ export class LoadingManager extends Component {
     }
 
     protected start(): void {
+        sys.localStorage.clear()
         // FbSdk.getInstance().loginGame()
     }
 
