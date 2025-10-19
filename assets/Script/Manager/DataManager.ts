@@ -65,6 +65,7 @@ export class DataManager extends BaseSingleton<DataManager> {
         const saved = await this.getLocaleShared("Gold")
         return saved == null ? 100000000000: saved
 
+
     }
 
     public async SetGold(value: number) {

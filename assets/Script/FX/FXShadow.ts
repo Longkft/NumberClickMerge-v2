@@ -15,6 +15,7 @@ export class FXShadow extends AutoComponent {
             });
 
             Tween.stopAllByTarget(this.node);
+            Tween.stopAllByTarget(this.shadow);
 
             this.shadow.node.active = true;
             this.shadow.opacity = 155;
@@ -29,6 +30,8 @@ export class FXShadow extends AutoComponent {
 
     HideFXShadow(): Promise<void> {
         return new Promise((resolve) => {
+            Tween.stopAllByTarget(this.node);
+            Tween.stopAllByTarget(this.shadow);
             tween(this.shadow)
                 .to(0.2, { opacity: 0 }, { easing: 'quadInOut' })
                 .call(() => {
@@ -46,6 +49,12 @@ export class FXShadow extends AutoComponent {
             })
             Tween.stopAllByTarget(guide);
             guide.active = true;
+
+            const blockNode = guide.getChildByName('block');
+            if (blockNode) {
+                blockNode.active = true;
+            }
+
             const posLocal = guide.getPosition().clone();
             guide.setPosition(-1080, posLocal.y, posLocal.z);
             tween(guide)
@@ -60,11 +69,17 @@ export class FXShadow extends AutoComponent {
     HideFxGuide(guide: Node): Promise<void> {
         return new Promise((resolve) => {
             log(guide)
+            Tween.stopAllByTarget(guide);
             const posLocal = guide.getPosition().clone();
+
             tween(guide)
                 .to(0.2, { position: new Vec3(-1080, posLocal.y, posLocal.z) })
                 .call(() => {
                     guide.active = false;
+                    const blockNode = guide.getChildByName('block');
+                    if (blockNode) {
+                        blockNode.active = false;
+                    }
                     resolve();
                 })
                 .start();
@@ -88,6 +103,7 @@ export class FXShadow extends AutoComponent {
 
     HideFxBox(guide: Node): Promise<void> {
         return new Promise((resolve) => {
+            Tween.stopAllByTarget(guide);
             const posLocal = guide.getPosition().clone();
             tween(guide)
                 .to(0.2, { position: new Vec3(1080, posLocal.y, posLocal.z) })

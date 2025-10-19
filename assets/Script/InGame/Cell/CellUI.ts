@@ -2,6 +2,8 @@ import { _decorator, Animation, AnimationClip, AnimationState, Color, Component,
 import { CellModel } from './CellModel';
 import { ECELL_CLICK_EFFECT, ECELL_STATE } from '../../Enum/ECell';
 import { GridManager } from '../GridManager';
+import { InGameLogicManager } from '../InGameLogicManager';
+import { ToolManager } from '../../Manager/ToolManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('CellUI')
@@ -69,6 +71,9 @@ export class CellUI extends Component {
         this._shakeState.repeatCount = Infinity;
 
         this._shakeState.play();
+
+        // InGameLogicManager.getInstance().IsProcessing = true;
+        // ToolManager.getInstance().isClick = true;
     }
 
     StopAnimationShake() {
@@ -84,6 +89,9 @@ export class CellUI extends Component {
         this._shakeState.repeatCount = 1;
 
         this._shakeState = null;
+
+        // InGameLogicManager.getInstance().IsProcessing = false;
+        // ToolManager.getInstance().isClick = false;
     }
 
     public ShowEff(active: boolean) {
