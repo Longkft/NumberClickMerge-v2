@@ -6,7 +6,8 @@ export enum SFXType {
 
 export enum GameMode {
     CLASSIC,
-    HARD
+    HARD,
+    JOURNEY
 }
 
 export enum GameState {

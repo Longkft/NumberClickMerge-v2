@@ -11,6 +11,9 @@ export class GameManager extends BaseSingleton<GameManager> {
     @property(JsonAsset)
     dataCell: JsonAsset = null;
 
+    @property(Node)
+    mapJourney: Node = null;
+
     public _currentState: GameState = GameState.MainMenu;
 }
 

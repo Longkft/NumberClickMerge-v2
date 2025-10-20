@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "41316500-0eff-4b2e-a2af-fee83283da3e",
+  "uuid": "eb6ced67-3a68-4760-bb5c-0120ce53c06a",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "InGame1"
+    "syncNodeName": "Hard"
   }
 }
