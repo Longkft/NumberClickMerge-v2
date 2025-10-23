@@ -1,0 +1,30 @@
+{
+    "min": 1,
+    "max": 8,
+    "quest": [
+        {
+            "index": 1,
+            "count": 5
+        },
+        {
+            "index": 2,
+            "count": 3
+        },
+        {
+            "index": 3,
+            "count": 2
+        },
+        {
+            "index": 4,
+            "count": 5
+        },
+        {
+            "index": 5,
+            "count": 3
+        },
+        {
+            "index": 6,
+            "count": 1
+        }
+    ]
+}

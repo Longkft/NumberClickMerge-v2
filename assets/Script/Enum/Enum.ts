@@ -7,11 +7,13 @@ export enum SFXType {
 export enum GameMode {
     CLASSIC,
     HARD,
+    MAP,
     JOURNEY
 }
 
 export enum GameState {
     MainMenu,
+    map,
     Gameplay,
     Pause,
     Victory,

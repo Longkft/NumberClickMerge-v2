@@ -4,6 +4,8 @@ import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
 import { Utils } from '../../Utils/Utils';
 import { InGameLogicManager } from '../InGameLogicManager';
+import { GameMode } from '../../Enum/Enum';
+import { GridManager } from '../GridManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('HeartUi')
@@ -11,9 +13,26 @@ export class HeartUi extends Component {
 
     listHeart: Node[] = [];
 
+    gameMode: GameMode = GameMode.CLASSIC;
+
     protected onLoad(): void {
-        Utils.getInstance().LoadHeartGameDefault();
-        this.LoadListHeart();
+        this.gameMode = GridManager.getInstance().GameMode;
+
+        this.Init();
+    }
+
+    Init() {
+        switch (this.gameMode) {
+            case GameMode.CLASSIC: {
+                Utils.getInstance().LoadHeartGameDefault();
+                this.LoadListHeart();
+            }
+                break;
+
+            case GameMode.JOURNEY:
+
+                break;
+        }
     }
 
     start() {
@@ -41,7 +60,7 @@ export class HeartUi extends Component {
 
             ActiveHeartNode.active = true;
         }
-        
+
         for (let j = myHeart; j < this.listHeart.length; j++) {
             let heartNode = this.listHeart[j];
             let ActiveHeartNode = heartNode.getChildByName('heatActive');

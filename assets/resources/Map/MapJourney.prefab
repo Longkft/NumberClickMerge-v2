@@ -28,9 +28,6 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 82
-      },
-      {
         "__id__": 84
       },
       {
@@ -38,10 +35,13 @@
       },
       {
         "__id__": 88
+      },
+      {
+        "__id__": 90
       }
     ],
     "_prefab": {
-      "__id__": 90
+      "__id__": 92
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -1775,10 +1775,13 @@
       },
       {
         "__id__": 79
+      },
+      {
+        "__id__": 81
       }
     ],
     "_prefab": {
-      "__id__": 81
+      "__id__": 83
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -2104,6 +2107,24 @@
     "fileId": "40+iT+QyVNM5wVXmpNQX3t"
   },
   {
+    "__type__": "412b3Q/p+9BvbiwGgvhfU7z",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 68
+    },
+    "_enabled": true,
+    "__prefab": {
+      "__id__": 82
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "4182zcaZpDJaqF8fc2rsOo"
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
@@ -2126,7 +2147,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 83
+      "__id__": 85
     },
     "_contentSize": {
       "__type__": "cc.Size",
@@ -2154,7 +2175,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 85
+      "__id__": 87
     },
     "_alignFlags": 18,
     "_target": null,
@@ -2190,7 +2211,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 87
+      "__id__": 89
     },
     "_id": ""
   },
@@ -2208,10 +2229,18 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 89
+      "__id__": 91
     },
-    "map": null,
-    "btnPlayJourney": null,
+    "map": {
+      "__id__": 2
+    },
+    "btnPlayJourney": {
+      "__id__": 68
+    },
+    "colorAtlas": {
+      "__uuid__": "813d124b-b4eb-4aa9-ae89-b20facb55ab4",
+      "__expectedType__": "cc.SpriteAtlas"
+    },
     "_id": ""
   },
   {
@@ -2227,6 +2256,7 @@
       "__id__": 0
     },
     "fileId": "91KM3VkWNPI7oRFt5YAx1J",
+    "instance": null,
     "targetOverrides": null
   }
 ]

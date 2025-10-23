@@ -155,13 +155,25 @@ export class SettingScene extends BaseTouch {
             this.node.setScale(1, 1, 1)
             this.box.active = true;
 
+            this.listBtn.children.forEach(element => {
+                element.active = false;
+            });
+
             if (DataManager.getInstance()._scenePlay == false) {
-                this.title.key = "setting"
-                this.listBtn.active = false
+                if (GameManager.getInstance()._currentState == GameState.map) {
+                    this.title.key = "pause";
+                    this.listBtn.active = true;
+                    this.listBtn.getChildByName('Home').active = true;
+                } else if (GameManager.getInstance()._currentState == GameState.MainMenu) {
+                    this.title.key = "setting";
+                    this.listBtn.active = false;
+                }
             }
             else {
-                this.title.key = "pause"
-                this.listBtn.active = true
+                this.title.key = "pause";
+                this.listBtn.active = true;
+                this.listBtn.getChildByName('Resume').active = true;
+                this.listBtn.getChildByName('listBtn').active = true;
             }
 
             this.title.updateText();

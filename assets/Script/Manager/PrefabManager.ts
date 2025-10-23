@@ -13,6 +13,9 @@ export class PrefabManager extends BaseSingleton<PrefabManager> {
     @property({ type: Prefab, group: { name: "INGAME" } })
     cameraItem: Prefab = null
 
+    @property({ type: Prefab, group: { name: "INGAME" } })
+    cellJourneyPrefab: Prefab = null
+
     @property({ type: Prefab, group: { name: "DAILY" } })
     itemDaily: Prefab = null
 

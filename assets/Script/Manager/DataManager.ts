@@ -103,6 +103,17 @@ export class DataManager extends BaseSingleton<DataManager> {
         await this.saveLocale("DataSound", value)
     }
 
+    // #region level quest
+    public async GetLevelQuest() {
+
+        const saved = await this.getLocaleShared("levelQuest")
+        return saved == null ? 1 : saved
+    }
+
+    public async SetLevelQuest(value: Number) {
+        await this.saveLocaleShared("levelQuest", value)
+    }
+
     // Lưu trạng thái game
     public async SaveGameState(gameState: any) {
         await this.saveLocale(`gameState`, gameState)

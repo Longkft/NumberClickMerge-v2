@@ -6,6 +6,9 @@ import { HighScoreMenu } from '../InGame/head/HighScoreMenu';
 import { ScoreController } from '../InGame/head/score/ScoreController';
 import { InGameLogicManager } from '../InGame/InGameLogicManager';
 import { EventGame } from '../Enum/EEvent';
+import { GameManager } from './GameManager';
+import { GameMode, GameState } from '../Enum/Enum';
+import { GridManager } from '../InGame/GridManager';
 // import { FbSdk } from '../FbSdk';
 
 
@@ -20,8 +23,12 @@ export class HomeManager extends BaseSingleton<HomeManager> {
     @property({ type: Prefab })
     mapJourneyPrefab: Prefab = null;
 
+    @property({ type: Prefab })
+    mapGameJourneyPrefab: Prefab = null;
+
     gamePlayNode: Node = null;
     mapJourneyNode: Node = null;
+    mapGameJourneyNode: Node = null;
 
     @property({ type: Node })
     loadingInScene: Node = null;
@@ -45,11 +52,15 @@ export class HomeManager extends BaseSingleton<HomeManager> {
     @property(Node)
     journeyContainer: Node = null;
 
-    protected onLoad(): void {
+    // =================== level quest =====================
+    levelQuest: number; // cấp leo tháp
+
+    protected async onLoad() {
 
         super.onLoad();
         // FbSdk.getInstance().loginGame()
         // localStorage.clear()
+        this.levelQuest = await DataManager.getInstance().GetLevelQuest();
         DataManager.getInstance()._scenePlay = false; // chưa có màn playGame
 
         this.PreLoadPrefabGamePlay();
@@ -60,6 +71,10 @@ export class HomeManager extends BaseSingleton<HomeManager> {
     PreLoadPrefabGamePlay() {
         Utils.PreloadAsset(`GamePlay/InGame`, Prefab, (Prefab) => {
             this.gamePlayPrefab = Prefab;
+        });
+
+        Utils.PreloadAsset(`GamePlay/InGame_MapJourney`, Prefab, (Prefab) => {
+            this.mapGameJourneyPrefab = Prefab;
         });
 
         Utils.PreloadAsset(`Map/MapJourney`, Prefab, (Prefab) => {
@@ -105,6 +120,7 @@ export class HomeManager extends BaseSingleton<HomeManager> {
         } else {
             this.scheduleLoadMap();
         }
+        DataManager.getInstance()._scenePlay = false;
     }
 
     scheduleLoadMap() {
@@ -124,6 +140,37 @@ export class HomeManager extends BaseSingleton<HomeManager> {
         this.mapJourneyNode.active = true;
     }
 
+    // ------------------------ Journey -------------------------------
+    TouchGameMapJourney() {
+        if (this.mapGameJourneyPrefab == null) {
+            this.loadingInScene.active = true;
+
+            this.schedule(this.scheduleLoadGameMap, 0.1);
+        } else {
+            this.scheduleLoadGameMap();
+        }
+        DataManager.getInstance()._scenePlay = true;
+    }
+
+    scheduleLoadGameMap() {
+        if (this.mapGameJourneyPrefab != null) {
+            this.loadingInScene.active = false;
+            this.unschedule(this.scheduleLoadGameMap);
+            this.ActiveGameMapJourney();
+        }
+    }
+
+    ActiveGameMapJourney() {
+        this.home.active = false;
+        this.mapJourneyNode.destroy();
+        this.mapGameJourneyNode = null;
+
+        // hiện map
+        this.mapGameJourneyNode = instantiate(this.mapGameJourneyPrefab);
+        this.mapGameJourneyNode.setParent(this.gameplayContainer);
+        this.mapGameJourneyNode.active = true;
+    }
+
     // #region  Score
 
     // ------------------------ other -------------------------------
@@ -132,16 +179,30 @@ export class HomeManager extends BaseSingleton<HomeManager> {
     }
 
     ShowHome() {
-        InGameLogicManager.getInstance().SaveGame()
-        // this.highScoreClassic.highScore = ScoreController.getInstance().highScoreCurrent;
-        // this.highScoreHard.highScore = ScoreController.getInstance().highScoreCurrent;
-        director.emit(EventGame.UPDATE_HIGH_SCORE);
+        this.home.active = true;
 
-        this.home.active = true
-        this.gamePlayNode.destroy();
-        this.gamePlayNode = null;
-        this.mapJourneyNode.destroy();
-        this.mapJourneyNode = null;
+        switch (GridManager.getInstance().GameMode) {
+            case GameMode.CLASSIC: {
+                InGameLogicManager.getInstance().SaveGame();
+                director.emit(EventGame.UPDATE_HIGH_SCORE);
+
+                this.gamePlayNode.destroy();
+                this.gamePlayNode = null;
+            }
+                break;
+            case GameMode.MAP: {
+                this.mapJourneyNode.destroy();
+                this.mapJourneyNode = null;
+            }
+                break;
+            case GameMode.JOURNEY: {
+                InGameLogicManager.getInstance().SaveGame();
+
+                this.mapGameJourneyNode.destroy();
+                this.mapGameJourneyNode = null;
+            }
+                break;
+        }
 
         DataManager.getInstance()._scenePlay = false;
     }

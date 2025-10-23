@@ -14,6 +14,9 @@ export class InGameUIManager extends BaseSingleton<InGameUIManager> {
     containNode: Node = null
 
     @property(Node)
+    questNode: Node = null
+
+    @property(Node)
     cellNode: Node = null
 
     @property(Node)
