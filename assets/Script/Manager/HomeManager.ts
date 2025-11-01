@@ -9,6 +9,7 @@ import { EventGame } from '../Enum/EEvent';
 import { GameManager } from './GameManager';
 import { GameMode, GameState } from '../Enum/Enum';
 import { GridManager } from '../InGame/GridManager';
+import { LevelConfig } from '../LevelConfig';
 // import { FbSdk } from '../FbSdk';
 
 
@@ -54,6 +55,8 @@ export class HomeManager extends BaseSingleton<HomeManager> {
 
     // =================== level quest =====================
     levelQuest: number; // cấp leo tháp
+    dataLevelQuest: any;
+    isHard: boolean = false;
 
     protected async onLoad() {
 
@@ -61,9 +64,17 @@ export class HomeManager extends BaseSingleton<HomeManager> {
         // FbSdk.getInstance().loginGame()
         // localStorage.clear()
         this.levelQuest = await DataManager.getInstance().GetLevelQuest();
+        this.dataLevelQuest = LevelConfig[this.levelQuest - 1];
+        this.isHard = this.dataLevelQuest.isHard;
         DataManager.getInstance()._scenePlay = false; // chưa có màn playGame
 
         this.PreLoadPrefabGamePlay();
+    }
+
+    setLevelQuestData() {
+        this.levelQuest += 1;
+        this.dataLevelQuest = LevelConfig[this.levelQuest - 1];
+        this.isHard = this.dataLevelQuest.isHard;
     }
 
     // #region  PreLoad

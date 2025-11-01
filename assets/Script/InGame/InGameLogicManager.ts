@@ -20,6 +20,7 @@ import { ScoreController } from './head/score/ScoreController';
 import { LevelController } from './head/Level/LevelController';
 import { ToolManager } from '../Manager/ToolManager';
 import { ECELL_CLICK_EFFECT, ECELL_STATE } from '../Enum/ECell';
+import { HomeManager } from '../Manager/HomeManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('InGameLogicManager')
@@ -57,11 +58,19 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
     // ---------------------------------------------
 
     private isGameReady: boolean = false;
+    private gameMode: GameMode = null;
 
     protected async onLoad() {
         super.onLoad();
         await ToolManager.getInstance().initialize();
+
+        this.gameMode = GridManager.getInstance().GameMode;
+
         this.RegisEventBeforUnload();
+
+        // if (this.gameMode == GameMode.CLASSIC) {
+        //     this.currentHeart = await DataManager.getInstance().GetMyHeart();
+        // }
         this.currentHeart = await DataManager.getInstance().GetMyHeart();
 
         this.isGameReady = true; // load xong
@@ -294,8 +303,10 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         const gridMgr = GridManager.getInstance();
         const rootModel = gridMgr.grid[root.row][root.col];
 
-        // Bắt đầu logic tính điểm
-        this.AddScoreAfterMerge(rootModel, matched);
+        if (this.gameMode == GameMode.CLASSIC) {
+            // Bắt đầu logic tính điểm
+            this.AddScoreAfterMerge(rootModel, matched);
+        }
 
         const newValue = rootModel.value + 1;
 
@@ -327,8 +338,6 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
 
         this.cells[root.row][root.col] = nodeCell;
         this.UpdateValueCellBeforeTween(root.row, root.col, nodeCell);
-
-
 
         // Fill tiếp và check match tiếp theo
         this.fillIntheBlank();
@@ -534,8 +543,12 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
             const rootModel = gridMgr.grid[group.root.row][group.root.col];
             const originalValue = rootModel.value; // Lấy giá trị gốc tại đây
 
-            // Tính điểm dựa trên giá trị gốc
-            this.AddScoreAfterMerge(rootModel, group.cells);
+            log('this.gameMode == GameMode.CLASSIC: ', this.gameMode)
+
+            if (this.gameMode == GameMode.CLASSIC) {
+                // Tính điểm dựa trên giá trị gốc
+                this.AddScoreAfterMerge(rootModel, group.cells);
+            }
 
             // Chuẩn bị dữ liệu để tạo ô mới sau này
             newCellsData.push({
@@ -913,14 +926,27 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         // KIỂM TRA CHẾ ĐỘ CHƠI HIỆN TẠI
         const currentMode = GridManager.getInstance().GameMode;
 
-        DataManager.getInstance().SaveGameState(gameStateData);
+        switch (currentMode) {
+            case GameMode.CLASSIC: {
+                DataManager.getInstance().SaveGameState(gameStateData);
+
+                ScoreController.getInstance().SaveScoreCurrent();
+
+                LevelController.getInstance().SaveTotalExp();
+            }
+                break;
+            case GameMode.JOURNEY: {
+                DataManager.getInstance().SetLevelQuest(HomeManager.getInstance().levelQuest);
+            }
+                break;
+        }
+
+        // DataManager.getInstance().SaveGameState(gameStateData);
 
         // Các lệnh save khác không liên quan đến chế độ chơi
         AudioManager.getInstance().SaveState();
         MoneyController.getInstance().SaveGold();
-        ScoreController.getInstance().SaveScoreCurrent();
         DataManager.getInstance().SetMyHeart(this.currentHeart);
-        LevelController.getInstance().SaveTotalExp();
         ToolManager.getInstance().SetToolState();
     }
 
@@ -931,7 +957,24 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         this.contains = [];
         this.cellContainColllection = [];
 
-        const currentMode = GridManager.getInstance().GameMode;
+        this.gameMode = GridManager.getInstance().GameMode;
+
+        log('this.gameMode0: ', this.gameMode)
+        switch (this.gameMode) {
+            case GameMode.CLASSIC: {
+                log('this.gameMode1: ', this.gameMode)
+                await this.LoadDataClassic();
+            }
+                break;
+            case GameMode.JOURNEY: {
+                log('this.gameMode2: ', this.gameMode)
+                this.LoadDataJourney();
+            }
+                break;
+        }
+    }
+
+    async LoadDataClassic() {
         let savedData = null;
 
         savedData = await DataManager.getInstance().LoadGameState();
@@ -965,6 +1008,18 @@ export class InGameLogicManager extends BaseSingleton<InGameLogicManager> {
         } else {
             PopupManager.getInstance().PopupGoal.Show();
         }
+    }
+
+    LoadDataJourney() {
+        GridManager.getInstance().initNewGrid();
+        this.InitContainCells();
+        this.InitCells();
+
+        this.scheduleOnce(() => {
+            this.checkAllMatchingGroupsLoop();
+        }, 0.25);
+
+        director.on(EventGame.GRID_CELL_UPDATED_EVENT, this.OnUpdateUi, this);
     }
 
     //#region hint

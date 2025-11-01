@@ -17,6 +17,7 @@ import { GameMode, SFXType } from '../../Enum/Enum';
 import { DataManager } from '../../Manager/DataManager';
 import { PopupManager } from '../../Manager/PopupManager';
 import { ToolManager } from '../../Manager/ToolManager';
+import { HomeManager } from '../../Manager/HomeManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('Cell')
@@ -33,12 +34,23 @@ export class Cell {
     constructor(cellData: CellModel) {
         this.cellData = cellData;
         // this.clickEffect = this.RandomEffectClick()
-        this.clickEffect = GridManager.getInstance().GameMode == GameMode.CLASSIC ? ECELL_CLICK_EFFECT.Up : this.RandomEffectClick();
+        this.clickEffect = this.returnStatusGameMode() ? ECELL_CLICK_EFFECT.Up : this.RandomEffectClick();
         this.CreateCellUI()
 
         // chỉ bind MỘT lần rồi lưu lại
         this.clickHandler = this.onClick.bind(this);
         this.RegisterEventClick();
+    }
+
+    returnStatusGameMode() {
+        if (GridManager.getInstance().GameMode == GameMode.CLASSIC) {
+            return true;
+        } else if (GridManager.getInstance().GameMode == GameMode.HARD) {
+            return false;
+        } else if (GridManager.getInstance().GameMode == GameMode.JOURNEY && HomeManager.getInstance().isHard) {
+            return false;
+        }
+        return true;
     }
 
     public CreateCellUI(): void {

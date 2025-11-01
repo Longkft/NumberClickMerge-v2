@@ -175,7 +175,7 @@ export class DataManager extends BaseSingleton<DataManager> {
     // #endregion
 
     public async saveLocale(key, value) {
-        await localStorage.setItem(key + `${Config.keyGame}` + `${GridManager.getInstance().GameMode}`, JSON.stringify(value));
+        await localStorage.setItem(key + `${Config.keyGame}` + `${GridManager.getInstance().GameMode}_gameMode`, JSON.stringify(value));
     }
 
     public async getLocale(key) {

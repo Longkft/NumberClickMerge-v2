@@ -1,4 +1,4 @@
-import { _decorator, Component, director, log, Node } from 'cc';
+import { _decorator, Component, director, Label, log, Node } from 'cc';
 import { DataManager } from '../../Manager/DataManager';
 import { EventBus } from '../../Utils/EventBus';
 import { EventGame } from '../../Enum/EEvent';
@@ -10,6 +10,9 @@ const { ccclass, property } = _decorator;
 
 @ccclass('HeartUi')
 export class HeartUi extends Component {
+
+    @property(Label)
+    valueHeartJourney: Label = null;
 
     listHeart: Node[] = [];
 
@@ -53,7 +56,23 @@ export class HeartUi extends Component {
     }
 
     UpdateUiheart() {
+        let currentGameMode = GridManager.getInstance().GameMode;
         let myHeart = InGameLogicManager.getInstance().currentHeart;
+        switch (currentGameMode) {
+            case GameMode.CLASSIC: {
+                this.updateUiClassic(myHeart);
+            }
+                break;
+            case GameMode.JOURNEY: {
+                this.updateUiJourney(myHeart);
+            }
+                break;
+        }
+
+
+    }
+
+    updateUiClassic(myHeart: number) {
         for (let i = 0; i < myHeart; i++) {
             let heartNode = this.listHeart[i];
             let ActiveHeartNode = heartNode.getChildByName('heatActive');
@@ -67,6 +86,11 @@ export class HeartUi extends Component {
 
             ActiveHeartNode.active = false;
         }
+    }
+
+    updateUiJourney(myHeart: number) {
+        if (!this.valueHeartJourney) return;
+        this.valueHeartJourney.string = myHeart.toString();
     }
 
     protected onDestroy(): void {
